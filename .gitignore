@@ -16,6 +16,8 @@ node_modules
 
 *.local.*
 
+sftp-config.json
+
 
 # Compiled source #
 ###################
@@ -54,3 +56,4 @@ node_modules
 .Trashes
 ehthumbs.db
 Thumbs.db
+
