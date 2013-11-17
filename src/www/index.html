@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta name="verify-reformal" content="8c521f17e906281b90537757" />
+	<title>Trigger</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/swfobject.js"></script>
+    <script src="js/id3-minimized.js"></script>
+    <script src="js/lastfm.api.js"></script>
+    <script src="js/lastfm.api.md5.js"></script>
+    <script src="js/timerchat.js"></script>
+    <script src="js/client.js"></script>
+    <script src="js/chrome.js"></script>
+    <script src="js/resize.js"></script>
+    <script src="js/uploader.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/tagline.js"></script>
+    <script src="js/paths.local.js"></script>
+    <script src="js/dateformat.js"></script>
+    
+    <script src="upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="upload/js/jquery.iframe-transport.js"></script>
+    <script src="upload/js/jquery.fileupload.js"></script>
+    <link rel="stylesheet" href="upload/css/jquery.fileupload-ui.css">
+    <script src="socket.io/socket.io/socket.io.js"></script>
+    
+
+</head>
+<body>
+<div id='radio'></div>
+
+<div id='content'>
+	<div id='playlist'>
+	<div class='resizer'></div>
+		<div class='current'></div>
+			<div class='innerl'>
+			<div style="margin-top:70px"></div>
+				<div class='inner'><ul class='list'></ul></div>
+			</div>
+	</div>
+	<div id='console'>
+		<div class='streamcontrol'>
+			<div class='play'><img src='/img/off.png' width="100%"></div>
+			<div class='stop'><img src='/img/on.gif' width="100%"></div>
+			<div class='links'></div>
+			<div id='volume'>
+				<div class='slider'>
+					 <div class='bar'></div>
+				</div>
+			</div>
+		</div>
+		<div class='logo'>
+			<img src='/img/triggerlogo.png'>
+		</div>
+		<div class='info'><div class='chname'></div><div class='chdata'></div></div>
+		<div class='submit_box'><div class='label'>+</div>
+			<div class='uploader'><input id="fileupload" type="file" placeholder="Тащи сюда свою музыку" multiple></div>
+		</div>
+		<div class='upfiles'></div>
+		<div class='loginform'>
+			<input id="lgname" class="username" name="username" type="text" autocomplete="on" placeholder="Юзернейм"><br />
+			<input id="lgpass" class="password" name="pass" type="password" autocomplete="on" placeholder="Пароль">
+			<div class='button'><a href='javascript:void(0);'>Вход</a></div>
+			<div id='save'><input type="checkbox" id="remember" checked> Запомнить</div>
+			<div id='recovery'></div>
+			<div class='alert'></div>
+		</div>
+		<div class='userinfo'></div>
+		<div class='serverinfo'>Каналы появятся постепенно, когда нас наберется достаточное количество. <br>А еще у нас есть группа в <a href='http://vk.com/triggerfm' target="_blank">vk</a>, а также <a href='http://twitter.com/TriggerRadio' target="_blank">твиттер</a> и даже <a href='http://trigger.fm/wiki' target="_blank">wiki</a>!<br><br>  Слушать нас можно с помощью любого проигрывателя добавив в него любую из ссылок под кнопкой эфира. <br><br> Да пребудет с вами сила!
+		</div>
+	</div>
+	<div id='info'>
+	<table class ='tabs'>
+		<tr>
+    		<td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
+    		<td class='tab history'><a href='javascript:void(0);'>История</a></td>
+    		<td class='tab channels'><a href='javascript:void(0);'>Каналы</a></td>
+    		<td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
+    	</tr>
+    </table>
+    	<div class='content profile'>
+    	</div>
+		<div class='content channels'></div>
+		<div class='content history'>
+			<div class='inner'>
+				<ul class='list'></ul>
+			</div>
+		</div>
+		<div class='content chat'>
+			
+			<div class='log'><div id='chatmessages'></div></div>
+			<div class='users'>
+				<div class='topline'></div>
+				<div class='scroller'></div>
+			</div>
+			<div class='input'>
+				<textarea id="messageinput" placeholder="начинай вводить..."></textarea>
+			</div>
+		</div>
+		<div class='resizer'></div>
+	</div>
+</div>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+</body>
+</html>

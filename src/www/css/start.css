@@ -1,0 +1,28 @@
+body {
+	background-color: #f4f4f3;
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Open Sans', sans-serif;
+	min-width: 720px;
+	color: #333;
+
+}
+
+#container{
+   position: absolute;
+   top: 50%;
+   margin-top: -17px;
+   left: 0;
+   width: 100%;
+}
+#content {
+   width: 172px;
+   margin-left: auto;
+   margin-right: auto;
+   height: 34px;
+}
+
+p {
+	text-align: center;
+	font-size: 10px;
+}
