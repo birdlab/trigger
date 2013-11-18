@@ -35,9 +35,9 @@ var customCodes=[];
 
 var messages=[];
 var now=null;
+var sound = new Audio();
 
 function playTink(){
-	var sound = new Audio();
 	if (sound.canPlayType('audio/ogg')){
 		sound.src='http://birdlab.ru/trigger/tink.ogg';
 		sound.play();
@@ -46,6 +46,47 @@ function playTink(){
 		sound.play();
 	}
 }  
+
+$(document).ready(function() {
+	
+});
+
+
+function submitMessage(){
+			var command=false;
+		  	var m= $.trim($('#messageinput').val());
+		  	if (m.replace('/tink', '')!=m){
+		  		command=true;
+		  		tink=!tink;
+		  		settink();
+			  	$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
+		  	} 
+		  	if (m.replace('/noimg', '')!=m){
+		  		command=true;
+		  		noimg=!noimg;
+		  		setnoimg();
+		  		$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
+		  	} 
+		  	if (!command) {
+				for (var i=0; i<customCodes.length; i++){
+					 if (m.replace(customCodes[i][0],'')!=m){
+						m = m.replace(customCodes[i][0], customCodes[i][1]);
+						if (i<2){
+							break;
+						}
+					}
+				}
+				
+				client.sendMessage(m);
+				$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
+			}
+}
+
+
+
+
+
+
 function fillUserlist(){
 	$('#info .users .topline').html('<span>Здесь:'+client.chat.u.length+'</span>');
 	$('#info .users .scroller').html('');
@@ -105,8 +146,6 @@ function addNick(name){
     return false;
 }
 var meta=[];
-meta[0]=/\/track(\w*)/gim;
-
 function addMessage(md) {
 		for (var i in mutelist){
 			if (mutelist[i]==md.uid){
@@ -114,23 +153,41 @@ function addMessage(md) {
 				return;
 			}
 		}
+		md.uname=$.trim(md.uname);
 		if (md.m.replace('>'+client.user.n,'')!=md.m){
 			if (tink){playTink();}
 			md.m='<b style="color:black">>'+client.user.n+md.m.replace('>'+client.user.n,'')+'</b>';
 		}
-		meta[0]=/\/track(\w*)/gim;
-		for (var i in meta){
-			var res=meta[i].exec(md.m);
-			if (res){
-				var str='';
-				if (i==0){
-					var tr=client.track(parseInt(res[1]));
-					str='<a href="javascript:opentrack('+tr.id+');void(0);">'+tr.a+' - '+tr.t+'</a>';
-				}
-				md.m = md.m.replace(res[0], str);
-			}
+		var useraction=false;
+		var replaceme=function(){
+			if (md.m.replace('/me', '')!=md.m){
+				useraction=true;
+				md.m=md.m.replace('/me', '<span onclick="return addNick(\''+md.uname+'\')" >'+md.uname+'</span>');
+		  		replaceme();		
+			} 
 		}
-		var message=$('<div class="message '+md.uname+'"><table><tr><td class="names"><span onclick="return addNick(\''+md.uname+'\')" >'+md.uname+': </span></td><td class="sms">'+md.m+'</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>')
+		replaceme();
+		if (!useraction){
+			meta[0]=/\/track(\w*)/gim;
+			var analys=function(){
+				var res=meta[i].exec(md.m);
+				if (res){
+					var str='';
+					if (i==0){
+						var tr=client.track(parseInt(res[1]));
+						str='<a href="javascript:opentrack('+tr.id+');void(0);">'+tr.a+' - '+tr.t+'</a>';
+					}
+					md.m = md.m.replace(res[0], str);
+					analys();
+				}
+			}
+			for (var i in meta){
+				analys();
+			}
+			var message=$('<div class="message '+md.uname+'"><table><tr><td class="names"><span onclick="return addNick(\''+md.uname+'\')" >'+md.uname+': </span></td><td class="sms">'+md.m+'</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
+		} else {
+			var message=$('<div class="message '+md.uname+'"><table><tr><td class="sms"><div class="action">'+md.m+'</div></td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
+		}
 		message.time=new Date(md.t).getTime();
 		if (messages.length){
 			if (message.time>messages[0].time){
@@ -188,3 +245,101 @@ function upadateMT(message){
 		}
 	}
 }
+
+
+
+    function getTextSelection(el) {
+        var start = 0, end = 0, normalizedValue, range,
+            textInputRange, len, endRange;
+
+        if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+ 			console.log('selected');
+            start = el.selectionStart;
+            end = el.selectionEnd;
+            if (start==end){
+            	start=0;
+            }
+        } else {
+        	console.log('not selected');
+            range = document.selection.createRange();
+
+            if (range && range.parentElement() == el) {
+                len = el.value.length;
+                normalizedValue = el.value.replace(/\r\n/g, "\n");
+
+                // Create a working TextRange that lives only in the input
+                textInputRange = el.createTextRange();
+                textInputRange.moveToBookmark(range.getBookmark());
+
+                // Check if the start and end of the selection are at the very end
+                // of the input, since moveStart/moveEnd doesn't return what we want
+                // in those cases
+                endRange = el.createTextRange();
+                endRange.collapse(false);
+
+                if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+                    start = end = len;
+                } else {
+                    start = -textInputRange.moveStart("character", -len);
+                    start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+                    if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+                        end = len;
+                    } else {
+                        end = -textInputRange.moveEnd("character", -len);
+                        end += normalizedValue.slice(0, end).split("\n").length - 1;
+                    }
+                }
+            }
+        }
+       	return {'start':start,'end':end};
+    }
+
+
+
+var insertTag = {
+	getCursor: function() {
+		var result = {start: 0, end: 0};
+		if (input.setSelectionRange){
+			result.start= input.selectionStart;
+			result.end = input.selectionEnd;
+		} else if (!document.selection) {
+			return false;
+		} else if (document.selection && document.selection.createRange) {
+			var range = document.selection.createRange();
+			var stored_range = range.duplicate();
+			stored_range.moveToElementText(input);
+			stored_range.setEndPoint('EndToEnd', range);
+			result.start = stored_range.text.length - range.text.length;
+			result.end = result.start + range.text.length;
+		};
+		return result;
+	},
+	setCursor: function(txtarea, start, end) {
+		if(txtarea.createTextRange) {
+			var range = txtarea.createTextRange();
+			range.move("character", start);
+			range.select();
+		} else if(txtarea.selectionStart) {
+			txtarea.setSelectionRange(start, end);
+		};
+	},
+	tag:function(startTag, endTag) {
+		var txtarea = document.getElementById("messageinput");
+		txtarea.focus();
+		var scrtop = txtarea.scrollTop;
+		var cursorPos = getTextSelection(txtarea);
+		var txt_pre = txtarea.value.substring(0, cursorPos.start);
+		var txt_sel = txtarea.value.substring(cursorPos.start, cursorPos.end);
+		var txt_aft = txtarea.value.substring(cursorPos.end);
+		if (cursorPos.start == cursorPos.end){
+			var nuCursorPos = cursorPos.start + startTag.length;
+		} else {
+			var nuCursorPos=String(txt_pre + startTag + txt_sel + endTag).length;
+		};
+		txtarea.value = txt_pre + startTag + txt_sel + endTag + txt_aft;
+		insertTag.setCursor(txtarea,nuCursorPos,nuCursorPos);
+		if (scrtop) txtarea.scrollTop=scrtop;
+		return false;
+	}
+};
