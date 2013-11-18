@@ -1,6 +1,26 @@
 var db=require('./dbdata.js');
 var sockets=require('./sockets.js');
-var sanitize = require('validator').sanitize;
+var sanitizer = require('sanitizer');
+
+function nmTokenPolicy(nmTokens) {
+   	if ("specialtoken" === nmTokens) {
+        return nmTokens;
+    }
+    if (/[^a-z\t\n\r ]/i.test(nmTokens)) {
+        return null;
+    } else {
+        return nmTokens.replace(
+            /([^\t\n\r ]+)([\t\n\r ]+|$)/g,
+            function (_, id, spaces) {
+                return 'p-' + id + (spaces ? ' ' : '');
+            });
+    }
+}
+
+
+function uriPolicy(value, effects, ltype, hints) {
+    return value;
+}
 
 function Chat()
 {
@@ -20,8 +40,7 @@ Chat.prototype.init = function(data) {
 }
 
 Chat.prototype.addMessage = function(message) {
-	message.m = message.m;
-	message.m = message.m.xss(true);
+	message.m = sanitizer.sanitize(message.m, uriPolicy, nmTokenPolicy);
 	var ct=new Date();
 	message.t=ct;
 	this.messages.push(message);
