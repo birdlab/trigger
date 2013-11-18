@@ -2,13 +2,41 @@ var db=require('./db.local.js');
 var user=require('./user.js');
 var exec = require("child_process").exec;
 var md5 = require('MD5');
-var sanitize = require('validator').sanitize;
+var sanitizer = require('sanitizer');
 
 var voteq=[];
 var uvoteq=[];
 
 var vprocess=false;
 var uvprocess=false;
+
+
+function nmTokenPolicy(nmTokens) {
+    if ("specialtoken" === nmTokens) {
+        return nmTokens;
+    }
+    if (/[^a-z\t\n\r ]/i.test(nmTokens)) {
+        return null;
+    } else {
+        return nmTokens.replace(
+            /([^\t\n\r ]+)([\t\n\r ]+|$)/g,
+            function (_, id, spaces) {
+                return 'p-' + id + (spaces ? ' ' : '');
+            });
+    }
+}
+
+
+function uriPolicy(value, effects, ltype, hints) {
+    return value;
+}
+
+function strip_tags( str ){	// Strip HTML and PHP tags from a string
+	return str.replace(/<\/?[^>]+>/gi, '');
+}
+
+
+
 
 exports.updatelimits=function(userid, callback){
 	var data={};
@@ -123,8 +151,8 @@ exports.getstats=function(userid, callback){
 
 
 exports.login=function(data, callback){
-	var username = data.u/*.xss()*/;
-    var password = data.p/*.xss()*/;
+	var username = sanitizer.escape(data.u);
+    var password = sanitizer.escape(data.p);
     db.connection.query('SELECT * FROM users WHERE name = \''+username+'\'', function(e, result, fields){
     	if (!e){
 	    	if (result[0]){
@@ -394,9 +422,9 @@ exports.addUserVote=function (vote){
 
 }
 exports.addTrack = function(track, callback){
-	track.artist=track.artist/*.xss()*/;
-	track.title=track.title/*.xss()*/;
-	track.info=track.info/*.xss()*/;
+	track.artist = sanitizer.escape(track.artist);
+	track.title = sanitizer.escape(track.title);
+	track.info = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
 	console.log('inserting');
 	db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, ?, ?, ?, ?, ?, NOW(), NULL)',
 		[track.path, 
@@ -539,7 +567,12 @@ exports.getTracks = function(paths, callback){
 }
 
 exports.getTags = function(string, callback){
-	string=string/*.xss()*/;
+	var str = strip_tags(string);
+	if(str.length != string.length){
+		callback({error: "not valid tag"});
+		return;
+	}
+	string= sanitizer.sanitize(string, uriPolicy, nmTokenPolicy);
 	var q='SELECT * FROM tags WHERE name LIKE \'%'+string+'%\'';
 	db.connection.query(q,function(error, result, fields){ 
 		if (!error){
@@ -561,7 +594,12 @@ exports.getTags = function(string, callback){
 }
 
 exports.getTag = function(string, callback){
-	string=string/*.xss()*/;
+	var str = strip_tags(string);
+	if(str.length != string.length){
+		callback({error: "not valid tag"});
+		return;
+	}
+	string = sanitizer.sanitize(string, uriPolicy, nmTokenPolicy);
 	var q='SELECT * FROM tags WHERE name ="'+string+'"';
 	db.connection.query(q,function(error, result, fields){ 
 		console.log('from db - ', result);
@@ -580,25 +618,36 @@ exports.getTag = function(string, callback){
 	
 }
 exports.addTag = function(string, callback){
-	string=string.toLowerCase()/*.xss()*/;
-	console.log('tag from user - ', string);
-	this.getTag(string, function(data){
-		console.log('finded', data);
-		if (data.t){
-			callback({id:data.t.id, n:data.t.n});
-		} else {
-			var q='INSERT INTO `tags` (`id`, `name`) VALUES (null, \''+string+'\')';
-			db.connection.query(q,function(error, result, fields){ 
-				if (!error){
-					console.log('new tag id '+result.insertId+' > '+string);
-					callback({id:result.insertId, n:string});
+	var str = strip_tags(string);
+	if(str.length != string.length){
+		callback({error: "not valid tag"});
+		return;
+	}
+	string = sanitizer.sanitize(string.toLowerCase(), uriPolicy, nmTokenPolicy);
+	if(string && string.length > 0){
+			console.log('tag from user - ', string);
+			this.getTag(string, function(data){
+				console.log('finded', data);
+				if (data.t){
+					callback({id:data.t.id, n:data.t.n});
 				} else {
-					console.log(error);
-					callback({error:'db fail'});
+					var q='INSERT INTO `tags` (`id`, `name`) VALUES (null, \''+string+'\')';
+					db.connection.query(q,function(error, result, fields){ 
+						if (!error){
+							console.log('new tag id '+result.insertId+' > '+string);
+							callback({id:result.insertId, n:string});
+						} else {
+							console.log(error);
+							callback({error:'db fail'});
+						}
+					});
 				}
-			});
-		}
-	});
+			});	
+	}
+	else{
+			callback({error:'not valid tag'});
+	}
+	
 }
 
 exports.addTrackTag = function(track, tag, callback){
@@ -627,7 +676,7 @@ exports.sendinvite = function (code, mail, socket){
 	});
 }
 exports.recoverpass = function(mail, callback){
-	mail=mail/*.xss()*/;
+	mail= sanitizer.sanitize(mail);
 	 db.connection.query('SELECT * FROM users WHERE email = \''+mail+'\'', function(err, result, fields){
     	if (!err){
 	    	if (result[0]){
@@ -659,7 +708,7 @@ exports.recoverpass = function(mail, callback){
 	
 }
 exports.changeuserpass = function(id, pass, callback){
-	var newpass=pass/*.xss()*/;
+	var newpass= sanitizer.sanitize(pass);
 	db.connection.query('UPDATE users SET password ="'+newpass+'" WHERE id = '+id, function(err, result, fields){
     	if (!err){
 			callback({ok:true});
