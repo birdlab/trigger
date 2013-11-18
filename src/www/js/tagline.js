@@ -132,7 +132,14 @@ origins.push('я не пидорас, но такое тащит, username %)');
 origins.push('не воруй моих детей, username!');
 origins.push('не бери треки у наркоманов, username');
 origins.push('бэри вайт не бари вайт, username');
+origins.push('Не всё, то чилл, что уныло, username');
+origins.push('Не весь метал одинаково полезен, username');
+origins.push('Поиграй на контрастах, username');
 origins.push('начинай вводить, username');
+origins.push('Все было хорошо, пока на триггер не пришел username');
+origins.push('не обижай семплер, username');
+
+
 
 
 

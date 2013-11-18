@@ -247,6 +247,7 @@ Client.prototype.init = function(host) {
 		cl.callbacks.channelsdata(data);
 	});	
 	socket.on('userdata', function(data){
+		console.log(data);
 		cl.callbacks.userdata(data);
 	});	
 	socket.on('uvd', function(data){
@@ -498,4 +499,12 @@ Client.prototype.changepass = function(oldpass,newpass,callback) {
 }
 Client.prototype.updateUserData = function(data) {
 	this.socket.emit('upduserdata',data);
+}
+Client.prototype.getchannel = function(id) {
+	for (var i in this.channels){
+		if (this.channels[i].id==id){
+			return this.channels[i];
+		}
+	}
+	return false;
 }

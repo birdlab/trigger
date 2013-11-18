@@ -1,15 +1,15 @@
 (function($){ $.fn.autofocus=function(){return (this[0].autofocus!==true)?this.focus():this;};})(jQuery);
 
 
-var client=null,
-	remember_name=true;
-	tink=true;
-	noimg=false;
-	historyprocess=false;
-	lht=0;
-	recovery=false;
-	mutelist=[];
-var ctrl=false;
+var client=null, remember_name=true, tink=true, noimg=false, historyprocess=false, lht=0, lang='ru', recovery=false, mutelist=[], ctrl=false;
+
+
+
+var kgb={
+	show:function(obj){
+		console.log(obj);
+	}
+}
 
 	
 $(document).ready(function() {
@@ -26,6 +26,16 @@ $(document).ready(function() {
 		}
 	} else {
 		$.Storage.set("tink", 'true');
+	}
+	var ni=$.Storage.get("noimg");
+	if (ni){
+		if (ni=='false'){
+			noimg=false;
+		} else {
+			noimg=true;
+		}
+	} else {
+		$.Storage.set("noimg", 'false');
 	}
 	var ni=$.Storage.get("noimg");
 	if (ni){
@@ -164,6 +174,7 @@ $(document).ready(function() {
 		var $input = $(this);
 		remember_name=$input.is(':checked');
 	});
+	$('#console .serverinfo.greating').html('<a href="http://vk.com/triggerfm?w=wall-55048733_285" target="_blank"><img src="http://cs419118.vk.me/v419118002/8f89/x-nn2YBcBe0.jpg"></a>');
 	
 	$('#console .loginform .button').click(goLogin);
 	$('#lgpass').bind('keyup',function(e){
@@ -217,35 +228,9 @@ $(document).ready(function() {
 	
 	setInterval(newTagline, 90000);
 
-	 $('#messageinput').bind("keyup", function(event){
+	$('#messageinput').bind("keyup", function(event){
 		  if(event.keyCode == 13){
-		  	var command=false;
-		  	var m= $('#messageinput').val();
-		  	if (m.replace('/tink', '')!=m){
-		  		command=true;
-		  		tink=!tink;
-		  		settink();
-			  	$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
-		  	} 
-		  	if (m.replace('/noimg', '')!=m){
-		  		command=true;
-		  		noimg=!noimg;
-		  		setnoimg();
-		  		$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
-		  	} 
-		  	if (!command) {
-				for (var i=0; i<customCodes.length; i++){
-					 if (m.replace(customCodes[i][0],'')!=m){
-						m = m.replace(customCodes[i][0], customCodes[i][1]);
-						if (i<2){
-							break;
-						}
-					}
-				}
-				
-				client.sendMessage(m);
-				$('#messageinput').val($('#messageinput').val().match(/^(\>[a-zA-Z0-9_.]+ )+/g) || '');
-			}
+		  	submitMessage();
 		  }
 	 });
 	 
@@ -446,6 +431,7 @@ function showHistory(){
 
 
 function addhistory(track){
+	console.log(track);
 	var item=$('<li class="item"></li>').appendTo('#info .content.history .list');
 	var base=$('<div class="base"></div>').appendTo(item);
 	var date=new Date(track.tt);
@@ -488,7 +474,7 @@ function addprofile(track){
 	var base=$('<div class="base"></div>').appendTo(item);
 	var date=new Date(track.tt);
 	//var date=track.tt.geDay+" - "+track.tt.getHours()+':'+track.getMinutes();
-	base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">'+track.a+'</div><div class="title">'+track.t+'</div></td><td class="time">'+date+'</td><td class="rating"><div>'+track.r+'</div></td></tr></table>');
+	base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">'+track.a+'</div><div class="title">'+track.t+'</div></td><td class="channel">'+client.getchannel(track.chid).name+'</td><td class="time">'+date+'</td><td class="rating"><div>'+track.r+'</div></td></tr></table>');
 	var inf=track.i;
 	var full=$('<div class="full"></div>').appendTo(item);
 	full.attr('id',track.id);
@@ -1051,6 +1037,9 @@ function addtrack(track){
 		fastag+='...';
 	} 
 	base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">'+track.a+'</div><div class="title">'+track.t+'</div></td><td class="fastag"><div class="intag">'+fastag+'</div></td><td class="time"></td><td class="rating"><div>'+track.r+'</div></td></tr></table>');
+
+	var rating=$(base).children('.rating');
+	rating.click(kgb.show);
 	var inf=track.i;
 	var full=$('<div class="full"></div>').appendTo(item);
 	full.attr('id',track.id);
@@ -1298,4 +1287,5 @@ $.fn.selectRange = function(start, end) {
         }
     });
 };
+
 

@@ -107,7 +107,7 @@ User.prototype.fullinfo = function(self, callback) {
 	}
 	db.getInvites(user.id, function(invites){
 		if (!self){
-			data.invites={u:invites.u, p:invites.parent};
+			data.invites={u:invites.u, p:invites.p};
 		} else {
 			data.invites=invites;
 		}
