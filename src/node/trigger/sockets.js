@@ -7,7 +7,6 @@ io.sockets.on('connection', function (socket) {
 	socket.on('ver', function (data) {
 		if (data.v==version){
 			var du={
-				
 				channels:[]
 			};
 			if (data.init){
@@ -38,11 +37,9 @@ io.sockets.on('connection', function (socket) {
 function bind(socket){
 	sockets.push(socket);
 	var address = socket.handshake.address;
-	socket.ip=address.address;
+	socket.ip=socket.handshake.headers['x-real-ip'];
+	socket.port=socket.handshake.address['port'];
 	socket.active=false;
-    console.log("New connection from " + address.address + ":" + address.port + "; RealIP: " + socket.handshake.headers['x-real-ip']);
-
-	console.log('Now connected ',sockets.length, ' sockets ', io.sockets.clients().length, ' is real');
 	socket.on('login', function(data){
 		var is=false;
 		for (var u in main.users){
@@ -67,7 +64,6 @@ function bind(socket){
 							var user=main.users[u];
 							socket.user=user;
 							socket.emit('loginstatus', {'user':user.fastinfo(), 'virtual': socket.user.virtual});
-							console.log('user '+user.name+' add new socket');	
 							user.addSocket(socket.id);
 							break;
 						}
@@ -75,7 +71,8 @@ function bind(socket){
 					if (!is){					
 						socket.user=data.user;
 						main.users.push(user);
-						user.addSocket(socket.id);		
+						user.addSocket(socket.id);	
+						console.log(socket.handshake);	
 						for (var s in sockets){
 							var ss=sockets[s];
 							if (ss.id!=socket.id&&ss.user&&ss.user.id!=user.id&&ss.handshake.address.address==socket.handshake.address.address&&ss.handshake.address.port==socket.handshake.address.port){
@@ -85,7 +82,6 @@ function bind(socket){
 						}
 						user.updateLimits(function(){				
 							socket.emit('loginstatus', {'user':user.fastinfo(),'virtual': socket.user.thevirtua});
-							console.log('user '+user.name+' loged');	
 						});
 					}
 					
@@ -212,7 +208,6 @@ function bind(socket){
     	if (data.s==0){
 	    	data.s=new Date();
     	}
-    	console.log("getting history - ",data);
 		db.getTracksByShift(data.chid, data.s, function(data){
 		   socket.emit('history',data); 
 	    });
@@ -257,10 +252,9 @@ function bind(socket){
     socket.on('vote', function (data) {
     	if (socket.user){
 	    	if (!socket.user.virtual){
-    			console.log(data);
     			data.user=socket.user;
     			main.channel(data.chid).addVote(data, function(data){
-					console.log('processed');
+					//console.log('processed');
 				});
 			}
 		}
