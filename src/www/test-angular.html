@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta name="verify-reformal" content="8c521f17e906281b90537757" />
+	<title>Trigger</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
+
+	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+	<script src="socket.io/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"></script>
+
+	<script src="js/vendor/storage.js"></script>
+	
+
+
+</head>
+<body>
+	<div ng-controller="AppCtrl">
+		<div id='radio'></div>
+
+		<div id='content'>
+			<div id='playlist'>
+				<div class='resizer'></div>
+				<div class='current'></div>
+				<div class='innerl'>
+					<div style="margin-top:70px"></div>
+					<div class='inner'><ul class='list'></ul></div>
+				</div>
+			</div>
+			<div id='console'>
+				<div class='streamcontrol'>
+					<div class='play'><img src='/img/off.png' width="100%"></div>
+					<div class='stop'><img src='/img/on.gif' width="100%"></div>
+					<div class='links'></div>
+					<div id='volume'>
+						<div class='slider'>
+							<div class='bar'></div>
+						</div>
+					</div>
+				</div>
+				<div class='logo'>
+					<img src='/img/triggerlogo.png'>
+				</div>
+				<div class='info'><div class='chname'></div><div class='chdata'></div></div>
+				<div class='submit_box'><div class='label'>+</div>
+				<div class='uploader'><input id="fileupload" type="file" placeholder="Тащи сюда свою музыку" multiple></div>
+			</div>
+			<div class='upfiles'></div>
+			<div ng-if="!model.user.user" class='loginform'>
+				<input id="lgname" class="username" name="username" type="text" autocomplete="on" placeholder="Юзернейм"><br />
+				<input id="lgpass" class="password" name="pass" type="password" autocomplete="on" placeholder="Пароль">
+				<div class='button'><a href='javascript:void(0);'>Вход</a></div>
+				<div id='save'><input type="checkbox" id="remember" checked> Запомнить</div>
+				<div id='recovery'></div>
+				<div class='alert'>{{model.user.error}}</div>
+			</div>
+			<div class='userinfo'></div>
+			<div class='serverinfo'>Каналы появятся постепенно, когда нас наберется достаточное количество. <br>А еще у нас есть группа в <a href='http://vk.com/triggerfm' target="_blank">vk</a>, а также <a href='http://twitter.com/TriggerRadio' target="_blank">твиттер</a> и даже <a href='http://trigger.fm/wiki' target="_blank">wiki</a>!<br><br>  Слушать нас можно с помощью любого проигрывателя добавив в него любую из ссылок под кнопкой эфира. <br><br> Да пребудет с вами сила!
+			</div>
+		</div>
+		<div id='info'>
+			<table class ='tabs'>
+				<tr>
+					<td class='tab chat'><a href='javascript:void(0);' ng-click="switchTab('chat')">Чат</a></td>
+					<td class='tab history'><a href='javascript:void(0);' ng-click="switchTab('history')">История</a></td>
+					<td class='tab channels'><a href='javascript:void(0);' ng-click="switchTab('channels')">Каналы</a></td>
+					<td class='tab profile'><a href='javascript:void(0);' ng-click="switchTab('profile')">Профиль</a></td>
+				</tr>
+			</table>
+			<div ng-if="model.activeTab=='profile'" class='content profile'>
+			</div>
+			<div ng-if="model.activeTab=='channels'" class='content channels'>
+				<div ng-repeat="channel in model.channels" class="channel" ng-click="goToChannel(channel.id)">
+					<div class="name">{{channel.name}}</div>
+					<a ng-href="{{channel.hi}}" target="_blank">192kbps</a>
+					<a ng-href="{{channel.low}}" target="_blank">96kbps</a>
+					<div class="listners">
+						<span>Слушают:</span>{{channel.lst}}
+					</div>
+					<br />
+				</div>
+			</div>
+			<div ng-if="model.activeTab=='history'" class='content history'>
+				<div class='inner'>
+					<ul class='list'></ul>
+				</div>
+			</div>
+			<div ng-if="model.activeTab=='chat'" class='content chat'>
+
+				<div class='log'>
+						<div id='chatmessages' ng-repeat="md in model.chatMessages">
+							<div class="message" ng-class="{{md.uname}}">
+									<table>
+											<tr>
+												<td class="sms">
+														<div class="action">{{md.m}}</div>
+												</td>
+												<td class="mif"><div class="messageinfo"></div>
+												</td>
+											</tr>
+									</table>
+							</div>
+						</div>
+				</div>
+				<div class='users'>
+					<div class='topline'></div>
+					<div class='scroller'></div>
+				</div>
+				<div class='input'>
+					<textarea id="messageinput" placeholder="начинай вводить..."></textarea>
+				</div>
+			</div>
+			<div class='resizer'></div>
+		</div>
+	</div>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+</div>
+
+<script src="js/vendor/storage.js"></script>
+<script src="js/app/app.js"></script>
+<script src="js/app/modules/socket.js"></script>
+<script src="js/app/app_controller.js"></script>	
+</body>
+</html>
