@@ -9,7 +9,6 @@ var sockets=require('./sockets.js');
 
 function Channel(i)
 {
-	console.log(i);
 	this.id=i.id;
 	this.port=i.port;
 	this.name=i.name;
