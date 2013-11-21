@@ -57,3 +57,13 @@ sftp-config.json
 ehthumbs.db
 Thumbs.db
 
+
+src/www/js/paths.example.js
+
+trigger.sublime-project
+
+*.sublime-workspace
+
+src/www/js/paths.example.js
+
+src/www/js/paths.example.js
