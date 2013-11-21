@@ -37,10 +37,10 @@ function start(){
 	if (data){
 		exec('killall mpd', function(error, stdout, stderr){
 			for (var i in data){
-				if (data[i].id<4){
+				//if (data[i].id<4){
 					var channel=ch.newChannel(data[i]);
 					channels.push(channel);
-				}
+			//	}
 			}
 			findfiles();
 		});
