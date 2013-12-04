@@ -174,7 +174,7 @@ $(document).ready(function() {
 		var $input = $(this);
 		remember_name=$input.is(':checked');
 	});
-	$('#console .serverinfo.greating').html('<a href="http://vk.com/triggerfm?w=wall-55048733_285" target="_blank"><img src="http://cs419118.vk.me/v419118002/8f89/x-nn2YBcBe0.jpg"></a>');
+	//$('#console .serverinfo.greating').html('<a href="http://vk.com/triggerfm?w=wall-55048733_285" target="_blank"><img src="http://cs419118.vk.me/v419118002/8f89/x-nn2YBcBe0.jpg"></a>');
 	
 	$('#console .loginform .button').click(goLogin);
 	$('#lgpass').bind('keyup',function(e){

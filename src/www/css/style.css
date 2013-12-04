@@ -796,7 +796,7 @@ td.sms img .hide {
 	padding-left: 15px;
 	float: left;
 }
-#info .content.profile .list .sendform .send {
+#info .content.profile .list .sendform .send, #sendall {
 	background: #ffcd00;
 	text-align: center;
 	width: 120px;
@@ -806,7 +806,11 @@ td.sms img .hide {
 	line-height: 26px;
 	margin-top: 2px;
 }
-#info .content.profile .list .sendform .send a {
+#sendall {
+	margin: 20px;
+	padding: 5px;
+}
+#info .content.profile .list .sendform .send a, #sendall a {
 	color: #fff !important;
 	text-decoration: none;
 }
