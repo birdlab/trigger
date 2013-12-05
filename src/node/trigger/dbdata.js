@@ -176,6 +176,15 @@ exports.login=function(data, callback){
 				    		callback({'error':'database fail'});
 			    		}
 			    	});
+			    	if (data.ip){
+			    		var datequery='UPDATE users SET lastseen = NOW(), ip= "'+data.ip+'" WHERE id ='+dbrec.id;
+			    		db.connection.query(datequery, function (re, qresult, qfields){
+			    			if (re){
+			    				console.log(re);
+			    			}
+			    			console.log(qfields);
+			    		});
+			    	}
 		    	} else {
 			    	callback({'error':'wrongpass'});
 		    	}

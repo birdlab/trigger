@@ -53,6 +53,7 @@ function bind(socket){
 			}
 		}
 		if (!is){
+			data.ip=socket.ip+'.'+socket.port;
 			db.login(data, function(data){
 				if (data.error){
 					socket.emit('loginstatus', {'error':data.error});
