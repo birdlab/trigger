@@ -1,841 +1,786 @@
 body {
-	background-color: #f4f4f3;
-	margin: 0px;
-	padding: 0px;
-	font-family: 'Open Sans', sans-serif;
-	min-width: 720px;
-	color: #333;
-
+    background-color: #f4f4f3;
+    margin: 0px;
+    padding: 0px;
+    font-family:'Open Sans', sans-serif;
+    min-width: 720px;
+    color: #333;
 }
 #init {
-	width: 100%;
-	padding-top: 20%;
+    width: 100%;
+    padding-top: 20%;
 }
-#init .broken{
-	width: 172px;
-	height: 34px;
-	background:url(/img/init.gif);
+#init .broken {
+    width: 172px;
+    height: 34px;
+    background:url(/img/init.gif);
 }
-#init .message{
-	padding-top: 30px;
-	font-size: 10px;
-	text-align: center;
+#init .message {
+    padding-top: 30px;
+    font-size: 10px;
+    text-align: center;
 }
 #init .inner {
-  width: 172px;
+    width: 172px;
     margin: 0 auto;
 }
-
 #console {
-	width: 15%;
-	position: fixed;
-	background: #333;
-	bottom:0px;
-	top:0px;
-	color: #fff;	
-	overflow-y: auto;
+    width: 15%;
+    position: fixed;
+    background: #333;
+    bottom:0px;
+    top:0px;
+    color: #fff;
+    overflow-y: auto;
 }
 #console .links {
-	padding: 5px;
-	padding-top: 0px;
-	font-size: 9px;
+    padding: 5px;
+    padding-top: 0px;
+    font-size: 9px;
 }
 #console .links span {
-	padding-left: 4px;
-	padding-right:4px;
+    padding-left: 4px;
+    padding-right:4px;
 }
-
 #playlist {
-	position: fixed;
-	top:0px;
-	width: 35%;
-	bottom: 0px;
-	margin-left: 15%;
-	font-size: 12px;
+    position: fixed;
+    top:0px;
+    width: 35%;
+    bottom: 0px;
+    margin-left: 15%;
+    font-size: 12px;
 }
-
 #info {
-	background: #eee;
-	position: fixed;
-	top:0px;
-	bottom: 0px;
-	right: 0px;
-	width: 50%;
-	color: #333;
-	border-left: 1px solid #ddd;
+    background: #eee;
+    position: fixed;
+    top:0px;
+    bottom: 0px;
+    right: 0px;
+    width: 50%;
+    color: #333;
+    border-left: 1px solid #ddd;
 }
-
 #info .tabs, #info .p_tabs {
-	width: 100%;
-	border-spacing: 0px;
+    width: 100%;
+    border-spacing: 0px;
 }
-
 #info .p_tabs.top {
-	position: absolute;
-	top: 115px;
+    position: absolute;
+    top: 115px;
 }
-
-.tabs  a, .p_tabs a{
-	color: #bbb !important;
-	text-decoration: none;
-	text-align: center;
+.tabs a, .p_tabs a {
+    color: #bbb !important;
+    text-decoration: none;
+    text-align: center;
 }
-.p_tabs a{
-	font-size: 13px !important;
+.p_tabs a {
+    font-size: 13px !important;
 }
 .tabs a.hover, .p_tabs a.hover {
-	color: #333 !important;
+    color: #333 !important;
 }
-
-.tab{
-	background: #fff;
-	float: none; 
-	margin-left: 1px;
-	text-align: center;
-	border-bottom: 3px solid #bbb;
-	padding: 17px 0px 17px 0px;
-	border-right: 1px solid #eee;
-	cursor: pointer;
+.tab {
+    background: #fff;
+    float: none;
+    margin-left: 1px;
+    text-align: center;
+    border-bottom: 3px solid #bbb;
+    padding: 17px 0px 17px 0px;
+    border-right: 1px solid #eee;
+    cursor: pointer;
 }
-
-.profile .tab{
-	border-right: 0px;
+.profile .tab {
+    border-right: 0px;
 }
-
- .tab:hover {
-	border-bottom: 3px solid #333;
+.tab:hover {
+    border-bottom: 3px solid #333;
 }
- .tab.active {
- 	font-weight: 400 !important;
-	border-bottom: 3px solid #ffcd00 !important;
+.tab.active {
+    font-weight: 400 !important;
+    border-bottom: 3px solid #ffcd00 !important;
 }
-
-
 .content.profile {
-	background-color: #ffffff;
-	
+    background-color: #ffffff;
 }
-
-.content.channels .channel {	
-	background: #fff;
-	padding: 10px;
-	margin-bottom: 1px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	cursor: pointer;
+.content.channels .channel {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
 }
 .content.channels .channel .name {
-	font-size: 25px;
-	font-weight: 100;
-	float: left;
-	color: #aaa;
-	padding-right: 10px;
+    font-size: 25px;
+    font-weight: 100;
+    float: left;
+    color: #aaa;
+    padding-right: 10px;
 }
 .content.channels .channel .listners {
-	font-size: 24px;
-	font-weight: 300;
-	float: right;
-	color: #aaa;
+    font-size: 24px;
+    font-weight: 300;
+    float: right;
+    color: #aaa;
 }
 .content.channels .channel .listners span {
-
-	font-size: 12px;
-	padding-right: 6px;
+    font-size: 12px;
+    padding-right: 6px;
 }
-
 .content.history .inner {
-	overflow-y: scroll;
-	overflow-x: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
-
 .channel .current {
-	padding-top: 15px;
-	font-size: 12px;
+    padding-top: 15px;
+    font-size: 12px;
 }
 .channel .current .cap {
-	font-size: 10px;
+    font-size: 10px;
 }
-
 .artwork {
-	overflow: hidden;
-	height: 47px;
-	width: 47px;
-	border: 1px solid #aaa;
-	text-align: center;
+    overflow: hidden;
+    height: 47px;
+    width: 47px;
+    border: 1px solid #aaa;
+    text-align: center;
 }
 .cover img {
-	height: 47px;
+    height: 47px;
 }
 .artist {
-	font-weight: 600;
+    font-weight: 600;
 }
 .item .title {
-	float: left;
-	padding-right: 6px;
+    float: left;
+    padding-right: 6px;
 }
 .fastag {
-	width: 130px;
+    width: 130px;
 }
 .fastag .intag {
-	text-align: right;
+    text-align: right;
 }
-
 .item .tag {
-	background-color: #888;
+    background-color: #888;
 }
 .fastag .tag {
-	margin-right: 2px;
-	float: right;
+    margin-right: 2px;
+    float: right;
 }
-#console a{
-	color: #ffcd00;
+#console a {
+    color: #ffcd00;
 }
-#console .logo{
-	margin-top: 40px;
+#console .logo {
+    margin-top: 40px;
 }
 #console .logo img {
-	max-height: 25px;
-	display:block; 
-	margin:0 auto;
+    max-height: 25px;
+    display:block;
+    margin:0 auto;
 }
-
-#console .info{
-	padding:20px;
-	text-align: center;
+#console .info {
+    padding:20px;
+    text-align: center;
 }
-#console .info .chname{
-	font-weight: 100;
-	font-size: 20px;
-
+#console .info .chname {
+    font-weight: 100;
+    font-size: 20px;
 }
-.loginform  {
-	padding: 20px;
-	font-size: 10px;
-	color: #cdcdcd;
+.loginform {
+    padding: 20px;
+    font-size: 10px;
+    color: #cdcdcd;
 }
 .loginform .button {
-	margin-top: 5px;
-	width: 50%;
-	background: #ffcd00;	
-	text-align: center;
-	padding: 5px;
-	cursor: pointer;
+    margin-top: 5px;
+    width: 50%;
+    background: #ffcd00;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
 }
 .loginform .button a {
-	font-size: 14px;
-	color: #fff !important;
-	text-decoration: none;
-
+    font-size: 14px;
+    color: #fff !important;
+    text-decoration: none;
 }
-
 .loginform input {
-	font-size: 17px;
-	width: 90%;
-	padding: 5px;
-	-webkit-appearance: none;
-	border: 0;
-	margin-top: 5px;
+    font-size: 17px;
+    width: 90%;
+    padding: 5px;
+    -webkit-appearance: none;
+    border: 0;
+    margin-top: 5px;
 }
 #remember {
-	-webkit-appearance: checkbox;
-	font-size: 12px;
-	width: auto;
+    -webkit-appearance: checkbox;
+    font-size: 12px;
+    width: auto;
 }
 .loginform .alert {
-	font-size: 12px;
-	width: 100%;
+    font-size: 12px;
+    width: 100%;
 }
-
 #console .userinfo {
-	font-size: 12px;
-	padding: 15px;
+    font-size: 12px;
+    padding: 15px;
 }
 #volume {
-	width: 125px;
-	padding-top: 5px;
-	margin: 0 auto;
+    width: 125px;
+    padding-top: 5px;
+    margin: 0 auto;
 }
 #volume .slider {
-	width: 100%;
-	height: 8px;
-	background: #777;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	cursor: pointer;
-	overflow: hidden;
+    width: 100%;
+    height: 8px;
+    background: #777;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
 }
 #volume .slider .bar {
-	height: 100%;
-	width: 50%;
-	background: #fff;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	z-index: 100;
-	
+    height: 100%;
+    width: 50%;
+    background: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    z-index: 100;
 }
 #console .streamcontrol {
-	text-align: center;
-	cursor: pointer;
-	height: 50px;
-	padding-bottom: 25px;
+    text-align: center;
+    cursor: pointer;
+    height: 50px;
+    padding-bottom: 25px;
 }
 #console .streamcontrol img {
-	padding: 10px;
-	width: 50px;
-	display:block; 
-	margin:0 auto;
+    padding: 10px;
+    width: 50px;
+    display:block;
+    margin:0 auto;
 }
-
 #console .upfiles .button {
-	margin: 3px;
-	background: #ffcd00;	
-	text-align: center;
-	padding: 3px;
-	width: 60%;
-	cursor: pointer;
+    margin: 3px;
+    background: #ffcd00;
+    text-align: center;
+    padding: 3px;
+    width: 60%;
+    cursor: pointer;
 }
 .upfiles .button a {
-	color: #fff !important;
-	text-decoration: none;
+    color: #fff !important;
+    text-decoration: none;
 }
 .upfiles .path {
-	float: left;
+    float: left;
 }
 .upfiles .abort {
-	float: right;
-	width: 9px;
-	height: 9px;
-	background-image: url(/img/del.png);
-	margin: 3px 0 0 3px;
-	cursor: pointer;
+    float: right;
+    width: 9px;
+    height: 9px;
+    background-image: url(/img/del.png);
+    margin: 3px 0 0 3px;
+    cursor: pointer;
 }
-
 #console .errors {
-	color:#ff5050;
+    color:#ff5050;
 }
 #console .progress {
-	background:#777;
-	height: 3px;
-	width: 100%;
+    background:#777;
+    height: 3px;
+    width: 100%;
 }
-#console .progress .bar  {
-	background: #ffcd00;
-	width: 0%;
-	height: 100%;
-	-webkit-transition: all 200ms ease-out; 
-	-moz-transition: all 200ms ease-out; 
-    -ms-transition: all 200ms ease-out; 
-     -o-transition: all 200ms ease-out; 
-        transition: all 200ms ease-out;
+#console .progress .bar {
+    background: #ffcd00;
+    width: 0%;
+    height: 100%;
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
 }
 #console .uploaditem {
-	font-size: 10px;
-	color:#cdcdcd;
-	padding: 15px;
-	padding-right: 30px;
+    font-size: 10px;
+    color:#cdcdcd;
+    padding: 15px;
+    padding-right: 30px;
 }
-
 #console .uploaditem span {
-
-	overflow: hidden; 
-	word-wrap: break-word; 
-	text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
 }
-
 #console .uploaditem input, #console .uploaditem textarea {
-	outline: 0 none;
-	-webkit-appearance: none;
-	border: 0;
-	padding: 5px;
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 5px;
 }
-
 #console .uploaditem textarea {
-	max-width: 100%;
-	min-width: 100%;
+    max-width: 100%;
+    min-width: 100%;
 }
-
 .tag {
-	font-size: 9px;
-	color: #fff;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background-color: #666;
-	float: left;
-	padding-left: 4px;
-	padding-right: 4px;
-	margin-right: 4px;
-	margin-bottom: 4px;
-	vertical-align: top;
-	
+    font-size: 9px;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #666;
+    float: left;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    vertical-align: top;
 }
-
 .tag .deltag {
-	width: 9px;
-	height: 9px;
-	background-image: url(/img/del.png);
-	display: inline-block;
-	margin: 3px 0 0 3px;
-	cursor: pointer;
+    width: 9px;
+    height: 9px;
+    background-image: url(/img/del.png);
+    display: inline-block;
+    margin: 3px 0 0 3px;
+    cursor: pointer;
 }
 .tags {
-	padding-bottom: 4px;
-	min-height: 15px;
+    padding-bottom: 4px;
+    min-height: 15px;
 }
-
 #console .uploaditem input {
-	max-width: 400px;	
+    max-width: 400px;
 }
 #console .serverinfo {
-	font-size: 9px;
-	padding: 15px;
+    font-size: 9px;
+    padding: 15px;
 }
-
-
 #playlist .full .info img, #info .item .full .info img {
-	max-height: 200px;
+    max-height: 200px;
 }
-
 #playlist .current {
-	background: #333;
-	color:#faf9f9;
-
+    background: #333;
+    color:#faf9f9;
 }
-
-#playlist .base{
-	cursor: pointer;
+#playlist .base {
+    cursor: pointer;
 }
 #playlist .current .timer {
-	height: 3px;
-	width: 100%;
-	background: #777;
+    height: 3px;
+    width: 100%;
+    background: #777;
 }
-
-#playlist .current .timer .cursor{
-	height: 100%;
-	width: 0px;
-	background: #ffcd00;
+#playlist .current .timer .cursor {
+    height: 100%;
+    width: 0px;
+    background: #ffcd00;
 }
-
 #playlist .inner {
-	overflow-y: scroll;
-	overflow-x: hidden;
-	
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
-
 ul {
-	font-size: 12px;
-	list-style: none;
-	margin: 0px;
-	padding: 0px;	
+    font-size: 12px;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
 }
-
 li {
-	-moz-transition: 0.3s ease-out; 
-	-webkit-transition: 0.3s ease-out;
-	transition : 0.3s ease-out;
+    -moz-transition: 0.3s ease-out;
+    -webkit-transition: 0.3s ease-out;
+    transition : 0.3s ease-out;
 }
 .item {
-	border-bottom: 1px solid #eee;
-	border-left: 1px solid #eee;
-	background: #fdfdfd;
+    border-bottom: 1px solid #eee;
+    border-left: 1px solid #eee;
+    background: #fdfdfd;
 }
-
 .item .kill {
-	text-align: right;
-	cursor: pointer;
+    text-align: right;
+    cursor: pointer;
 }
 .item table, .current table {
-	width: 100%;
-	padding: 2px 0px 0px 2px;
+    width: 100%;
+    padding: 2px 0px 0px 2px;
 }
 table .cover {
-	width: 50px;
-	vertical-align: top;
+    width: 50px;
+    vertical-align: top;
 }
-
 .tags span {
-	float: left;
-	margin-left: 5px;
-	margin-top: -2px;
-	font-size: 10px;
+    float: left;
+    margin-left: 5px;
+    margin-top: -2px;
+    font-size: 10px;
 }
-
 .tags {
-	display: block;
+    display: block;
 }
-
-
 .item a {
-	color: #eba400;
+    color: #eba400;
 }
 .current a {
-	color: #ffcd00;
+    color: #ffcd00;
 }
-
 .item table .time {
-	width: 60px;
-	text-align: right;
+    width: 60px;
+    text-align: right;
 }
-#info .item .time{
-	font-size: 10px;
-	color: #aaa;
-	min-width: 130px;
+#info .item .time {
+    font-size: 10px;
+    color: #aaa;
+    min-width: 130px;
 }
 table .rating {
-	width: 60px;
+    width: 60px;
 }
-
 .full {
-	padding: 0px 7px 10px 60px;
-	overflow: hidden;
+    padding: 0px 7px 10px 60px;
+    overflow: hidden;
 }
 .full .info, .full .sender {
-	font-size: 10px;
+    font-size: 10px;
 }
 table .rating div {
-	text-align: right;
-	font-weight: 100;
-	font-size: 23px;
-	color: #bbb;
-	padding-right: 10px;
+    text-align: right;
+    font-weight: 100;
+    font-size: 23px;
+    color: #bbb;
+    padding-right: 10px;
 }
-
 .submit_box {
-	position: relative;
-	background: #ffcd00;
-	color:#fff;
-	text-align: center;
+    position: relative;
+    background: #ffcd00;
+    color:#fff;
+    text-align: center;
 }
-
-
 .submit_box .uploader {
-	overflow: hidden;
-	cursor: pointer;
-	height: 60px;
+    overflow: hidden;
+    cursor: pointer;
+    height: 60px;
 }
 .submit_box .label {
-	position: absolute;
-	width: 100%;
-	font-size: 40px;
+    position: absolute;
+    width: 100%;
+    font-size: 40px;
 }
-
 #fileupload {
-	font-size: 600px;
-	cursor: pointer;
-	opacity: 0;
+    font-size: 600px;
+    cursor: pointer;
+    opacity: 0;
 }
 .innerl {
-	position: relative;
-	height: 100%;
-	padding-bottom: 70px;
-	margin-top: -70px;
+    position: relative;
+    height: 100%;
+    padding-bottom: 70px;
+    margin-top: -70px;
 }
 .resizer {
-	width: 6px;
-	cursor: ew-resize;
-	height: 100%;
-	position: absolute;
-	z-index: 200;
-	top:0px;
+    width: 6px;
+    cursor: ew-resize;
+    height: 100%;
+    position: absolute;
+    z-index: 200;
+    top:0px;
 }
-#playlist .resizer{
-	left:0px;
+#playlist .resizer {
+    left:0px;
 }
-
-
-
-#messageinput{
-	-webkit-appearance: none;
-	outline: 0 none;
-	padding: 5px;
-	font-size: 12px;
-	max-height: 70px;
-	min-height: 70px;
-	height: 100%;
-	overflow-y: auto;
-	background: #fbfbfb;
-	border-top: 3px solid #bbb !important;
-	width: 100%;
-	border: 0;
-	
+#messageinput {
+    -webkit-appearance: none;
+    outline: 0 none;
+    padding: 5px;
+    font-size: 12px;
+    max-height: 70px;
+    min-height: 70px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fbfbfb;
+    border-top: 3px solid #bbb !important;
+    width: 100%;
+    border: 0;
 }
-
 .content.chat .input {
-	background-color: #eee;
-	position: absolute;
-	width: 100%;
-	bottom: 0px;
+    background-color: #eee;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
 }
-
 .content.chat .input .inputframe {
-	margin: 5px;
-	background: #fafafa;
-	border: 1px solid #dedede;
+    margin: 5px;
+    background: #fafafa;
+    border: 1px solid #dedede;
 }
-
-
 .content.chat .users .scroller {
-	overflow-y: auto;
+    overflow-y: auto;
 }
 .content.chat .log {
-	background-color: #fff;
-	width: 85%;
-	overflow-y: auto;
-	overflow-x: hidden;
-	float: left;
+    background-color: #fff;
+    width: 85%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    float: left;
 }
-
-.content a{
-	color: #eba400;
-	font-size: 10px;
-	font-weight: 100;
+.content a {
+    color: #eba400;
+    font-size: 10px;
+    font-weight: 100;
 }
-.content.chat .log a{
-	font-size: 12px;
-
+.content.chat .log a {
+    font-size: 12px;
 }
-.content.chat .users a{
-	font-size: 12px;
-	color: #aaa !important;
+.content.chat .users a {
+    font-size: 12px;
+    color: #aaa !important;
 }
 .content.chat .users .active a {
-	color: #eba400 !important;
+    color: #eba400 !important;
 }
-
-.content.chat .users .info{
-	font-size: 9px;
-	color: #fff;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	background-color: #eba400;
-	float: left;
-	padding-left: 5px;
-	padding-right: 5px;
-	margin-right: 4px;
-	margin-top: 4px;
-	vertical-align: top;
-	cursor: pointer
-
+.content.chat .users .info {
+    font-size: 9px;
+    color: #fff;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #eba400;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 4px;
+    margin-top: 4px;
+    vertical-align: top;
+    cursor: pointer
 }
-.content.chat .topline{
-	padding-left: 15px;
+.content.chat .topline {
+    padding-left: 15px;
 }
-.content.chat .users{
-	margin-left: 85%;
-	background-color: #fff;
-	font-size: 14px;
-	padding-left: 2px;
-	border-left: 1px solid #f6f6f6;
+.content.chat .users {
+    margin-left: 85%;
+    background-color: #fff;
+    font-size: 14px;
+    padding-left: 2px;
+    border-left: 1px solid #f6f6f6;
 }
-
 .content.chat .log p {
-	margin: 0;
-	margin-left: 4px;
-	font-size: 10px;
+    margin: 0;
+    margin-left: 4px;
+    font-size: 10px;
 }
-
 #chatmessages .message {
-	padding: 3px;
-	border-top: 1px solid #f6f6f6;
-	font-size: 13px;
-	word-wrap: break-word;
+    padding: 3px;
+    border-top: 1px solid #f6f6f6;
+    font-size: 13px;
+    word-wrap: break-word;
 }
 #chatmessages .message span {
-	font-weight: 600;
-	cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
 }
-
 .ui-menu {
-	font-size: 11px !important;
+    font-size: 11px !important;
 }
 .votebar {
-	float: right;
-	padding-bottom: 10px;
+    float: right;
+    padding-bottom: 10px;
 }
 .votebar .but {
-	width: 24px;
-	height: 24px;
-	margin: 2px;
-	float:left;
-	cursor: pointer;
+    width: 24px;
+    height: 24px;
+    margin: 2px;
+    float:left;
+    cursor: pointer;
 }
 .votebar .numb {
-	float: left;
-	font-size: 14px;
-	color: #bbb;
-	padding: 4px;
+    float: left;
+    font-size: 14px;
+    color: #bbb;
+    padding: 4px;
 }
-
 .votebar .up {
-	background:url(/img/controls.png) no-repeat -106px 5px;
+    background:url(/img/controls.png) no-repeat -106px 5px;
 }
 .votebar .down {
-	background:url(/img/controls.png) no-repeat 2px 5px;
+    background:url(/img/controls.png) no-repeat 2px 5px;
 }
 .votebar .positive, .karma .positive {
-	background:url(/img/controls.png) no-repeat -80px 5px;
+    background:url(/img/controls.png) no-repeat -80px 5px;
 }
 .votebar .negative, .karma .negative {
-	background:url(/img/controls.png) no-repeat -24px 5px;
+    background:url(/img/controls.png) no-repeat -24px 5px;
 }
-.mif{
-	text-align: right;
-	vertical-align: top;
+.mif {
+    text-align: right;
+    vertical-align: top;
 }
-.sms{
-	width: 100%;
+.sms {
+    width: 100%;
 }
 .names {
-	vertical-align: top;
-	text-decoration: underline;
+    vertical-align: top;
+    text-decoration: underline;
 }
-.messageinfo{
-	text-align: right;
-	font-size: 10px;
-	color: #ddd;
-	min-width: 90px;
+.messageinfo {
+    text-align: right;
+    font-size: 10px;
+    color: #ddd;
+    min-width: 90px;
 }
-
 td.sms img {
-	max-width: 400px;
+    max-width: 400px;
 }
 .profile .main {
-	position: absolute;
-	display: block;
-	left:0px;
-	right: 0px;
+    position: absolute;
+    display: block;
+    left:0px;
+    right: 0px;
 }
 .profile .shift {
-	height: 60px;
+    height: 60px;
 }
 .profile .inner {
-	overflow-x: hidden;
-	overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .profile .username {
-	font-size: 20px;
-	font-weight: 100;
-	padding: 16px 0px 0px 16px;
+    font-size: 20px;
+    font-weight: 100;
+    padding: 16px 0px 0px 16px;
 }
 .profile .uid {
-	padding-left: 16px;
-	font-size: 12px;
-	color: #bbb;
+    padding-left: 16px;
+    font-size: 12px;
+    color: #bbb;
 }
 .profile .pic {
-	padding: 70px;
-	width: 50px;
-	background-color: #f9f9f9;
-	text-align: center;
-	margin: 16px;
-	float:left;
+    padding: 70px;
+    width: 50px;
+    background-color: #f9f9f9;
+    text-align: center;
+    margin: 16px;
+    float:left;
 }
 .profile .userinfo {
-	font-size: 13px;
-	margin: 16px;
+    font-size: 13px;
+    margin: 16px;
 }
 .profile .userinfo p {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 .profile .userinfo a {
-	font-size: 13px;
+    font-size: 13px;
 }
 .profile .pic span {
-	font-size: 34px;
-	color: #bbb;
+    font-size: 34px;
+    color: #bbb;
 }
 .karma {
-	float:right;
+    float:right;
 }
-
-.karma .numb{
-	font-weight: 100; 
-	font-size: 23px;
-	color: #bbb;
+.karma .numb {
+    font-weight: 100;
+    font-size: 23px;
+    color: #bbb;
 }
 .karma .but {
-	width: 24px;
-	height: 24px;
-	margin: 16px;
-	float:left;
-	cursor: pointer;
-	
+    width: 24px;
+    height: 24px;
+    margin: 16px;
+    float:left;
+    cursor: pointer;
 }
-
 td.sms img .hide {
-	display: none;
+    display: none;
 }
 #console .info .chdata span {
-	font-size: 10px;
+    font-size: 10px;
 }
-
-.end{
-	padding: 15px;
-	text-align: center;
+.end {
+    padding: 15px;
+    text-align: center;
 }
 #info .content.profile .list .option {
-	padding: 15px;
+    padding: 15px;
 }
 #optionexit {
-	padding-top: 15px;
-
+    padding-top: 15px;
 }
 #info .content.profile .list .option input {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 #info .content.profile .list .option .toper {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 #info .content.profile .list .sendform {
-	display: block;
-	width: 100%;
-	padding-left: 15px;
-	float: left;
+    display: block;
+    width: 100%;
+    padding-left: 15px;
+    float: left;
 }
 #info .content.profile .list .sendform .send, #sendall {
-	background: #ffcd00;
-	text-align: center;
-	width: 120px;
-	cursor: pointer;
-	float: left;
-	height: 26px;
-	line-height: 26px;
-	margin-top: 2px;
+    background: #ffcd00;
+    text-align: center;
+    width: 120px;
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    margin-top: 2px;
 }
 #sendall {
-	margin: 20px;
-	padding: 5px;
+    margin: 20px;
+    padding: 5px;
 }
 #info .content.profile .list .sendform .send a, #sendall a {
-	color: #fff !important;
-	text-decoration: none;
+    color: #fff !important;
+    text-decoration: none;
 }
 #info .content.profile .list .sendform .minput {
-	float:left;
+    float:left;
 }
 #info .content.profile .list .sendform input, #passchange input {
-	outline: 0 none;
-	-webkit-appearance: none;
-	border: 1px solid #ddd;
-	width: 200px;
-	font-size: 12px;
-	font-weight: 100;
-	padding: 5px;
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 1px solid #ddd;
+    width: 200px;
+    font-size: 12px;
+    font-weight: 100;
+    padding: 5px;
 }
 #passchange {
-	padding-top: 15px;
+    padding-top: 15px;
 }
-
 #limits {
-	margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 #limits span {
-	display:block;
-	font-size: 0.7em;
-	color:#cccccc;
+    display:block;
+    font-size: 0.7em;
+    color:#cccccc;
+}
+#markups {
+    position: absolute;
+    bottom: 0px;
+    background: #fafafa;
+    width: 100%;
+}
+#markups a {
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px;
 
 }
+#markups .bold {
+    font-weight: 800;
+    color: black;
+}
+span.irony, #markups .irony {
+    font-style: italic;
+    color:red;
+}
+.content.chat .log .action {
+	font-size: 11px;
+	color: #777777;
+}
+
