@@ -8,30 +8,31 @@
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
 
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-    <script src="js/vendor/storage.js"></script>
-    <script src="js/vendor/jquery.easing.min.js"></script>
-    <script src="js/vendor/swfobject.js"></script>
-    <script src="js/vendor/id3-minimized.js"></script>
-    <script src="js/vendor/lastfm.api.js"></script>
-    <script src="js/vendor/lastfm.api.md5.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/swfobject.js"></script>
+    <script src="js/id3-minimized.js"></script>
+    <script src="js/lastfm.api.js"></script>
+    <script src="js/lastfm.api.md5.js"></script>
     <script src="js/timerchat.js"></script>
     <script src="js/client.js"></script>
     <script src="js/chrome.js"></script>
+    <script src="js/channels.js"></script>
     <script src="js/resize.js"></script>
     <script src="js/uploader.js"></script>
     <script src="js/player.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/tagline.js"></script>
     <script src="js/paths.local.js"></script>
-    <script src="js/vendor/dateformat.js"></script>
+    <script src="js/dateformat.js"></script>
     
     <script src="upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="upload/js/vendor/jquery.iframe-transport.js"></script>
-    <script src="upload/js/vendor/jquery.fileupload.js"></script>
+    <script src="upload/js/jquery.iframe-transport.js"></script>
+    <script src="upload/js/jquery.fileupload.js"></script>
     <link rel="stylesheet" href="upload/css/jquery.fileupload-ui.css">
-    <script src="socket.io/socket.io/socket.io.js"></script>
+    <script src="socket.io/socket.io.js"></script>
     
 
 </head>
@@ -75,9 +76,11 @@
 			<div class='alert'></div>
 		</div>
 		<div class='userinfo'></div>
-		<div class='serverinfo greating'></div>
+		<div class='serverinfo greating'>
+		</div>
 		
-		<div class='serverinfo reformal'><a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">Уголок потребителя</a><script type="text/javascript">
+		<div class='serverinfo reformal'><a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
+            <script type="text/javascript">
     var reformalOptions = {
         project_id: 87627,
         show_tab: false,
@@ -89,22 +92,34 @@
         document.getElementsByTagName('head')[0].appendChild(script);
     })();
 </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://trigger.reformal.ru">Уголок потребителя</a></noscript>
-	</div>
-	</div>
+	<br>
+            <a href="https://docs.google.com/document/d/1ZOPqvWnSIq70cRLr6KWUh0dyLYe79W62mL0X7Kek54s" target="_blank">RTFM</a>
+        </div>
+		
+		
+		</div>
 	<div id='info'>
 	<table class ='tabs'>
 		<tr>
     		<td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
     		<td class='tab history'><a href='javascript:void(0);'>История</a></td>
-    		<td class='tab channels'><a href='javascript:void(0);'>Каналы</a></td>
+    		<!--<td class='tab channels'><a href='javascript:void(0);'>Каналы</a></td>-->
     		<td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
     	</tr>
     </table>
     	<div class='content profile'>
     	</div>
-		<div class='content channels'></div>
+		<div class='content channels'>
+            <div class='inner'>
+                <ul class='list'></ul>
+            </div>
+		</div>
 		<div class='content history'>
+            <div id="hpanel">
+                <label><input type="checkbox" name="showgold" id="showgold">Золото</label>
+            </div>
 			<div class='inner'>
+                <div class="loader">Trigger задумался...</div>
 				<ul class='list'></ul>
 			</div>
 		</div>
@@ -117,6 +132,11 @@
 			</div>
 			<div class='input'>
 				<textarea id="messageinput" placeholder="начинай вводить..."></textarea>
+				<div id='markups'>
+				<a href="#" class="bold" onclick="insertTag.tag('&lt;b&gt;', '&lt;/b&gt;'); return false;">bold</a>
+				<a href="#" class="irony" onclick="insertTag.tag('&lt;span class=\'irony\'&gt;', '&lt;/span&gt;'); return false;">irony</a>
+				</div>
+
 			</div>
 		</div>
 		<div class='resizer'></div>

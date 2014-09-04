@@ -6,7 +6,6 @@ function loadUrl(url, reader, file, callback) {
         dataReader: reader
     });
 }
-var uploadarray = [];
 var sendall = $('<div id="sendall"><a href="javascript:void(0);">Отправить все!</a></div>');
 var defered = false;
 
@@ -16,7 +15,7 @@ function addupload(file) {
     var abort = $('<div class="abort"></div>').appendTo(fup);
     var artist = $('<input class="finput artist" type="text" autocomplete="on" placeholder="Артист">').appendTo(fup);
     var title = $('<input class="finput title" type="text" placeholder="Название">').appendTo(fup);
-    var trackinfo = $('<textarea class="finput trackinfo" type="text" placeholder="Пара слов от треке (не обязательно)"></textarea><br />').appendTo(fup);
+    var trackinfo = $('<textarea class="finput trackinfo" type="text" placeholder="Пара слов о треке"></textarea><br />').appendTo(fup);
     $('<span>Теги:</span>').appendTo(fup);
     var tagscontainer = $('<div class="tags"></div>').appendTo(fup);
     $('<input list="autotags" class="finput taginput" type="text" placeholder="начинай вводить..."><datalist id="autotags"></datalist><span>Enter - добавить</span>').appendTo(fup);
@@ -41,7 +40,8 @@ function addupload(file) {
     var jqXHR = null
     $(progress).hide();
     $(uploader).fileupload({
-        add: function() {},
+        add: function() {
+        },
         progressall: function(e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $(bar).css('width', progress + '%');
@@ -144,7 +144,7 @@ function addupload(file) {
             }
         }
     });
-    tracksubmit.submit = function() {
+    tracksubmit.submit = function(data) {
         ready = true;
         if (!jqXHR) {
             trackupload.upload();
@@ -159,42 +159,39 @@ function addupload(file) {
                 errors.html('Будь мужиком, укажи артиста!');
                 return;
             }
-            var container = fup;
             var form = $(this).parent();
             client.tracksubmit({
-                'chid': client.channel.id,
-                'track': {
-                    'artist': artist.val(),
-                    'title': title.val(),
-                    'info': trackinfo.val(),
-                    'tags': servertags,
-                    'path': serverfilename
-                }
-            }, function(data) {
-                if (!data.error) {
-                    console.log('my form is ', form.children('.artist').val());
-                    form.hide(300, function() {
-                        if ($('#console .upfiles .uploaditem').length < 2) {
-                            sendall.remove();
-                        }
-                        this.remove();
-                        if (defered && uploadarray.length) {
-                            uploadarray.shift();
-                            uploadarray[0].submit();
-                        } else {
-                            defered = false;
-                        }
-                    });
+                    'chid': client.channel.id,
+                    'track': {
+                        'artist': artist.val(),
+                        'title': title.val(),
+                        'info': trackinfo.val(),
+                        'tags': servertags,
+                        'path': serverfilename
+                    }
+                },
+                function(data) {
+                    if (!data.error) {
+                        form.hide(300, function() {
+                            if ($('#console .upfiles .uploaditem').length < 2) {
+                                sendall.remove();
+                            }
+                            this.remove();
+                            if (defered && uploadarray.length) {
+                                uploadarray.shift();
+                                uploadarray[0].submit();
+                            } else {
+                                defered = false;
+                            }
+                        });
 
-                } else {
-                    errors.html(data.error);
+                    } else {
+                        errors.html(data.error);
+                    }
                 }
-            });
-
+            );
         }
-
     }
-
     trackupload.upload = function() {
         trackupload.hide();
         errors.html('');
@@ -207,7 +204,7 @@ function addupload(file) {
                 trackupload.show();
             })
             .complete(function(result, textStatus, jqXHR) {
-                console.log(JSON.parse(result.responseText).files[0].name);
+                console.log("upload result - ", result, textStatus);
                 serverfilename = JSON.parse(result.responseText).files[0].name;
                 uploaded = true;
                 if (ready) {
@@ -218,12 +215,10 @@ function addupload(file) {
     }
     trackupload.click(trackupload.upload);
     tracksubmit.click(tracksubmit.submit);
-    uploadarray.push(tracksubmit);
     if ($('#console .upfiles .uploaditem').length > 1 && $('#sendall').length == 0) {
         sendall.prependTo($('#console .upfiles'));
         sendall.click(function() {
-            defered = true;
-            uploadarray[0].submit();
+            $('#console .upfiles .uploaditem .button.send').trigger('click');
         });
     }
 }

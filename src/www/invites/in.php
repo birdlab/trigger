@@ -5,7 +5,7 @@
 	<link type="text/css" href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
 	<link type="text/css" href="assets/css/style.min.css" rel="stylesheet" media="screen">
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 <title>
 	You're lucky!
 </title>
@@ -24,7 +24,7 @@ require_once ('validation/validation.php'); 		// validation class
 // mysqli classes
 require_once('mysql_classes/class.simpleDB.php');
 require_once('mysql_classes/class.simpleMysqli.php');
-require_once('config.local.php');
+require_once('config.php');
 
 $rules = array(); // validation rules array
 
@@ -52,7 +52,7 @@ if (!empty($errors)) {
 // no errors! show the from or whatever
 else { ?>
 	
-	<?php	$db = new simpleMysqli($__mysql_config); // new mysqli instance w/config from config.local.php
+	<?php	$db = new simpleMysqli($__mysql_config); // new mysqli instance w/config from config.php
 	$_get_invite = $db->select('SELECT email, userid FROM trigger.invites WHERE code=?', $_GET['code']); // get the data from db
 	
 	$_check = TRUE;

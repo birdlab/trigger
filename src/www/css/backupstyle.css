@@ -1,0 +1,1213 @@
+body {
+    background-color: #f4f4f3;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+    min-width: 720px;
+    color: #333;
+}
+
+.clearfix:after {
+    clear: both;
+    content: "" !important;
+    display: block;
+}
+
+#init {
+    width: 100%;
+    padding-top: 20%;
+}
+
+#init .broken {
+    width: 172px;
+    height: 34px;
+    background: url(/img/init.gif);
+}
+
+#init .message {
+    padding-top: 30px;
+    font-size: 10px;
+    text-align: center;
+}
+
+#init .inner {
+    width: 172px;
+    margin: 0 auto;
+}
+
+#console {
+    width: 15%;
+    position: fixed;
+    background: #333;
+    bottom: 0px;
+    top: 0px;
+    color: #fff;
+    overflow-y: auto;
+}
+
+#console .links {
+    padding: 5px;
+    padding-top: 0px;
+    font-size: 9px;
+}
+
+#console .links span {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#playlist {
+    position: fixed;
+    top: 0px;
+    width: 35%;
+    bottom: 0px;
+    margin-left: 15%;
+    font-size: 12px;
+}
+
+#info {
+    background: #eee;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 50%;
+    color: #333;
+    border-left: 1px solid #ddd;
+}
+
+#info .tabs, #info .p_tabs {
+    width: 100%;
+    border-spacing: 0px;
+}
+
+#info .p_tabs.top {
+    position: absolute;
+    top: 115px;
+}
+
+.tabs a, .p_tabs a {
+    color: #bbb !important;
+    text-decoration: none;
+    text-align: center;
+}
+
+.p_tabs a {
+    font-size: 13px !important;
+}
+
+.tabs a.hover, .p_tabs a.hover {
+    color: #333 !important;
+}
+
+.tab {
+    background: #fff;
+    float: none;
+    margin-left: 1px;
+    text-align: center;
+    border-bottom: 3px solid #bbb;
+    padding: 17px 0px 17px 0px;
+    border-right: 1px solid #eee;
+    cursor: pointer;
+}
+
+.profile .tab {
+    border-right: 0px;
+}
+
+.tab:hover {
+    border-bottom: 3px solid #333;
+}
+
+.tab.active {
+    font-weight: 400 !important;
+    border-bottom: 3px solid #ffcd00 !important;
+}
+
+.content.profile {
+    background-color: #ffffff;
+}
+
+.content.channels .channel {
+    background: #fff;
+    margin-bottom: 1px;
+
+}
+
+.content.channels .channel span {
+    padding-top: 10px;
+
+}
+
+.content.channels .channel .base {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.content.channels .channel .name {
+    font-size: 25px;
+    font-weight: 100;
+    float: left;
+    color: #aaa;
+    padding-right: 10px;
+}
+
+.content.channels .channel .listners {
+    font-size: 24px;
+    font-weight: 300;
+    float: right;
+    color: #aaa;
+}
+
+.content.channels .channel .listners span {
+    font-size: 12px;
+    padding-right: 6px;
+}
+
+.content.history .inner, .content.channels .inner {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.channel .current {
+    padding-top: 5px;
+    font-size: 12px;
+}
+
+.channel .current .cap {
+    font-size: 10px;
+}
+
+.artwork {
+    overflow: hidden;
+    height: 47px;
+    width: 47px;
+    border: 1px solid #aaa;
+    text-align: center;
+}
+
+.cover img {
+    height: 47px;
+}
+
+.artist {
+    font-weight: 600;
+}
+
+.item .title {
+    float: left;
+    padding-right: 6px;
+}
+
+.fastag {
+    width: 130px;
+}
+
+.fastag .intag {
+    text-align: right;
+}
+
+.item .tag {
+    background-color: #888;
+}
+
+.fastag .tag {
+    margin-right: 2px;
+    float: right;
+}
+
+#console a {
+    color: #ffcd00;
+}
+
+#console .logo {
+    margin-top: 40px;
+}
+
+#console .logo img {
+    max-height: 25px;
+    display: block;
+    margin: 0 auto;
+}
+
+#console .info {
+    padding: 20px;
+    text-align: center;
+}
+
+#console .info .chname {
+    font-weight: 100;
+    font-size: 20px;
+}
+
+.loginform {
+    padding: 20px;
+    font-size: 10px;
+    color: #cdcdcd;
+}
+
+.loginform .button {
+    margin-top: 5px;
+    width: 50%;
+    background: #ffcd00;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.loginform .button a {
+    font-size: 14px;
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.loginform input {
+    font-size: 17px;
+    width: 90%;
+    padding: 5px;
+    -webkit-appearance: none;
+    border: 0;
+    margin-top: 5px;
+}
+
+#remember {
+    -webkit-appearance: checkbox;
+    font-size: 12px;
+    width: auto;
+}
+
+.loginform .alert {
+    font-size: 12px;
+    width: 100%;
+}
+
+#console .userinfo {
+    font-size: 12px;
+    padding: 15px;
+}
+
+#volume {
+    width: 125px;
+    padding-top: 5px;
+    margin: 0 auto;
+}
+
+#volume .slider {
+    width: 100%;
+    height: 8px;
+    background: #777;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#volume .slider .bar {
+    height: 100%;
+    width: 50%;
+    background: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    z-index: 100;
+}
+
+#console .streamcontrol {
+    text-align: center;
+    cursor: pointer;
+    height: 50px;
+    padding-bottom: 25px;
+}
+
+#console .streamcontrol img {
+    padding: 10px;
+    width: 50px;
+    display: block;
+    margin: 0 auto;
+}
+
+#console .upfiles .button {
+    margin: 3px;
+    background: #ffcd00;
+    text-align: center;
+    padding: 3px;
+    width: 60%;
+    cursor: pointer;
+}
+
+.upfiles .button a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.upfiles .path {
+    float: left;
+}
+
+.upfiles .abort {
+    float: right;
+    width: 9px;
+    height: 9px;
+    background-image: url(/img/del.png);
+    margin: 3px 0 0 3px;
+    cursor: pointer;
+}
+
+#console .errors {
+    color: #ff5050;
+}
+
+#console .progress {
+    background: #777;
+    height: 3px;
+    width: 100%;
+}
+
+#console .progress .bar {
+    background: #ffcd00;
+    width: 0%;
+    height: 100%;
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
+}
+
+#console .uploaditem {
+    font-size: 10px;
+    color: #cdcdcd;
+    padding: 15px;
+    padding-right: 30px;
+}
+
+#console .uploaditem span {
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
+#console .uploaditem input, #console .uploaditem textarea {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 5px;
+}
+
+#console .uploaditem textarea {
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.tag {
+    font-size: 9px;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #666;
+    display: inline-block;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    vertical-align: top;
+}
+
+.tag .deltag {
+    width: 9px;
+    height: 9px;
+    background-image: url(/img/del.png);
+    display: inline-block;
+    margin: 3px 0 0 3px;
+    cursor: pointer;
+}
+
+.tags {
+    padding-bottom: 4px;
+    min-height: 1px;
+    max-width: 220px;
+}
+
+#console .uploaditem input {
+    max-width: 400px;
+}
+
+#console .serverinfo {
+    font-size: 9px;
+    padding: 15px;
+}
+
+#console .serverinfo img {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+/* Треки в плейлисте
+---------------------------------------------*/
+
+ #playlist .full, #info .item .full {
+    padding: 0px 7px 10px 7px;
+    overflow: hidden;
+}
+
+/*Текущий трек */
+
+#playlist .full table,
+#playlist .full tbody,
+#playlist .full tr,
+#playlist .full td {
+    margin: 0;
+    padding: 0;
+}
+
+#playlist .full .r-col,
+#playlist .full .l-col {
+    vertical-align: top;
+}
+
+#playlist .full .l-col { width: 47px; }
+
+#playlist .full .l-col .kill {margin-left:15px;}
+
+#playlist .full .r-col { padding-left: 5px;}
+
+#playlist .full .kill {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  top:3px;
+}
+
+#playlist .full .info img,
+#info .item .full .info img {
+    max-height: 200px;
+}
+
+#playlist .current {
+    background: #333;
+    color: #faf9f9;
+}
+
+#playlist .base {
+    cursor: pointer;
+}
+
+#playlist .current .timer {
+    height: 3px;
+    width: 100%;
+    background: #777;
+}
+
+#playlist .current .timer .cursor {
+    height: 100%;
+    width: 0px;
+    background: #ffcd00;
+}
+
+#playlist .inner {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+ul {
+    font-size: 12px;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+li {
+    -moz-transition: 0.3s ease-out;
+    -webkit-transition: 0.3s ease-out;
+    transition: 0.3s ease-out;
+}
+
+.item {
+    border-bottom: 1px solid #eee;
+    border-left: 1px solid #eee;
+    background: #fdfdfd;
+}
+
+
+
+.item table, .current table {
+    width: 100%;
+    padding: 2px 0px 0px 2px;
+}
+
+table .cover {
+    width: 50px;
+    vertical-align: top;
+}
+
+.track_links {
+    clear: both;
+}
+
+.track_links span {
+    margin-left: 5px;
+    margin-top: -2px;
+    font-size: 10px;
+}
+.track_links span:first-child { margin-left: 0;}
+
+
+
+.item .tags {
+    display: block;
+    float: left;
+    margin-top:5px;
+}
+
+.item a {
+    color: #eba400;
+}
+
+.current a {
+    color: #ffcd00;
+}
+
+.item table .time {
+    width: 60px;
+    text-align: right;
+}
+
+#info .item .time {
+    font-size: 10px;
+    color: #aaa;
+    min-width: 130px;
+}
+
+table .rating {
+    width: 80px;
+}
+
+
+.full .info,
+.full .sender {
+    font-size: 10px;
+    padding: 3px 0 5px 0;
+    clear: both;
+}
+
+table .rating div {
+    text-align: right;
+    font-weight: 100;
+    font-size: 23px;
+    color: #bbb;
+    padding-right: 10px;
+}
+
+table .rating .curnum {
+    text-align: center;
+    padding-right: 0px;
+}
+
+.submit_box {
+    position: relative;
+    background: #ffcd00;
+    color: #fff;
+    text-align: center;
+}
+
+.submit_box .uploader {
+    overflow: hidden;
+    cursor: pointer;
+    height: 60px;
+}
+
+.submit_box .label {
+    position: absolute;
+    width: 100%;
+    font-size: 40px;
+}
+
+#fileupload {
+    font-size: 600px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.innerl {
+    position: relative;
+    height: 100%;
+    padding-bottom: 70px;
+    margin-top: -70px;
+}
+
+.resizer {
+    width: 6px;
+    cursor: ew-resize;
+    height: 100%;
+    position: absolute;
+    z-index: 200;
+    top: 0px;
+}
+
+#playlist .resizer {
+    left: 0px;
+}
+
+#messageinput {
+    -webkit-appearance: none;
+    outline: 0 none;
+    padding: 5px;
+    font-size: 12px;
+    max-height: 70px;
+    min-height: 70px;
+    height: 100%;
+    overflow-y: auto;
+    background: #fbfbfb;
+    border-top: 3px solid #bbb !important;
+    width: 100%;
+    border: 0;
+}
+
+.content.chat .input {
+    background-color: #eee;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+}
+
+.content.chat .input .inputframe {
+    margin: 5px;
+    background: #fafafa;
+    border: 1px solid #dedede;
+}
+
+.content.chat .users .scroller {
+    overflow-y: auto;
+}
+
+.content.chat .log {
+    background-color: #fff;
+    width: 85%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    float: left;
+}
+
+.content a {
+    color: #eba400;
+    font-size: 10px;
+    font-weight: 100;
+}
+
+.content.chat .log a {
+    font-size: 12px;
+}
+
+.content.chat .users a {
+    font-size: 12px;
+    color: #aaa !important;
+}
+
+.content.chat .users .active a {
+    color: #eba400 !important;
+}
+
+.content.chat .users .info {
+    font-size: 9px;
+    color: #fff;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #eba400;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 4px;
+    margin-top: 4px;
+    vertical-align: top;
+    cursor: pointer
+}
+
+.content.chat .topline {
+    padding-left: 15px;
+}
+
+.content.chat .users {
+    margin-left: 85%;
+    background-color: #fff;
+    font-size: 14px;
+    padding-left: 2px;
+    border-left: 1px solid #f6f6f6;
+}
+
+.content.chat .log p {
+    margin: 0;
+    margin-left: 4px;
+    font-size: 10px;
+    float: left;
+}
+
+.content.chat .log .end {
+    float: none;
+}
+
+#chatmessages .message {
+    padding: 3px;
+    border-top: 1px solid #f6f6f6;
+    font-size: 13px;
+    word-wrap: break-word;
+}
+
+#chatmessages .message table {
+    width: 100%;
+}
+
+#chatmessages .message span {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ui-menu {
+    font-size: 11px !important;
+}
+
+
+
+
+/* Рейтинг трека
+--------------------------------------------------*/
+.votebar {
+    float: right;
+}
+
+.votebar .but, .current .rating .but {
+    width: 24px;
+    height: 24px;
+    margin: 2px;
+    float: left;
+    cursor: pointer;
+}
+
+.current .rating .but {
+    padding-right: 0px;
+}
+
+.votebar .numb {
+    float: left;
+    font-size: 14px;
+    color: #bbb;
+    padding: 4px;
+}
+
+.votebar .up, .current .rating .up {
+    background: url(/img/controls.png) no-repeat -106px 5px;
+}
+
+.votebar .down, .current .rating .down {
+    background: url(/img/controls.png) no-repeat 2px 5px;
+}
+
+.votebar .positive, .karma .positive {
+    background: url(/img/controls.png) no-repeat -80px 5px;
+}
+
+.votebar .negative, .karma .negative {
+    background: url(/img/controls.png) no-repeat -24px 5px; 
+}
+
+
+
+
+
+
+
+.mif {
+    text-align: right;
+    vertical-align: top;
+}
+
+.sms {
+    width: 100%;
+}
+
+.names {
+    vertical-align: top;
+    text-decoration: underline;
+}
+
+.pm {
+    color: #8d8d8d;
+}
+
+.messageinfo {
+    text-align: right;
+    font-size: 10px;
+    color: #ddd;
+    min-width: 90px;
+}
+
+.content.chat .sms img {
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.content.chat .log p img {
+    max-height: 200px;
+}
+
+.profile .main {
+    position: absolute;
+    display: block;
+    left: 0px;
+    right: 0px;
+}
+
+.profile .shift {
+    height: 60px;
+}
+
+.profile .inner {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.profile .username {
+    font-size: 20px;
+    font-weight: 100;
+    padding: 16px 0px 0px 16px;
+}
+
+.profile .uid {
+    padding-left: 16px;
+    font-size: 12px;
+    color: #bbb;
+}
+
+.profile .pic {
+    width: 200px;
+    height: 200px;
+    background-image: url(/img/ear.png);;
+    margin: 16px;
+    float: left;
+}
+
+.profile .userinfo {
+    font-size: 13px;
+    margin: 16px;
+}
+
+.profile .userinfo p {
+    margin-top: 10px;
+}
+
+.profile .userinfo a {
+    font-size: 13px;
+}
+
+.karma {
+    float: right;
+}
+
+.karma .numb {
+    font-weight: 100;
+    font-size: 23px;
+    color: #bbb;
+}
+
+.karma .but {
+    width: 24px;
+    height: 24px;
+    margin: 16px;
+    float: left;
+    cursor: pointer;
+}
+
+td.sms img .hide {
+    display: none;
+}
+
+#console .info .chdata span {
+    font-size: 10px;
+}
+
+.end {
+    padding: 15px;
+    text-align: center;
+}
+
+#info .content.profile .list .option {
+    padding: 15px;
+}
+
+#optionexit {
+    padding-top: 15px;
+}
+
+#info .content.profile .list .option input {
+    margin-right: 10px;
+}
+
+#info .content.profile .list .option .toper {
+    margin-bottom: 10px;
+}
+
+#info .content.profile .list .sendform {
+    display: block;
+    width: 100%;
+    padding-left: 15px;
+    float: left;
+}
+
+#info .content.profile .list .sendform .send, #sendall {
+    background: #ffcd00;
+    text-align: center;
+    width: 120px;
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    margin-top: 2px;
+}
+
+#sendall {
+    margin: 20px;
+    padding: 5px;
+}
+
+#info .content.profile .list .sendform .send a, #sendall a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+#info .content.profile .list .sendform .minput {
+    float: left;
+}
+
+#info .content.profile .list .sendform input, #passchange input {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 1px solid #ddd;
+    width: 200px;
+    font-size: 12px;
+    font-weight: 100;
+    padding: 5px;
+}
+
+#passchange {
+    padding-top: 15px;
+}
+
+#limits {
+    margin-bottom: 8px;
+}
+
+#limits span {
+    display: block;
+    font-size: 0.7em;
+    color: #cccccc;
+}
+
+#markups {
+    position: absolute;
+    bottom: 0px;
+    background: #fafafa;
+    width: 100%;
+}
+
+#markups a {
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px;
+
+}
+
+#markups .bold {
+    font-weight: 800;
+    color: black;
+}
+
+span.irony, #markups .irony {
+    font-style: italic;
+    color: red;
+}
+
+.content.chat .log .action {
+    font-size: 11px;
+    color: #777777;
+}
+
+.profile .item .channel {
+    font-size: 23px;
+    color: #bbb;
+    font-weight: 100;
+    width: 60px;
+}
+
+#hpanel {
+    font-size: 13px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+#hpanel label {
+    padding-left: 5px;
+    padding-top: 10px;
+}
+
+.content .loader {
+    z-index: -1;
+    text-align: center;
+    color: #aaa;
+    padding: 100px;
+}
+
+.advice {
+    font-size: 16px;
+    color: #aaa;
+    text-align: center;
+    padding: 17px;
+}
+
+.channel .description {
+    margin-top: 20px;
+}
+
+.channel .base .hint {
+    font-size: 10px;
+    color: #aaa;
+}
+
+.channel .base .users {
+    padding-top: 10px;
+}
+
+/* Админпанель для канала
+--------------------------------------------*/
+
+.channel .full {
+    background: #ffffff;
+    width: 100%;
+    padding: 0 10px 10px 10px;
+}
+
+.channel .full a {
+    font-size: 13px;
+}
+
+.channel .full span {
+    padding: 0;
+}
+
+.channel .full label {
+    display: block;
+}
+
+.channel .full .l-col {
+    float: left;
+    width: 50%;
+}
+
+.channel .full .r-col {
+    float: left;
+    width: 50%;
+}
+
+.channel .full .banned {
+    padding-top: 49px;
+}
+
+.channel .full .editors-list li,
+.channel .full .banned-list li {
+    list-style: none;
+    margin: 5px 0;
+    max-width: 300px;
+}
+
+
+.channel .full header {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.channel .full .prman {
+    margin-bottom: 10px;
+}
+
+.channel .full .prman-crown {
+    background: url(/img/crown.png) no-repeat 0 0px;
+    display: inline-block;
+    padding-left: 20px;
+}
+
+/* Иконочки(((((
+
+.full .editor-name {
+	background: url(img/queen.png) no-repeat 0 1px;
+	display: inline-block;
+	padding-left: 19px;
+}
+
+.full .banned-name {
+	background: url(img/plankton.png) no-repeat 0 1px;
+	display: inline-block;
+	padding-left: 19px;
+}
+
+*/
+
+.channel .full .descr {
+    padding: 0;
+}
+
+.channel .full .delete {
+    background: url(/img/delete.png) no-repeat 0 0;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    position: relative;
+    margin-left: 2px;
+    top: 2px;
+}
+
+.channel .full button {
+    border: none;
+    color: #FFF;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ffcd00;
+    width: 80px;
+    height: 22px;
+
+}
+
+.channel .full .editors button,
+.channel .full .banned button {
+    width: 35px;
+}
+
+input[type="text"],
+input[type="password"] {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 1px solid #ddd;
+    width: 150px;
+    font-size: 12px;
+    height: 18px;
+    padding: 1px 5px;
+    margin-bottom: 3px;
+}
+
+input.id {
+    width: 51px;
+}
+
+.channel .full button:active,
+.channel .full input[type="button"]:active,
+.channel .full input[type="submit"]:active {
+    position: relative;
+    top: 1px;
+}

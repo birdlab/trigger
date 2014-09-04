@@ -38,6 +38,7 @@ $(document).ready(function() {
     });
     
     $('#playlist .resizer').mousedown(function(e){
+    	console.log('playlist on');
     	e.preventDefault();
     	$('body').css({'cursor': 'ew-resize'});
 	    $(window).bind('mousemove', consoleresize);
@@ -101,7 +102,10 @@ function onresize(){
 	$('#playlist .inner').height($(window).height() - $('#playlist .current').height());
 	var tabsheight=$('#info .tabs').height();
 	var chatheight=$(window).height() - $('#info .content.chat .input').height() - tabsheight;
-	$('#info .content.history .inner').height($(window).height() - tabsheight);
+
+	$('#info .content.history .inner').height($(window).height() - tabsheight-20);
+    $('#info .content.channels .inner').height($(window).height() - tabsheight);
+
 	var profileshift=$('#info .tabs').height()+$('#info .content.profile .main').height();
 	if ($('#info .content.profile .p_tabs').hasClass('top')){
 		profileshift+=$('#info .content.profile .p_tabs').height();
