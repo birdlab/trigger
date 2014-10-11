@@ -17,6 +17,8 @@ function User() {
     this.country = '';
     this.regdate = null;
     this.pass = null;
+    this.info=null;
+    this.picture=null;
     this.email = null;
     this.virtual = false;
     this.nextUpdate = 0;
@@ -105,6 +107,8 @@ User.prototype.fullinfo = function(self, callback) {
         'co': user.country,
         'reg': user.regdate,
         'r': user.rating,
+        'pic':user.picture,
+        'i':user.info,
         'prch': this.prch,
         'opch': this.opch,
         'n': [],

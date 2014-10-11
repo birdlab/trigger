@@ -110,38 +110,3 @@ if (window.addEventListener) {
 	window.attachEvent("onstorage", handle_storage);
 };
 
-var player=null;
-
-$(document).ready(function() {
-	player=new Player();
-	var vol=parseInt($.Storage.get("volume"));
-	if (vol>0){
-		vol=vol/1000;
-		$('#volume .slider .bar').width(vol*125);
-		player.volume(vol);
-	}
-	$('#console .streamcontrol .play').click( function (){
-		player.play(client.channel.hi);
-		$('#console .streamcontrol .play').hide();
-		$('#console .streamcontrol .stop').show();
-		$.Storage.set("play", 'true');
-	});
-	$('#console .streamcontrol .stop').click( function(){
-		player.stop();
-		$('#console .streamcontrol .stop').hide();
-		$('#console .streamcontrol .play').show();
-		$.Storage.set("play", 'false');
-	});
-	$('#console .streamcontrol .play').show();
-	$('#console .streamcontrol .stop').hide();
-	
-	$('#volume .slider').bind('mousedown',function(e){
-		e.preventDefault();
-		setvolume(e);
-		$(window).bind('mousemove', setvolume);
-	    $(window).mouseup(function(){
-	    	$(window).unbind('mousemove', setvolume);
-	    });
-	});
-	
-});

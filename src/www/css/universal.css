@@ -1,0 +1,195 @@
+
+.clearfix:after {
+    clear: both;
+    content: "" !important;
+    display: block;
+}
+
+#init {
+    width: 100%;
+    padding-top: 20%;
+}
+
+#init .broken {
+    width: 172px;
+    height: 34px;
+    background: url(/img/init.gif);
+}
+
+#init .message {
+    padding-top: 30px;
+    font-size: 10px;
+    text-align: center;
+}
+
+#init .inner {
+    width: 172px;
+    margin: 0 auto;
+}
+
+#console {
+    width: 15%;
+    position: fixed;
+    background: #333;
+    bottom: 0px;
+    top: 0px;
+    color: #fff;
+    overflow-y: auto;
+}
+
+#console .links {
+    padding: 5px;
+    padding-top: 0px;
+    font-size: 9px;
+}
+
+#console .links span {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+
+#console .uploaditem input {
+    max-width: 400px;
+}
+
+#console .serverinfo {
+    font-size: 11px;
+    padding: 12px;
+}
+
+#console .serverinfo img {
+    width: 100%;
+}
+#console .serverinfo a {
+    padding-left: 3px;
+}
+
+#messageinput {
+    -webkit-appearance: none;
+    outline: 0 none;
+    padding: 5px;
+    padding-bottom: 23px;
+    font-size: 12px;
+    min-height: 53px;
+    height: 53px;
+    overflow-y: auto;
+    border-top: 3px solid #bbb !important;
+    width: 100%;
+    border: 0;
+    resize: vertical;
+}
+.content.chat .input {
+    background-color: #eee;
+    position: absolute;
+    width: 100%;
+}
+
+.voters {
+    width: 100%;
+}
+
+.voters .pvotes{
+    text-align: right;
+}
+.voters .nvotes{
+    text-align: left;
+}
+
+.voters ul {
+    font-size: 10px;
+    display: inline-block;
+    vertical-align: top;
+    list-style: none;
+    display: table-cell;
+    width: 50%;
+    min-width: 66px;
+}
+
+
+#playlist .inner {
+    overflow-x: hidden;
+}
+.messageinfo a {
+    font-size: 10px !important;
+}
+
+
+
+
+
+.channel .full header {
+    font-weight: bold;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+.banplace{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.banplace button{
+    border: none;
+    color: #333;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ffcd00;
+    width: 80px;
+    height: 22px;
+
+}
+
+
+
+#userdescription{
+    margin-bottom: 15px;
+}
+#userdescription:focus {
+    outline: none;
+}
+.htmleditor{
+    padding: 10px;
+}
+
+#info .content.profile .pic.exist{
+    overflow: hidden;
+    text-align: center;
+    background-image: none !important;
+}
+#info .content.profile .pic img{
+    height: 200px;
+}
+
+input[type="text"],
+input[type="password"] {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 1px solid #ddd;
+    width: 150px;
+    font-size: 12px;
+    height: 18px;
+    padding: 1px 5px;
+    margin-bottom: 3px;
+}
+
+#piclink {
+    width: 250px !important;
+}
+
+.channel .description {
+    margin-top: 20px;
+}
+.channel .description:focus{
+    outline: none;
+}
+.channel .htmleditor:focus{
+    outline: none;
+}
+.channel .usershead {
+    font-weight: 100;
+    font-size: 13px;
+}
+#markups {
+    font-size: 11px;
+}

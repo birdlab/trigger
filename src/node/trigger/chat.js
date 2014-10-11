@@ -1,6 +1,7 @@
 var db = require('./dbdata.js');
 var sockets = require('./sockets.js');
 var sanitize = require('validator').sanitize;
+var san = require('sanitizer');
 
 function Chat() {
     this.messages = [];
@@ -19,39 +20,26 @@ Chat.prototype.init = function(data) {
 }
 
 Chat.prototype.addMessage = function(message, user, callback) {
-
     var ct = new Date();
     message.t = ct;
-    var isimage = message.m.match(/(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg|bmp))/gim || false);
+
+
+    //  var isimage = message.m.match(/(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg|bmp))/gim || false);
 
     var isprivate = message.m.match(/^(\>{2}[a-zA-Z0-9_.]+)+/g || false);
 
-    if (isimage && !isprivate) {
-        user.imgcount += 1;
-    } else {
-        if (user.imgcount > 0) {
-            user.imgcount -= .2;
-        }
-    }
     if (isprivate) {
         message.pm = isprivate.toString().replace('>>', '');
+        //message.m = san.escape(message.m);
         sockets.sendMessage(message);
+
     } else {
-        if (!(user.imgcount > 3 && isimage)) {
-            this.messages.push(message);
-            sockets.sendMessage(message);
-            db.addMessage(message);
-            if (this.messages.length > 50) {
-                var mm = this.messages.shift();
-            }
-            if (callback) {
-                callback({ok: true});
-            }
-        } else {
-            user.imgcount -= 1;
-            if (callback) {
-                callback({error: 'слишком много картинок :('});
-            }
+        //message.m = san.escape(message.m);
+        this.messages.push(message);
+        sockets.sendMessage(message);
+        db.addMessage(message);
+        if (callback) {
+            callback({ok: true});
         }
     }
 }
@@ -109,16 +97,14 @@ Chat.prototype.removeUser = function(socket) {
 }
 Chat.prototype.getMessages = function(shift, callback) {
     var data = {};
-    if (shift > 0) {
-        if (shift) {
-            db.getMessages(this.id, shift, function(messages) {
-                data.m = messages;
-                callback(data);
-            });
-        }
+    if (shift) {
+        db.getMessages(this.id, shift, function(messages) {
+            data.m = messages;
+            callback(data);
+        });
     } else {
         data.u = this.compactUsers()
-        data.m = this.messages;
+        data.m = this.messages.slice(-50);
         callback(data);
     }
 

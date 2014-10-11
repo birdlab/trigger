@@ -26,18 +26,22 @@ customCodes[5][1] = 'я идиот убейте меня кто нибудь! ';
 
 customCodes[6] = [];
 customCodes[6][0] = '))))))))))';
-customCodes[6][1] = '<font color="pink">недавно я познакомился с мальчиком, у него такие голубе глаза и член который... кажется я не туда пишу</font> ';
+customCodes[6][1] = '<font color="pink">недавно я познакомился с мальчиком, у него такие голубые глаза и член который еле помещается в мою... кажется я не туда пишу</font> ';
 
 customCodes[7] = [];
 customCodes[7][0] = 'NO.';
 customCodes[7][1] = '<img src="/img/no.jpg" />';
 
+customCodes[8] = [];
+customCodes[8][0] = /[<]\s*\\*\s*script\s*/gim;
+customCodes[8][1] = 'кулхацир в чати';
 
 
 
 var messages = [];
 var now = null;
 var sound = new Audio();
+var chatlogupdate = false;
 
 function playTink() {
     if (sound.canPlayType('audio/ogg')) {
@@ -49,7 +53,35 @@ function playTink() {
     }
 }
 
+function scrolltop() {
+    if ($(this).scrollTop() < 300 && !chatlogupdate) {
+        chatlogupdate = true;
+        console.log($(this).scrollTop());
+        var sh = Date.now();
+        if (messages.length) {
+            sh = new Date(Date.parse(client.chat.m[0].t) + 14400000);
+            console.log(sh);
+            var scroll = this;
+            client.getChat({shift: sh}, function(data) {
+                var delta = $('#chatmessages').height();
+                console.log(delta);
+                data.m.reverse();
+                for (var i in data.m) {
+                    client.chat.m.unshift(data.m[i]);
+                    addMessage(data.m[i]);
+                }
+                delta = $('#chatmessages').height() - delta;
+                $(scroll).scrollTop($(scroll).scrollTop() + delta);
+                chatlogupdate = false;
+            });
+        }
+    }
+}
+
 $(document).ready(function() {
+    //  console.log($('#info .content.chat .log.nano'));
+    $('#info .content.chat .log').scroll(scrolltop);
+    // $(".nano").bind("scrolltop", scrolltop);
 });
 
 
@@ -80,8 +112,8 @@ function submitMessage() {
             }
         }
 
-        client.sendMessage(m, function(data){
-            if (data.error){
+        client.sendMessage(m, function(data) {
+            if (data.error) {
                 $('#messageinput').attr("placeholder", data.error);
             } else {
                 $('#messageinput').attr("placeholder", "начинай вводить...");
@@ -158,29 +190,27 @@ function addNick(name) {
     return false;
 }
 var meta = [];
+
 function addMessage(md) {
     for (var i in mutelist) {
         if (mutelist[i] == md.uid) {
             return;
         }
     }
+    var tome = false;
     md.uname = $.trim(md.uname);
     if (md.m) {
         if (md.pm) {
             if (client.user.n == md.pm) {
-                if (tink) {
-                    playTink();
-                }
+                tome = true;
                 md.m = '<b style="color:#8d8d8d">>>' + md.pm + md.m.replace('>>' + md.pm, '') + '</b>';
             } else {
                 md.m = '<div style="color:#8d8d8d">>>' + md.pm + md.m.replace('>>' + md.pm, '') + '</div>';
             }
         } else {
             if (md.m.replace('>' + client.user.n, '') != md.m) {
-                if (tink) {
-                    playTink();
-                }
-                md.m = '<b style="color:black">>' + client.user.n + md.m.replace('>' + client.user.n, '') + '</b>';
+                tome = true;
+                md.m = '<b class="pm">>' + client.user.n + md.m.replace('>' + client.user.n, '') + '</b>';
             }
         }
         var useraction = false;
@@ -192,34 +222,66 @@ function addMessage(md) {
             }
         }
         replaceme();
+        var pm = 'pm';
+        if (!md.pm) {
+            pm = '';
+        }
         if (!useraction) {
+            var message = $('<div class="message ' + md.uname + '"><table><tr><td class="names ' + pm + '"><span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + ': </span></td><td class="sms">' + md.m + '</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
             meta[0] = /\/track(\w*)/gim;
             var analys = function() {
                 var res = meta[i].exec(md.m);
                 if (res) {
                     var str = '';
                     if (i == 0) {
-                        var tr = client.track(parseInt(res[1]));
-                        str = '<a href="javascript:opentrack(' + tr.id + ');void(0);">' + tr.a + ' - ' + tr.t + '</a>';
+                        console.log('sending req');
+                        client.track(parseInt(res[1]), function(tr) {
+                            str = '<a href="#">' + tr.a + ' - ' + tr.t + '</a>';
+                            var toupdate=$(message).find('.sms').html();
+                            toupdate = toupdate.replace(res[0], str);
+                            $(message).find('.sms').html(toupdate);
+                            var href=$(message).find('a').attr('id', tr.id);
+                            console.log('replace ok');
+                            href.click(function(){
+                                console.log('opening', tr);
+                                opentrack(tr);
+                            })
+                           // analys();
+                        });
                     }
-                    md.m = md.m.replace(res[0], str);
-                    analys();
                 }
             }
             for (var i in meta) {
                 analys();
             }
-            var pm = 'pm';
-            if (!md.pm) {
-                pm = '';
-            }
-            var message = $('<div class="message ' + md.uname + '"><table><tr><td class="names '+pm+'"><span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + ': </span></td><td class="sms">' + md.m + '</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
         } else {
             var message = $('<div class="message ' + md.uname + '"><table><tr><td class="sms"><div class="action">' + md.m + '</div></td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
         }
+        var info = message.find('.messageinfo');
+        var trtm = null;
+        $(info).mouseenter(function(e) {
+            trtm = setTimeout(function() {
+                console.log(md.tid);
+                client.track(md.tid, function(data) {
+                    $(info).html('<a href="#">' + data.a + ' - ' + data.t + '</a>');
+                    $(info).find('a').click(function(){
+                        opentrack(data);
+                    })
+                });
+            }, 200);
+        });
+        $(info).mouseleave(function() {
+            if (trtm) {
+                clearTimeout(trtm);
+            }
+            upadateMT(message);
+        });
         message.time = new Date(md.t).getTime();
         if (messages.length) {
             if (message.time > messages[0].time) {
+                if (tome && tink) {
+                    playTink();
+                }
                 message.appendTo($('#chatmessages'));
                 messages.push(message);
             } else {

@@ -15,6 +15,7 @@ function Channel(i) {
     this.prname = i.prname;
     this.editors = i.editors;
     this.banned = i.banned;
+    this.banlist = [];
     this.description = i.description;
     this.hilink = i.hilink;
     this.lowlink = i.lowlink;
@@ -52,9 +53,9 @@ Channel.prototype.init = function(id) {
     id = ch.id;
 
     if (ch.id == 1) {
-        command = 'mpd --no-daemon /home/trigger/mpd/mpd.conf';
+        command = 'nice -n -10 mpd --no-daemon /home/trigger/mpd/mpd.conf';
     } else {
-        command = 'mpd --no-daemon /home/trigger/mpd/' + ch.name + '/mpd.conf';
+        command = 'nice -n -10 mpd --no-daemon /home/trigger/mpd/' + ch.name + '/mpd.conf';
     }
     if (!ch.chat) {
         ch.chat = chat.newChat(ch.id);
@@ -67,7 +68,6 @@ Channel.prototype.init = function(id) {
 }
 
 Channel.prototype.setop = function(data, callback) {
-
     var ch = this;
     if (data.pr) {
         main.getuser(data.id, function(user) {
@@ -165,23 +165,27 @@ Channel.prototype.setprops = function(channeldata, callback) {
 
 Channel.prototype.banuser = function(data, callback) {
     var ch = this;
-    if (!ch.isbanned(data.id)) {
+    if (data.id) {
+        console.log('try to get user', data.id);
         main.getuser(data.id, function(user) {
             if (user) {
-                console.log(user);
-                var newbanned = {
-                    id: data.id,
-                    name: user.name,
-                    reason: data.r
+                console.log(user.name);
+                if (!ch.isbanned(data.id)) {
+                    var newbanned = {
+                        id: data.id,
+                        name: user.name,
+                        reason: data.r
+                    }
+                    ch.banned.push(newbanned);
+                    db.banuser(data);
+                    callback({banned: ch.banned});
+                } else {
+                    callback({error: 'in'});
                 }
-                ch.banned.push(newbanned);
-                db.banuser(data);
-                callback({banned: ch.banned});
             }
         });
-    } else {
-        callback({error: 'in'});
     }
+
 
 }
 
@@ -255,6 +259,51 @@ function uniq(a) {
     return n;
 }
 
+
+Channel.prototype.updateTracks = function() {
+    var ch = this;
+    for (var i in ch.playlist) {
+        var track = ch.playlist[i];
+        var oldrating = track.rating;
+        track.rating = 0;
+        for (var p in track.positive) {
+            var vote = track.positive[p];
+            for (var s in this.chat.chatsockets) {
+                var user = this.chat.chatsockets[s].user;
+                if (user) {
+                    if (vote.voterid == user.id) {
+                        vote.active = this.chat.chatsockets[s].active
+                    }
+                    if (vote.active) {
+                        track.rating += vote.value;
+                    }
+                    break;
+                }
+            }
+        }
+        for (var p in track.negative) {
+            var vote = track.negative[p];
+            for (var s in this.chat.chatsockets) {
+                var user = this.chat.chatsockets[s].user;
+                if (user) {
+                    if (vote.voterid == user.id) {
+                        vote.active = this.chat.chatsockets[s].active
+                    }
+                    if (vote.active) {
+                        track.rating += vote.value;
+                    }
+                    break;
+                }
+            }
+        }
+        if (oldrating != track.rating) {
+            sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
+        }
+
+    }
+}
+
+
 Channel.prototype.status = function() {
     var ch = this;
     exec('php /home/trigger/node/fastinfo.php ' + ch.hilink + ' ' + ch.lowlink, function(error, stdout, stderr) {
@@ -298,6 +347,7 @@ Channel.prototype.status = function() {
                     }
                     ch.active = ch.chat.getActive();
                     sockets.sendListners({'chid': ch.id, 'l': ips.length, 'a': ch.active});
+                    //ch.updateTracks();
                 }
             }
         } else {
@@ -420,11 +470,11 @@ Channel.prototype.addTrack = function(data, callback) {
                 } else {
                     var user = main.user(track.submiter);
                     if (user) {
-                        if (user.time > track.time || ch.chat.users.length<11 || ch.id != 1 || ch.playlist.length < 11 ) {
+                        if (user.time > track.time || ch.chat.users.length < 11 || ch.id != 1 || ch.playlist.length < 11) {
                             ch.playlist.push(track);
                             track.channel = ch.id;
                             track.unlim = 0;
-                            if ((ch.chat.users.length<11 || ch.playlist.length < 10) && ch.id == 1) {
+                            if ((ch.chat.users.length < 11 || ch.playlist.length < 10) && ch.id == 1) {
                                 track.unlim = 1;
                             }
                             db.addTrack(track, function() {

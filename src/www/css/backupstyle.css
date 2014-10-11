@@ -7,55 +7,6 @@ body {
     color: #333;
 }
 
-.clearfix:after {
-    clear: both;
-    content: "" !important;
-    display: block;
-}
-
-#init {
-    width: 100%;
-    padding-top: 20%;
-}
-
-#init .broken {
-    width: 172px;
-    height: 34px;
-    background: url(/img/init.gif);
-}
-
-#init .message {
-    padding-top: 30px;
-    font-size: 10px;
-    text-align: center;
-}
-
-#init .inner {
-    width: 172px;
-    margin: 0 auto;
-}
-
-#console {
-    width: 15%;
-    position: fixed;
-    background: #333;
-    bottom: 0px;
-    top: 0px;
-    color: #fff;
-    overflow-y: auto;
-}
-
-#console .links {
-    padding: 5px;
-    padding-top: 0px;
-    font-size: 9px;
-}
-
-#console .links span {
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
 #playlist {
     position: fixed;
     top: 0px;
@@ -430,19 +381,6 @@ body {
     max-width: 220px;
 }
 
-#console .uploaditem input {
-    max-width: 400px;
-}
-
-#console .serverinfo {
-    font-size: 9px;
-    padding: 15px;
-}
-
-#console .serverinfo img {
-    width: 100%;
-}
-
 
 
 
@@ -512,10 +450,6 @@ body {
     background: #ffcd00;
 }
 
-#playlist .inner {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
 
 ul {
     font-size: 12px;
@@ -534,6 +468,10 @@ li {
     border-bottom: 1px solid #eee;
     border-left: 1px solid #eee;
     background: #fdfdfd;
+}
+
+.item.hiligth {
+    background: #ffcd00;
 }
 
 
@@ -657,32 +595,11 @@ table .rating .curnum {
 }
 
 #messageinput {
-    -webkit-appearance: none;
-    outline: 0 none;
-    padding: 5px;
-    font-size: 12px;
-    max-height: 70px;
-    min-height: 70px;
-    height: 100%;
-    overflow-y: auto;
     background: #fbfbfb;
-    border-top: 3px solid #bbb !important;
-    width: 100%;
-    border: 0;
+
 }
 
-.content.chat .input {
-    background-color: #eee;
-    position: absolute;
-    width: 100%;
-    bottom: 0px;
-}
 
-.content.chat .input .inputframe {
-    margin: 5px;
-    background: #fafafa;
-    border: 1px solid #dedede;
-}
 
 .content.chat .users .scroller {
     overflow-y: auto;
@@ -698,7 +615,6 @@ table .rating .curnum {
 
 .content a {
     color: #eba400;
-    font-size: 10px;
     font-weight: 100;
 }
 
@@ -763,6 +679,10 @@ table .rating .curnum {
 
 #chatmessages .message table {
     width: 100%;
+}
+
+#chatmessages .message b.pm {
+    color: black;
 }
 
 #chatmessages .message span {
@@ -1071,9 +991,6 @@ span.irony, #markups .irony {
     padding: 17px;
 }
 
-.channel .description {
-    margin-top: 20px;
-}
 
 .channel .base .hint {
     font-size: 10px;
@@ -1126,12 +1043,6 @@ span.irony, #markups .irony {
     max-width: 300px;
 }
 
-
-.channel .full header {
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-
 .channel .full .prman {
     margin-bottom: 10px;
 }
@@ -1163,7 +1074,7 @@ span.irony, #markups .irony {
 }
 
 .channel .full .delete {
-    background: url(/img/delete.png) no-repeat 0 0;
+    background: url(/img/del.png) no-repeat 0 0;
     display: inline-block;
     width: 10px;
     height: 10px;
@@ -1189,17 +1100,7 @@ span.irony, #markups .irony {
     width: 35px;
 }
 
-input[type="text"],
-input[type="password"] {
-    outline: 0 none;
-    -webkit-appearance: none;
-    border: 1px solid #ddd;
-    width: 150px;
-    font-size: 12px;
-    height: 18px;
-    padding: 1px 5px;
-    margin-bottom: 3px;
-}
+
 
 input.id {
     width: 51px;
@@ -1210,4 +1111,8 @@ input.id {
 .channel .full input[type="submit"]:active {
     position: relative;
     top: 1px;
+}
+
+.htmleditor{
+    background: #eee;
 }

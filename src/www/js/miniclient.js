@@ -68,21 +68,15 @@ function Client(host) {
 var lastfm = null;
 
 Client.prototype.init = function(host) {
-    console.log('init');
    // this.socket = io.connect(host, {resource: 'socket.io'});
     this.socket=io();
-    var socket=this.socket;
+    var socket = this.socket;
     var cl = this;
-    lastfm = new LastFM({
-        apiKey: '4366bdedfe39171be1b5581b52ddee90',
-        apiSecret: '5def31e9198fa02af04873239bcb38f5'
-    });  
-
     socket.on('welcome', function(data) {
         $(cl).trigger('welcome', data);
     });
-
     socket.on('getver', function() {
+
         socket.emit('ver', {'v': cl.version, 'init': true});
     });
 
@@ -153,31 +147,6 @@ Client.prototype.init = function(host) {
             cl.channel.a = data.a;
         }
         $(cl).trigger('listners', data);
-    });
-    socket.on('usupd', function(data) {
-        if (cl.chat) {
-            for (var us in cl.chat.u) {
-                if (cl.chat.u[us].id == data.uid) {
-                    cl.chat.u[us].a = data.a;
-                }
-            }
-            $(cl).trigger('userupdate', data);
-        }
-    });
-    socket.on('uplim', function(data) {
-        if (data.nt > 0) {
-            cl.user.nt = new Date(Date.parse(new Date()) + data.nt);
-        } else {
-            if (cl.user) {
-                cl.user.nt = 0;
-            }
-        }
-        cl.user.t = data.t;
-        if (cl.user.t < 0) {
-            cl.user.t = 0;
-        }
-        cl.user.w = data.w;
-        $(cl).trigger('updatelimits', data);
     });
     socket.on('channeldata', function(data) {
         var i = 0;
@@ -251,7 +220,6 @@ Client.prototype.init = function(host) {
         cl.chat.m.push(data);
         $(cl).trigger('message', data);
     });
-
     socket.on('history', function(data) {
         cl.callbacks.history(data);
     });
@@ -337,9 +305,6 @@ Client.prototype.init = function(host) {
         cl.callbacks = {};
         cl.chat = null;
     });
-    socket.on('tags', function(data) {
-        cl.callbacks.tags(data.t);
-    });
 
     socket.on('uptr', function(data) {
         if (data.t.id == cl.channel.current.id) {
@@ -397,11 +362,9 @@ Client.prototype.login = function(name, pass, callback) {
 }
 Client.prototype.track = function(id, callback) {
     var cl = this;
-    var complete=false;
     if (id == cl.channel.current.id) {
         if (callback) {
             callback(cl.channel.current);
-            complete=true;
         } else {
             return cl.channel.current
         }
@@ -410,17 +373,14 @@ Client.prototype.track = function(id, callback) {
         if (cl.channel.pls[t].id == id) {
             if (callback) {
                 callback(cl.channel.pls[t]);
-                complete=true;
             } else {
                 return cl.channel.pls[t];
             }
         }
     }
-    if (!complete&&callback){
-        this.socket.emit('gettrack', {'id': id}, function(d) {
-            callback(d);
-        });
-    }
+    this.socket.emit('gettrack', {'id': id}, function(d) {
+        callback(d);
+    });
 
 }
 Client.prototype.getPlaylist = function(channel, callback) {
@@ -535,7 +495,6 @@ Client.prototype.getchannel = function(id) {
 }
 
 Client.prototype.banuser = function(uid, reason, callback) {
-    console.log(reason);
     this.socket.emit('banuser', {id: uid, r: reason}, callback);
 }
 Client.prototype.unbanuser = function(uid, callback) {

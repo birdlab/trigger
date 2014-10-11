@@ -31,7 +31,7 @@ function testplay(q) {
                                                 }
                                                 q.callback(time);
                                             } else {
-                                                console.log('tester - > ',error);
+                                            //    console.log('tester - > ',error);
                                                 process = false;
                                                 if (query.length > 0) {
                                                     testplay(query.shift());
@@ -41,7 +41,7 @@ function testplay(q) {
                                     }
                                 } else {
                                     process = false;
-                                    console.log('tester - > ',error);
+                               //     console.log('tester - > ',error);
                                     q.callback(false);
                                     if (query.length > 0) {
                                         testplay(query.shift());
@@ -49,7 +49,7 @@ function testplay(q) {
                                 }
                             });
                         } else {
-                            console.log('tester - > ',error);
+                       //     console.log('tester - > ',error);
                             process = false;
                             q.callback(false);
                             if (query.length > 0) {
@@ -58,7 +58,7 @@ function testplay(q) {
                         }
                     });
                 } else {
-                    console.log('tester - > ',error);
+               //     console.log('tester - > ',error);
                     process = false;
                     q.callback(false);
                     if (query.length > 0) {
@@ -67,7 +67,7 @@ function testplay(q) {
                 }
             });
         } else {
-            console.log('tester - > ',error);
+          //  console.log('tester - > ',error);
             if (check()) {
                 testplay(q);
             } else {
@@ -93,7 +93,7 @@ function check() {
 }
 exports.test = function(path, callback) {
     if (path) {
-        console.log('tester get name - ', path);
+      //  console.log('tester get name - ', path);
         var t = {
             'path': path,
             'callback': callback

@@ -149,6 +149,9 @@ function getUser(id, callback) {
                             id: dbrec.id,
                             country: dbrec.country,
                             city: dbrec.city,
+                            info: dbrec.info,
+                            picture: dbrec.picture,
+                            rank: dbrec.rank,
                             regdate: dbrec.regdate,
                             email: dbrec.email,
                             gender: dbrec.gender[0] == 1,
@@ -173,7 +176,7 @@ exports.getuser = function(id, callback) {
 }
 
 exports.getstats = function(userid, callback) {
-    /*    db.connection.query('SELECT count(*) as "count" FROM tracks WHERE tracks.submiter=' + userid + ' AND tracks.date BETWEEN NOW() - INTERVAL 7 DAY AND NOW()', function(e, r, fields) {
+    /*db.connection.query('SELECT count(*) as "count" FROM tracks WHERE tracks.submiter=' + userid + ' AND tracks.date BETWEEN NOW() - INTERVAL 7 DAY AND NOW()', function(e, r, fields) {
      var count = r[0].count;
      db.connection.query('select sum(trackvote.value) as "rating" FROM trackvote where trackvote.trackid in (SELECT tracks.id FROM tracks WHERE tracks.submiter=' + userid + ' AND tracks.date BETWEEN NOW() - INTERVAL 7 DAY AND NOW()) AND trackvote.voterid <> ' + userid + ';', function(e, result, fields) {
      var rating = result[0].rating;
@@ -222,7 +225,7 @@ exports.addMessage = function(message) {
 }
 
 exports.getMessages = function(id, shift, callback) {
-    var q = 'SELECT chat.*, users.name FROM chat LEFT JOIN users ON chat.userid=users.id WHERE date <' + db.connection.escape(shift) + ' AND channelid=' + id + ' ORDER BY date DESC LIMIT 50';
+    var q = 'SELECT chat.*, users.name FROM chat LEFT JOIN users ON chat.userid=users.id WHERE date < ' + db.connection.escape(shift) + ' AND channelid=' + id + ' ORDER BY date DESC LIMIT 50';
     db.connection.query(q, function(e, result, fields) {
         var data = [];
         for (var m in result) {
@@ -333,6 +336,21 @@ exports.getTracksByShift = function(channel, shift, gold, callback) {
     getTracksFromQery(q, callback);
 }
 
+exports.getTrackByID = function(id, callback) {
+    var q = 'SELECT tracks.* FROM tracks WHERE tracks.id=' + id + ' LIMIT 1';
+    db.connection.query(q, function(error, result, fields) {
+        if (result.length) {
+            var track = {
+                a: result[0].artist,
+                t: result[0].title,
+                id: result[0].id,
+                tt: result[0].playdate
+            }
+            callback(track);
+        }
+
+    });
+}
 
 exports.getChannels = function(callback) {
     var q = 'SELECT channels.*, users.name as prname FROM channels LEFT JOIN users ON channels.prid=users.id';
@@ -731,11 +749,32 @@ exports.changeuserpass = function(id, pass, callback) {
 }
 exports.changeuserdata = function(user) {
     var g = 0;
-    if (user.gender) {
+    if (user.gender && g != 1) {
         g = 1;
+        db.connection.query('UPDATE users SET gender =' + g + ' WHERE id = ' + user.id, function(err, result, fields) {
+            if (err) {
+                console.log('gender fail');
+                console.log(err);
+            }
+        });
     }
-    db.connection.query('UPDATE users SET gender =' + g + ' WHERE id = ' + user.id, function(err, result, fields) {
-    });
+    if (user.info) {
+        db.connection.query('UPDATE users SET info =' + db.connection.escape(user.info) + ' WHERE id = ' + user.id, function(err, result, fields) {
+            if (err) {
+                console.log('info fail');
+                console.log(err);
+            }
+        });
+    }
+    if (user.picture) {
+        db.connection.query('UPDATE users SET picture =' + db.connection.escape(user.picture) + ' WHERE id = ' + user.id, function(err, result, fields) {
+            if (err) {
+                console.log('picture fail');
+                console.log(err);
+            }
+        });
+    }
+
 }
 exports.generateinvite = function(userid) {
     var code = md5("sds" + Math.random() * 100000000000 + new Date().getTime() + "a");
@@ -779,7 +818,7 @@ exports.removeop = function(data) {
 }
 exports.savechannelstate = function(data, callback) {
     if (data.description) {
-        db.connection.query('UPDATE channels SET description = ' + mysql.escape(data.description) + ' WHERE `id` = ' + data.chid + ';', function(error, result, fields) {
+        db.connection.query('UPDATE channels SET description = ' + db.connection.escape(data.description) + ' WHERE `id` = ' + data.chid + ';', function(error, result, fields) {
             var bddata = {};
             if (error) {
                 bddata.error = error;

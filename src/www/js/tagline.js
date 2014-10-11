@@ -139,6 +139,20 @@ origins.push('Не обижай семплер, username!');
 origins.push('Эй, username, не хочешь немного Даргомыжского?');
 origins.push('У Джина Симмонса язык 12 сантиметров, а у username целых двадцать пять!');
 origins.push('Держись, username!');
+origins.push('думджаз - для тех, кому блюз уже не поможет, username');
+origins.push('Не отключайся, username!');
+origins.push('прекрасный альбом, username очень гашишный!');
+origins.push('Не всё, то чилл, что уныло, username!');
+origins.push('Не весь метал одинаково полезен, username!');
+origins.push('Пельмени каждый может обидеть, username!');
+origins.push('А теперь ешь своего аллигатора, username!');
+origins.push('нет, залить ты не сможешь, username!');
+origins.push('Боже, что ты несешь, username!');
+origins.push('Делаешь Дабстеп? Приходи к нам на завод записывать сэмплы, username!');
+origins.push('Как много треков тут хороших username, а плюсы тратим на попсу');
+origins.push('Музыка души - это не колебания волн и Скриллекс, username, а не спетая ещё песня жизни.');
+origins.push('Укради мне финскую барби, username!');
+origins.push('В любой непонятной ситуации гугли, username!');
 origins.push('Не отключайся, username!');
 
 

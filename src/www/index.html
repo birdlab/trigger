@@ -5,20 +5,25 @@
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta name="verify-reformal" content="8c521f17e906281b90537757" />
 	<title>Trigger</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" title="nigth" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" title="day" type="text/css" href="css/backupstyle.css" />
     <link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
+    <link rel="stylesheet" type="text/css" href="css/universal.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/nanoscroller.css" />-->
+
 
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="js/storage.js"></script>
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/swfobject.js"></script>
     <script src="js/id3-minimized.js"></script>
     <script src="js/lastfm.api.js"></script>
     <script src="js/lastfm.api.md5.js"></script>
-    <script src="js/timerchat.js"></script>
+    <script src="js/storage.js"></script>
+
     <script src="js/client.js"></script>
     <script src="js/chrome.js"></script>
+    <script src="js/user.js"></script>
     <script src="js/channels.js"></script>
     <script src="js/resize.js"></script>
     <script src="js/uploader.js"></script>
@@ -27,7 +32,8 @@
     <script src="js/tagline.js"></script>
     <script src="js/paths.local.js"></script>
     <script src="js/dateformat.js"></script>
-    
+
+    <!--<script src="js/jquery.nanoscroller.min.js"></script>-->
     <script src="upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="upload/js/jquery.iframe-transport.js"></script>
     <script src="upload/js/jquery.fileupload.js"></script>
@@ -38,14 +44,13 @@
 </head>
 <body>
 <div id='radio'></div>
-
 <div id='content'>
 	<div id='playlist'>
 	<div class='resizer'></div>
 		<div class='current'></div>
 			<div class='innerl'>
 			<div style="margin-top:70px"></div>
-				<div class='inner'><ul class='list'></ul></div>
+				<div class='inner nano'><ul class='list nano-content'></ul></div>
 			</div>
 	</div>
 	<div id='console'>
@@ -60,13 +65,14 @@
 			</div>
 		</div>
 		<div class='logo'>
-			<img src='/img/triggerlogo.png'>
+			<a href="http://trigger.fm/start.html"><img src='/img/triggerlogo.png'></a>
 		</div>
 		<div class='info'><div class='chname'></div><div class='chdata'></div></div>
 		<div class='submit_box'><div class='label'>+</div>
 			<div class='uploader'><input id="fileupload" type="file" placeholder="Тащи сюда свою музыку" multiple></div>
 		</div>
 		<div class='upfiles'></div>
+		
 		<div class='loginform'>
 			<input id="lgname" class="username" name="username" type="text" autocomplete="on" placeholder="Юзернейм"><br />
 			<input id="lgpass" class="password" name="pass" type="password" autocomplete="on" placeholder="Пароль">
@@ -78,8 +84,15 @@
 		<div class='userinfo'></div>
 		<div class='serverinfo greating'>
 		</div>
-		
-		<div class='serverinfo reformal'><a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
+
+
+
+		<div class='serverinfo reformal'>
+
+            <a href="http://trigger.fm/donate.html">Жертвенник</a>
+
+            <br>
+            <a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
             <script type="text/javascript">
     var reformalOptions = {
         project_id: 87627,
@@ -92,8 +105,9 @@
         document.getElementsByTagName('head')[0].appendChild(script);
     })();
 </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://trigger.reformal.ru">Уголок потребителя</a></noscript>
-	<br>
-            <a href="https://docs.google.com/document/d/1ZOPqvWnSIq70cRLr6KWUh0dyLYe79W62mL0X7Kek54s" target="_blank">RTFM</a>
+	<br><div id='styleswitch'></div>
+            <a href="https://docs.google.com/document/d/1ZOPqvWnSIq70cRLr6KWUh0dyLYe79W62mL0X7Kek54s" target="_blank">RTFM</a><br>
+            <a class='goin' href="http://trigger.reformal.ru" onclick="$('.loginform').show(400);$('.goin').hide();return false;" onmouseover="Reformal.widgetPreload();">Вход</a>
         </div>
 		
 		
@@ -103,7 +117,7 @@
 		<tr>
     		<td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
     		<td class='tab history'><a href='javascript:void(0);'>История</a></td>
-    		<!--<td class='tab channels'><a href='javascript:void(0);'>Каналы</a></td>-->
+    		<td class='tab channels'><a href='javascript:void(0);'>Демократия</a></td>
     		<td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
     	</tr>
     </table>
@@ -118,30 +132,40 @@
             <div id="hpanel">
                 <label><input type="checkbox" name="showgold" id="showgold">Золото</label>
             </div>
-			<div class='inner'>
+			<div class='inner nano'>
                 <div class="loader">Trigger задумался...</div>
-				<ul class='list'></ul>
+				<ul class='list nano-content'></ul>
 			</div>
 		</div>
 		<div class='content chat'>
 			
-			<div class='log'><div id='chatmessages'></div></div>
+			<div class='log nano'><div id='chatmessages' class='nano-content'></div></div>
 			<div class='users'>
 				<div class='topline'></div>
 				<div class='scroller'></div>
 			</div>
 			<div class='input'>
 				<textarea id="messageinput" placeholder="начинай вводить..."></textarea>
-				<div id='markups'>
-				<a href="#" class="bold" onclick="insertTag.tag('&lt;b&gt;', '&lt;/b&gt;'); return false;">bold</a>
-				<a href="#" class="irony" onclick="insertTag.tag('&lt;span class=\'irony\'&gt;', '&lt;/span&gt;'); return false;">irony</a>
-				</div>
+
 
 			</div>
+
+            <div id='markups'>
+            <a href="#" class="bold" onclick="insertTag.tag('&lt;b&gt;', '&lt;/b&gt;'); return false;">bold</a>
+            <a href="#" class="irony" onclick="insertTag.tag('&lt;span class=\'irony\'&gt;', '&lt;/span&gt;'); return false;">irony</a>
+            <label><input type="checkbox" name="tink" id="chattink">Тиньк</label>
+            <label><input type="checkbox" name="showimg" id="chatshowimg">Картинки</label>
+            </div>
+
 		</div>
 		<div class='resizer'></div>
 	</div>
 </div>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+<div class="raiting-list">
+	<div class="raiting-list_close" onclick="$('.raiting-list').hide(); return false;">x</div>
+	<ul class="raiting-list_negative">блабла</ul>
+	<ul class="raiting-list_positive">блабла</ul>
+</div>
 </body>
 </html>
