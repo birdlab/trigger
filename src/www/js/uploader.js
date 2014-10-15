@@ -43,6 +43,7 @@ function addupload(file) {
         add: function() {
         },
         progressall: function(e, data) {
+            console.log(data.loaded);
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $(bar).css('width', progress + '%');
         }
@@ -196,12 +197,14 @@ function addupload(file) {
         trackupload.hide();
         errors.html('');
         var submiter = tracksubmit;
+        console.log('Start upload');
         jqXHR = uploader.fileupload('send', {
             files: [file]
         })
             .error(function(jqXHR, textStatus, errorThrown) {
-                errors.html('Server upload error');
+                errors.html(textStatus);
                 trackupload.show();
+                console.log('XHP error', textStatus);
             })
             .complete(function(result, textStatus, jqXHR) {
                 console.log("upload result - ", result, textStatus);

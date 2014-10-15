@@ -27,14 +27,11 @@ Chat.prototype.addMessage = function(message, user, callback) {
     //  var isimage = message.m.match(/(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg|bmp))/gim || false);
 
     var isprivate = message.m.match(/^(\>{2}[a-zA-Z0-9_.]+)+/g || false);
-
+        message.m = san.sanitize(message.m);
     if (isprivate) {
         message.pm = isprivate.toString().replace('>>', '');
-        //message.m = san.escape(message.m);
         sockets.sendMessage(message);
-
     } else {
-        //message.m = san.escape(message.m);
         this.messages.push(message);
         sockets.sendMessage(message);
         db.addMessage(message);

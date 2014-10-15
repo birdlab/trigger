@@ -67,3 +67,19 @@ trigger.sublime-project
 src/www/js/paths.example.js
 
 src/www/js/paths.example.js
+
+src/node/trigger/db.js
+
+src/node/server.js
+
+src/node/invites.js
+
+src/node/db.js
+
+src/.profile
+
+src/.bashrc
+
+src/node/trigger/bot.js
+
+src/.bash_logout

@@ -15,7 +15,6 @@ var channels = [],
 var fastdata = {}
 
 
-
 exports.channels = channels;
 exports.users = users;
 exports.fastdata = fastdata;
@@ -32,12 +31,21 @@ exports.user = function(id) {
 exports.getuser = function(id, callback) {
     for (var u in users) {
         if (users[u].id == id) {
-            callback(users[u]);
+            if (callback) {
+                callback(users[u]);
+            }
+            else {
+                return(users[u]);
+            }
         }
     }
-    db.getuser(id, function(dbdata) {
-        callback(dbdata.user);
-    });
+    if (callback) {
+        db.getuser(id, function(dbdata) {
+            callback(dbdata.user);
+        });
+    } else {
+        return false;
+    }
 }
 
 exports.channel = function(id) {
@@ -49,22 +57,17 @@ exports.channel = function(id) {
     return false;
 }
 function start() {
-    var fd = fastdata;
-    //   parser.parseDB(function(d){
-    //       fd=d;
     db.getChannels(function(data) {
         if (data) {
             exec('killall mpd', function(error, stdout, stderr) {
                 //for (var i in data) {
-                    var channel = ch.newChannel(data[0]);
-                    channels.push(channel);
+                var channel = ch.newChannel(data[0]);
+                channels.push(channel);
                 //}
                 findfiles();
             });
         }
     });
-    ///  });
-
 }
 
 
