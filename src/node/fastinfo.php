@@ -18,7 +18,7 @@ function getpage($url, $connect_timeout=10, $timeout=120)
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch,CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_USERPWD, "admin:***REMOVED***");
+        curl_setopt($ch, CURLOPT_USERPWD, "admin:iloveukupnik");
         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, $connect_timeout);
         $data = curl_exec($ch);
         curl_close($ch);

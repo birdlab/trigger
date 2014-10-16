@@ -103,14 +103,6 @@ function submitMessage() {
     }
 
     if (!command) {
-        for (var i = 0; i < customCodes.length; i++) {
-            if (m.replace(customCodes[i][0], '') != m) {
-                m = m.replace(customCodes[i][0], customCodes[i][1]);
-                if (i < 2) {
-                    break;
-                }
-            }
-        }
 
         client.sendMessage(m, function(data) {
             if (data.error) {
@@ -203,19 +195,28 @@ function addMessage(md) {
         if (md.pm) {
             if (client.user.n == md.pm) {
                 tome = true;
-                md.m = '<b style="color:#8d8d8d">>>' + md.pm + md.m.replace('>>' + md.pm, '') + '</b>';
+                console.log('private message ', md);
+                md.m = '<b style="color:#8d8d8d">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</b>';
             } else {
-                md.m = '<div style="color:#8d8d8d">>>' + md.pm + md.m.replace('>>' + md.pm, '') + '</div>';
+                md.m = '<div style="color:#8d8d8d">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</div>';
             }
         } else {
-            if (md.m.replace('>' + client.user.n, '') != md.m) {
+            if (md.m.replace('&gt;' + client.user.n, '') != md.m) {
                 tome = true;
-                md.m = '<b class="pm">>' + client.user.n + md.m.replace('>' + client.user.n, '') + '</b>';
+                md.m = '<b class="pm">>' + client.user.n + md.m.replace('&gt;' + client.user.n, '') + '</b>';
+            }
+        }
+        for (var i = 0; i < customCodes.length; i++) {
+            if (md.m.replace(customCodes[i][0], '') != md.m) {
+                md.m = md.m.replace(customCodes[i][0], customCodes[i][1]);
+                if (i < 2) {
+                    break;
+                }
             }
         }
         var useraction = false;
         var replaceme = function() {
-            if (md.m.replace('/me', '') != md.m) {
+            if (md.m.replace('/me ', '') != md.m) {
                 useraction = true;
                 md.m = md.m.replace('/me', '<span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + '</span>');
                 replaceme();
