@@ -34,7 +34,7 @@ io.sockets.on('connection', function(socket) {
 
             bind(socket);
             socket.emit('welcome', du);
-            
+
         } else {
             socket.emit('welcome', false);
         }
@@ -431,7 +431,7 @@ function bind(socket) {
             }
             data.chid = socket.user.prch || socket.user.opch;
             if (data.chid) {
-                main.channel(data.chid).unbanuser(data, function(data){
+                main.channel(data.chid).unbanuser(data, function(data) {
                     callback(data);
                 });
             }
@@ -630,6 +630,18 @@ function bind(socket) {
             console.log(s.user.info);
             if (changed) {
                 db.changeuserdata(s.user);
+            }
+        }
+    });
+    socket.on('updtrack', function(data) {
+        var s = socket;
+        if (s.user) {
+            if (s.channel) {
+                channel=main.channel(s.channel);
+                if (channel){
+                    channel.updateTrack(data);
+                }
+
             }
         }
     });

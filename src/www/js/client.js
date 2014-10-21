@@ -524,6 +524,10 @@ Client.prototype.changepass = function(oldpass, newpass, callback) {
 }
 Client.prototype.updateUserData = function(data) {
     this.socket.emit('upduserdata', data);
+
+}
+Client.prototype.updateTrack = function(data) {
+    this.socket.emit('updtrack', data);
 }
 Client.prototype.getchannel = function(id) {
     for (var i in this.channels) {

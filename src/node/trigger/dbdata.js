@@ -776,6 +776,19 @@ exports.changeuserdata = function(user) {
     }
 
 }
+
+exports.updateTrack = function(track) {
+    var a = db.connection.escape(track.artist);
+    var t = db.connection.escape(track.title);
+    db.connection.query('UPDATE tracks SET artist =' + a + ', title = ' + t + '  WHERE id = ' + track.id, function(err, result, fields) {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+        } else {
+            console.log('track update ok');
+        }
+    });
+}
 exports.generateinvite = function(userid) {
     var code = md5("sds" + Math.random() * 100000000000 + new Date().getTime() + "a");
     db.connection.query('insert into invites (parentid, code, give_time, userid) VALUES (' + userid + ', "' + code + '", NOW(), 0)', function(error, result, fields) {

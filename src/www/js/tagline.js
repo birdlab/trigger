@@ -154,6 +154,10 @@ origins.push('Музыка души - это не колебания волн и
 origins.push('Укради мне финскую барби, username!');
 origins.push('В любой непонятной ситуации гугли, username!');
 origins.push('Не отключайся, username!');
+<<<<<<< Updated upstream
+=======
+origins.push('Это не баян, это ротация, username');
+>>>>>>> Stashed changes
 
 
 

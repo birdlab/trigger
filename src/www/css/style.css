@@ -385,15 +385,9 @@ body {
 
 
 
-
-
-
-
-
-
-
 /* Треки в плейлисте
 ---------------------------------------------*/
+
 
  #playlist .full, #info .item .full {
     padding: 0px 7px 10px 7px;
@@ -471,10 +465,22 @@ li {
     border-bottom: 1px solid #4d4d4d;
     background: #444;
 }
+<<<<<<< Updated upstream
 .item.hiligth {
     background: #ffcd00;
 }
 
+=======
+
+.item.my {
+    background: #555 !important;
+}
+
+.item.hiligth {
+    background: #ffcd00;
+}
+
+>>>>>>> Stashed changes
 
 
 .item table, .current table {

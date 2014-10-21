@@ -152,14 +152,10 @@ Channel.prototype.setprops = function(channeldata, callback) {
     if (channeldata.limit) {
         data.limit = channeldata.limit;
     }
-    // if (channeldata.limit){
-    //     data.anonce=channeldata.anonce;
-    // }
     if (channeldata.description) {
         data.description = channeldata.description;
         ch.description = channeldata.description;
     }
-    console.log('all data to base ', data);
     db.savechannelstate(data, callback);
 }
 
@@ -525,7 +521,21 @@ Channel.prototype.track = function(id) {
         }
     }
 }
+Channel.prototype.updateTrack = function(data) {
+    var ch=this;
+    if (data){
+        if (data.id){
+            track=ch.track(data.id);
+            if (track){
+                track.artist=data.a;
+                track.title=data.t;
+                db.updateTrack(track);
+                sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
+            }
+        }
+    }
 
+}
 Channel.prototype.addVote = function(data, callback) {
     var ch = this;
     var addv = function() {

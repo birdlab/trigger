@@ -384,10 +384,6 @@ body {
 
 
 
-
-
-
-
 /* Треки в плейлисте
 ---------------------------------------------*/
 
@@ -397,6 +393,7 @@ body {
 }
 
 /*Текущий трек */
+
 
 #playlist .full table,
 #playlist .full tbody,
@@ -469,6 +466,12 @@ li {
     border-left: 1px solid #eee;
     background: #fdfdfd;
 }
+<<<<<<< Updated upstream
+=======
+.item.my {
+    background: #f6f6f6 !important;
+}
+>>>>>>> Stashed changes
 
 .item.hiligth {
     background: #ffcd00;
