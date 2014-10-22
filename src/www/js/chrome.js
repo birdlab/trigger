@@ -1055,8 +1055,15 @@ function addtrack(track) {
 
     base.click(function() {
         $('.intag').css('display', 'block');
-        $('#playlist .current .base').removeClass('expanded');
-        $('#playlist .current .full').hide(400);
+        var curentbase = $('#playlist .current .base');
+        var curentexpanded = curentbase.hasClass('expanded');
+        if (curentexpanded) {
+            $('#playlist .current .base').removeClass('expanded');
+            $('#playlist .current .full').hide(400);
+            full.toggle({step: onresize});
+        } else {
+            full.toggle(400);
+        }
         $('#playlist .item').each(function() {
             var b = $(this).children('.base');
             var f = $(this).children('.full');
@@ -1130,8 +1137,6 @@ function addtrack(track) {
                 client.addvote({'id': track.id, 'v': vote});
             });
         }
-
-        full.toggle({step: onresize});
     });
     base.hover(function(ein) {
         $(this).addClass('tru');
@@ -1150,7 +1155,6 @@ function opentrack(track) {
         item = $('#playlist .current');
         item.css('background', '#ffcd00');
         item.animate({backgroundColor: '#333'}, 1000);
-
     }
     if ($('#playlist .list .trackid' + id).length > 0) {
         item = $('#playlist .list .trackid' + id);
