@@ -1060,9 +1060,6 @@ function addtrack(track) {
         if (curentexpanded) {
             $('#playlist .current .base').removeClass('expanded');
             $('#playlist .current .full').hide(400);
-            full.toggle({step: onresize});
-        } else {
-            full.toggle(400);
         }
         $('#playlist .item').each(function() {
             var b = $(this).children('.base');
@@ -1136,6 +1133,11 @@ function addtrack(track) {
                 var vote = client.track(track.id).vote - 1;
                 client.addvote({'id': track.id, 'v': vote});
             });
+        }
+        if (curentexpanded){
+            full.toggle({step: onresize});
+        } else {
+            full.toggle(400);
         }
     });
     base.hover(function(ein) {
