@@ -138,7 +138,6 @@ $(document).ready(function() {
         $('#console .streamcontrol .play').show();
 
     });
-
     $(client).bind('message', function(event, data) {
         var move = false;
         if ($('.log')[0].scrollHeight - $('.log').scrollTop() == $('.log').outerHeight()) {
@@ -149,7 +148,6 @@ $(document).ready(function() {
             $('.log').animate({scrollTop: $('.log')[0].scrollHeight}, 1200);
         }
     });
-
     $(client).bind('cover', function(event, data) {
         if (data.src != 'img/nocover.png') {
             if ($('#playlist .current').attr('trackid') == data.id) {
@@ -180,7 +178,6 @@ $(document).ready(function() {
     $(client).bind('newuser', function(event, data) {
         fillUserlist();
     });
-
     $(client).bind('listners', function(event, data) {
         $('#info .content.channels #' + data.chid + ' .listners').html('<span>Слушают:</span>' + data.l);
         if (data.chid == client.channel.chid) {
@@ -191,7 +188,6 @@ $(document).ready(function() {
         }
 
     });
-
     $(client).bind('offuser', function(event, data) {
         fillUserlist();
     });
@@ -230,7 +226,6 @@ $(document).ready(function() {
         }
     }, 1000);
 
-
     client.init(location.host);
 
     $("#remember").change(function() {
@@ -245,6 +240,7 @@ $(document).ready(function() {
             goLogin();
         }
     });
+
 
     $('#fileupload').fileupload({
         dataType: 'json',
@@ -261,6 +257,7 @@ $(document).ready(function() {
             $(this).children('a').toggleClass('hover');
         }
     });
+    //переключалка закладок
     $('#info .tabs .tab').bind('click', function() {
         if (!$(this).hasClass('active')) {
             $('#info .tabs .tab').removeClass('active').children('a').removeClass('hover');
@@ -288,6 +285,8 @@ $(document).ready(function() {
         }
     });
 
+
+    //галка золота в истории
     $('#showgold').bind('click', function() {
         if (!historyprocess) {
             showHistory($(this).is(':checked'));
@@ -1132,7 +1131,7 @@ function addtrack(track) {
             });
         }
 
-        full.toggle(400);
+        full.toggle({step: onresize});
     });
     base.hover(function(ein) {
         $(this).addClass('tru');
