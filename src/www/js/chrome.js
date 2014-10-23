@@ -1134,7 +1134,7 @@ function addtrack(track) {
                 client.addvote({'id': track.id, 'v': vote});
             });
         }
-        if (curentexpanded){
+        if (curentexpanded) {
             full.toggle({step: onresize});
         } else {
             full.toggle(400);
