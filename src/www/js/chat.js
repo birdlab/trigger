@@ -59,7 +59,7 @@ function scrolltop() {
         console.log($(this).scrollTop());
         var sh = Date.now();
         if (messages.length) {
-            sh = new Date(Date.parse(client.chat.m[0].t) + 14400000);
+            sh = new Date(Date.parse(client.chat.m[0].t) + 10800000);
             console.log(sh);
             var scroll = this;
             client.getChat({shift: sh}, function(data) {

@@ -6,6 +6,7 @@ var db = require('./dbdata.js');
 var exec = require("child_process").exec;
 var main = require('../trigger.js');
 var sockets = require('./sockets.js');
+var san = require('sanitizer');
 
 function Channel(i) {
     this.id = i.id;
@@ -473,6 +474,9 @@ Channel.prototype.addTrack = function(data, callback) {
                             if ((ch.chat.users.length < 11 || ch.playlist.length < 10) && ch.id == 1) {
                                 track.unlim = 1;
                             }
+                            track.artist=san.sanitize(track.artist);
+                            track.title=san.sanitize(track.title);
+                            track.info=san.sanitize(track.info);
                             db.addTrack(track, function() {
                                 track.rating = 0;
                                 track.positive = [];
@@ -527,8 +531,8 @@ Channel.prototype.updateTrack = function(data) {
         if (data.id){
             track=ch.track(data.id);
             if (track){
-                track.artist=data.a;
-                track.title=data.t;
+                track.artist=san.sanitize(data.a);
+                track.title=san.sanitize(data.t);
                 db.updateTrack(track);
                 sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
             }

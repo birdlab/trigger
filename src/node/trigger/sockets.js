@@ -271,6 +271,7 @@ function bind(socket) {
     socket.on('addtag', function(data) {
         if (socket.user) {
             if (data.s) {
+                console.log(data.s);
                 db.addTag(data.s, function(dbdata) {
                     if (!dbdata.error) {
                         dbdata.n = data.s;
