@@ -613,7 +613,7 @@ function bind(socket) {
         var changed = false;
         console.log('start changing userdata');
         if (s.user && data) {
-            if (data.g) {
+            if (typeof data.g != 'undefined') {
                 if (data.g != s.user.gender) {
                     s.user.gender = data.g;
                     changed = true;
