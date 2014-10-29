@@ -553,7 +553,7 @@ function addhistory(track) {
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
     item.addClass('trackid' + track.id);
-    lht = new Date(Date.parse(track.tt) + 14400000);
+    lht = new Date(Date.parse(track.tt) + 10800000);
     if (client.user) {
         for (var vr in track.p) {
             if (track.p[vr].vid == client.user.id) {
@@ -615,7 +615,7 @@ function addprofile(track) {
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(tags);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(tags);
     item.addClass('trackid' + track.id);
-    lht = new Date(Date.parse(track.tt) + 14400000);
+    lht = new Date(Date.parse(track.tt) + 10800000);
     if (client.user) {
         for (var vr in track.p) {
             if (track.p[vr].vid == client.user.id) {
@@ -1173,7 +1173,7 @@ function opentrack(track) {
         }
     } else {
         if (track.tt) {
-            showHistory(false, new Date(Date.parse(track.tt) + 14450000));
+            showHistory(false, new Date(Date.parse(track.tt) + 10850000));
         }
     }
 

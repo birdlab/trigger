@@ -748,15 +748,21 @@ exports.changeuserpass = function(id, pass, callback) {
 
 }
 exports.changeuserdata = function(user) {
-    var g = 0;
-    if (user.gender && g != 1) {
-        g = 1;
+    if (user.genderupdated) {
+        console.log('update gender');
+        var g = 0;
+        if (user.gender) {
+            g = 1;
+        }
         db.connection.query('UPDATE users SET gender =' + g + ' WHERE id = ' + user.id, function(err, result, fields) {
             if (err) {
                 console.log('gender fail');
                 console.log(err);
+            } else {
+                user.genderupdated = false;
             }
         });
+
     }
     if (user.info) {
         db.connection.query('UPDATE users SET info =' + db.connection.escape(user.info) + ' WHERE id = ' + user.id, function(err, result, fields) {

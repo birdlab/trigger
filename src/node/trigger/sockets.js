@@ -1,10 +1,8 @@
 var main = require('../trigger.js');
 var db = require('./dbdata.js');
 var http = require('http');
-
 var parser = require('./dataparser.js');
-
-//var io = require('socket.io').listen(40033, { log: true });
+var san = require('sanitizer');
 var io = require('socket.io')(40033);
 
 
@@ -614,21 +612,26 @@ function bind(socket) {
         var s = socket;
         var changed = false;
         console.log('start changing userdata');
-        if (s.user) {
+        if (s.user && data) {
             if (data.g) {
-                s.user.gender = data.g;
-                changed = true;
+                if (data.g != s.user.gender) {
+                    s.user.gender = data.g;
+                    changed = true;
+                    s.user.genderupdated = true;
+                }
             }
             if (data.pic) {
-                s.user.picture = data.pic;
-                changed = true;
+                if (data.pic != s.user.picture) {
+                    s.user.picture = san.sanitize(data.pic);
+                    changed = true;
+                }
             }
             if (data.i) {
-                s.user.info = data.i;
-                changed = true;
+                if (data.i != s.user.info) {
+                    s.user.info = san.sanitize(data.i);
+                    changed = true;
+                }
             }
-            console.log(data);
-            console.log(s.user.info);
             if (changed) {
                 db.changeuserdata(s.user);
             }
@@ -638,8 +641,8 @@ function bind(socket) {
         var s = socket;
         if (s.user) {
             if (s.channel) {
-                channel=main.channel(s.channel);
-                if (channel){
+                channel = main.channel(s.channel);
+                if (channel) {
                     channel.updateTrack(data);
                 }
 

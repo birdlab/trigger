@@ -71,11 +71,12 @@ function getuser(id) {
                 butpositive.css('visibility', 'hidden');
                 butnegative.css('visibility', 'hidden');
             }
+            console.log(data);
             var scroller = $("<div class='inner'></div>").appendTo($('#info .content.profile'));
             if (data.pic) {
-                var pic = $("<div class='pic exist'><img src='" + data.pic + "'></div>").appendTo(scroller);
+                var upic = $("<div class='pic exist'><img src='" + data.pic + "'></div>").appendTo(scroller);
             } else {
-                var pic = $("<div class='pic'></div>").appendTo(scroller);
+                var upic = $("<div class='pic'></div>").appendTo(scroller);
             }
 
             var date = new Date(data.reg);
@@ -127,10 +128,9 @@ function getuser(id) {
                             var path = $('#piclink').val();
                             if (path != pic && path.length) {
                                 console.log('try to send pic');
-                                client.updateUserData({
-                                    pic: path
-                                });
+                                client.updateUserData({pic: path});
                                 pic = path;
+                                upic.html('<img src=' + path + '>');
                             }
                         }
                         return false;
@@ -140,10 +140,6 @@ function getuser(id) {
                     if (data.pic) {
                         $('#piclink').val(data.pic);
                     }
-
-
-                    //   var submt = $('<a href="#">Вткнть</a><p>').appendTo(info);
-                    console.log(data);
 
                 } else {
                     $(userdescription).attr('contentEditable', false);
@@ -206,12 +202,6 @@ function getuser(id) {
                                 g: gender
                             });
 
-                            if (gender) {
-                                info.html("С нами с " + date.format('dd.mm.yyyy') + userparent + "<p>Принес " + data.trx + " треков. Их средний рейтинг: " + data.rt + "<p>Понаприглашал: " + invitestring)
-                            } else {
-                                info.html("С нами с " + date.format('dd.mm.yyyy') + userparent + "<p>Принесла " + data.trx + " треков. Их средний рейтинг: " + data.rt + "<p>Понаприглашала: " + invitestring)
-
-                            }
                         });
                         $('#showimg').click(function() {
                             noimg = !$(this).is(':checked');
