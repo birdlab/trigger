@@ -1,11 +1,8 @@
-trigger
-========
+#trigger
 
-Installation:
-------
+##Installation:
 
-Если система девственно чиста - ставим ssh, nginx, mysql и php
---
+###Если система девственно чиста - ставим ssh, nginx, mysql и php
 
 sudo apt-get update
 sudo apt-get upgrade
@@ -14,8 +11,7 @@ sudo apt-get install php5-cli php5-common php5-mysql php5-gd php5-fpm php5-cgi p
 sudo apt-get install nginx
 sudo apt-get install mysql-server mysql-client php5-mysql
 
-ставим icecast2 и его продвинутый форк
---
+###ставим icecast2 и его продвинутый форк
 
 sudo apt-get install icecast2
 sudo apt-get install libxslt1-dev libcurl4-openssl-dev libvorbis-dev
@@ -44,7 +40,7 @@ sudo apt-get install build-essential
 sudo adduser trigger
 sudo adduser trigger sudo
 
----логинимся как trigger
+логинимся как trigger
 
 mkdir /home/trigger/www
 mkdir /home/trigger/node
@@ -57,9 +53,9 @@ sudo npm install MD5
 sudo npm install sanitizer
 sudo npm install validator
 
-далее считаем, что виртуальный триггер будет доступен по адресу virt-trigger.fm
-------------------------
-создаем файл virt-trigger.fm.conf со следующим содержимым:
+####далее считаем, что виртуальный триггер будет доступен по адресу virt-trigger.fm
+
+###создаем файл virt-trigger.fm.conf со следующим содержимым:
 
 upstream backend {
     server 127.0.0.1:40033;
@@ -128,8 +124,8 @@ server {
 
 }
 
-и кладем его в /etc/nginx/conf.d/
-------------------------
+###и кладем его в /etc/nginx/conf.d/
+
 в файле /etc/nginx/sites-available/default вписываем (или находим и раскомменчиваем) следующее:
 location ~ \.php$ {
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
