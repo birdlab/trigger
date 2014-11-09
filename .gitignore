@@ -83,3 +83,4 @@ src/.bashrc
 src/node/trigger/bot.js
 
 src/.bash_logout
+src/php/smtp_config.php
