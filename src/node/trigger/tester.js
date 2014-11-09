@@ -93,7 +93,7 @@ function check() {
 }
 exports.test = function(path, callback) {
     if (path) {
-      //  console.log('tester get name - ', path);
+     //  console.log('tester get name - ', path);
         var t = {
             'path': path,
             'callback': callback

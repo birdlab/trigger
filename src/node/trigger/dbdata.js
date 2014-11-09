@@ -795,6 +795,12 @@ exports.updateTrack = function(track) {
         }
     });
 }
+
+exports.setLiveTime = function(id, time) {
+    var q = 'UPDATE tracks SET time = ' + time + ' WHERE id =' + id;
+    db.connection.query(q, function(error, result, fields) {
+    });
+}
 exports.generateinvite = function(userid) {
     var code = md5("sds" + Math.random() * 100000000000 + new Date().getTime() + "a");
     db.connection.query('insert into invites (parentid, code, give_time, userid) VALUES (' + userid + ', "' + code + '", NOW(), 0)', function(error, result, fields) {

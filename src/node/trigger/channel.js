@@ -412,9 +412,19 @@ Channel.prototype.pushNext = function(callback) {
 Channel.prototype.timecontrol = function() {
     ch = this;
     ch.currentTime += 1;
-    if (ch.currentTime > ch.current.time && !ch.playlist.length > 0) {
-        ch.currentTime = 0;
-        sockets.sendNewCurrent({'chid': ch.id, 'track': packTrackData(ch.current)});
+    if (ch.current.live) {
+        ch.current.time = ch.currentTime;
+        var user = main.user(ch.current.submiter);
+        if (user) {
+            if (ch.current.time > user.time) {
+                ch.skip();
+            }
+        }
+    } else {
+        if (ch.currentTime > ch.current.time && !ch.playlist.length > 0) {
+            ch.currentTime = 0;
+            sockets.sendNewCurrent({'chid': ch.id, 'track': packTrackData(ch.current)});
+        }
     }
 }
 
@@ -440,6 +450,7 @@ Channel.prototype.checkFile = function() {
     });
 }
 
+
 Channel.prototype.addTrack = function(data, callback) {
     var track = data;
     var ch = this;
@@ -454,7 +465,7 @@ Channel.prototype.addTrack = function(data, callback) {
         }
     }
     if (!is && !ch.isbanned(track.submiter)) {
-        tester.test(track.path, function(ans) {
+        process_track = function(ans) {
             if (ans) {
                 track.time = ans;
                 if (track.id) {
@@ -474,9 +485,9 @@ Channel.prototype.addTrack = function(data, callback) {
                             if ((ch.chat.users.length < 11 || ch.playlist.length < 10) && ch.id == 1) {
                                 track.unlim = 1;
                             }
-                            track.artist=san.sanitize(track.artist);
-                            track.title=san.sanitize(track.title);
-                            track.info=san.sanitize(track.info);
+                            track.artist = san.sanitize(track.artist);
+                            track.title = san.sanitize(track.title);
+                            track.info = san.sanitize(track.info);
                             db.addTrack(track, function() {
                                 track.rating = 0;
                                 track.positive = [];
@@ -502,6 +513,11 @@ Channel.prototype.addTrack = function(data, callback) {
                             }
                             killfile(track.path);
                         }
+                    } else {
+                        if (callback) {
+                            callback({'error': 'Ошибка получения данных пользователя'});
+                        }
+                        killfile(track.path);
                     }
                 }
 
@@ -511,7 +527,12 @@ Channel.prototype.addTrack = function(data, callback) {
                 }
                 killfile(track.path);
             }
-        });
+        }
+        if (track.live) {
+            process_track(1);
+        } else {
+            tester.test(track.path, process_track);
+        }
     }
 }
 
@@ -526,13 +547,20 @@ Channel.prototype.track = function(id) {
     }
 }
 Channel.prototype.updateTrack = function(data) {
-    var ch=this;
-    if (data){
-        if (data.id){
-            track=ch.track(data.id);
-            if (track){
-                track.artist=san.sanitize(data.a);
-                track.title=san.sanitize(data.t);
+    var ch = this;
+    if (data) {
+        if (data.id) {
+            track = ch.track(data.id);
+            if (track) {
+                if (data.a) {
+                    track.artist = san.sanitize(data.a);
+                }
+                if (data.t) {
+                    track.title = san.sanitize(data.t);
+                }
+                if (data.time) {
+                    track.time = data.time;
+                }
                 db.updateTrack(track);
                 sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
             }
@@ -623,7 +651,10 @@ Channel.prototype.addVote = function(data, callback) {
 
 Channel.prototype.processTrack = function(track) {
     var ch = this;
-    db.setPlayDate(track.id, ch.currentTime);
+    if (track.live) {
+        db.setLiveTime(track.id, track.time);
+    }
+    db.setPlayDate(track.id, track.time);
     if (ch.active > 9) {
         if ((track.positive.length / ch.active) > 0.8 && track.negative.length < 3) {
             db.setGold(track.id);
