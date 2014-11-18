@@ -628,6 +628,8 @@ table .rating .curnum {
 .content.chat .users a {
     font-size: 12px;
     color: #aaa !important;
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+    text-decoration: none;
 }
 
 .content.chat .users .active a {
