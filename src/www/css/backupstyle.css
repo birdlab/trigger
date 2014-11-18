@@ -634,6 +634,12 @@ table .rating .curnum {
     color: #eba400 !important;
 }
 
+.content.chat .users .userblock {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .content.chat .users .info {
     font-size: 9px;
     color: #fff;
