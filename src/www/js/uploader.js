@@ -22,6 +22,7 @@ function addupload(file) {
     var isStream = $('<div><div class="button stream"><a href="javascript:void(0);">Live</a></div></div>').appendTo(fup);
     var progress = $('<div class="progress"></div>').appendTo(fup);
     loadUrl(file.urn || file.name, new FileAPIReader(file), file, function(tags) {
+
         if (tags.artist) {
             artist.val(tags.artist);
         }

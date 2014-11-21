@@ -11,10 +11,11 @@ var channels = [],
     tracks = [],
     files = [],
     users = [];
+    timezone=10800000;
 
 var fastdata = {}
 
-
+exports.timezone=timezone;
 exports.channels = channels;
 exports.users = users;
 exports.fastdata = fastdata;

@@ -5,7 +5,7 @@
 })(jQuery);
 
 
-var client = null, remember_name = true, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
+var timezone=10800000, client = null, remember_name = true, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
 function switch_style(css_title) {
 // You may use this script on your site free of charge provided
 // you do not remove this notice or the URL below. Script from
@@ -553,7 +553,7 @@ function addhistory(track) {
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
     item.addClass('trackid' + track.id);
-    lht = new Date(Date.parse(track.tt));
+    lht = new Date(Date.parse(track.tt)+timezone);
     if (client.user) {
         for (var vr in track.p) {
             if (track.p[vr].vid == client.user.id) {
@@ -615,7 +615,7 @@ function addprofile(track) {
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(tags);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(tags);
     item.addClass('trackid' + track.id);
-    lht = new Date(Date.parse(track.tt));
+    lht = new Date(Date.parse(track.tt)+timezone);
     if (client.user) {
         for (var vr in track.p) {
             if (track.p[vr].vid == client.user.id) {

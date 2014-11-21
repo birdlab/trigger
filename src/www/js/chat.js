@@ -57,10 +57,10 @@ function scrolltop() {
     if ($(this).scrollTop() < 300 && !chatlogupdate) {
         chatlogupdate = true;
         console.log($(this).scrollTop());
-        var sh = Date.now();
+        var sh = Date(Date.parse(Date.now()));
+        console.log('local ',sh);
         if (messages.length) {
-            sh = new Date(Date.parse(client.chat.m[0].t));
-            console.log(sh);
+            sh = new Date(Date.parse(client.chat.m[0].t)+timezone);
             var scroll = this;
             client.getChat({shift: sh}, function(data) {
                 var delta = $('#chatmessages').height();
@@ -75,6 +75,7 @@ function scrolltop() {
                 chatlogupdate = false;
             });
         }
+        console.log('final ',sh);
     }
 }
 

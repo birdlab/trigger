@@ -182,6 +182,8 @@ function bind(socket) {
                 if (socket.channel) {
                     if (!data.shift) {
                         data.shift = null;
+                    } else {
+                        //data.shift+=main.timezone;
                     }
                 }
                 var ch = main.channel(data.id);
