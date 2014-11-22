@@ -620,50 +620,9 @@ table .rating .curnum {
     float: left;
 }
 
-.content a {
-    color: #eba400;
-    font-weight: 100;
-}
-
-.content.chat .log a {
-    font-size: 12px;
-}
-
-.content.chat .users a {
-    font-size: 12px;
-    color: #ccc !important;
-}
-
-.content.chat .users .active a {
-    color: #eba400 !important;
-}
-
-.content.chat .users .info {
-    font-size: 9px;
-    color: #fff;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    background-color: #eba400;
-    float: left;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 4px;
-    margin-top: 4px;
-    vertical-align: top;
-    cursor: pointer
-}
-
-.content.chat .topline {
-    padding-left: 15px;
-}
 
 .content.chat .users {
-    margin-left: 85%;
     background-color: #444;
-    font-size: 14px;
-    padding-left: 2px;
-    border-left: 1px solid #4d4d4d;
 }
 
 .content.chat .log p {
@@ -751,23 +710,6 @@ table .rating .curnum {
 
 
 
-.mif {
-    text-align: right;
-    vertical-align: top;
-}
-
-.sms {
-    width: 100%;
-}
-
-.names {
-    vertical-align: top;
-    text-decoration: underline;
-}
-
-.pm {
-    color: #666;
-}
 
 .messageinfo {
     text-align: right;
