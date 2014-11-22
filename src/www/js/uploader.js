@@ -68,9 +68,10 @@ function addupload(file) {
     var servertags = [];
     var temptags = [];
     var requested = false;
+    var uploadercallback=false;
 
 
-    var addtotags = function() {
+    var addtotags = function(callback) {
         var chose = $(taginput).val();
         var is = false;
         for (var t in temptags) {
@@ -99,6 +100,9 @@ function addupload(file) {
                     $(taginput).val('');
                     requested = false;
                 }
+                if (callback) {
+                    callback();
+                }
                 break;
             }
         }
@@ -108,14 +112,14 @@ function addupload(file) {
                 client.getTags($(taginput).val(), function(data) {
                     requested = true;
                     temptags = data;
-                    addtotags();
+                    addtotags(callback);
                 });
             } else {
                 console.log('not finded');
                 client.addTag($(taginput).val(), function(data) {
                     requested = true;
                     temptags = data;
-                    addtotags();
+                    addtotags(callback);
                 });
             }
         }
@@ -150,9 +154,9 @@ function addupload(file) {
     tracksubmit.submit = function(data) {
         ready = true;
         if (islive) {
-            uploaded=true;
+            uploaded = true;
             serverfilename = $('.finput.stream').val();
-            if (serverfilename.length<7){
+            if (serverfilename.length < 7) {
                 errors.html('И ежу понятно что это не поток ;)');
                 return;
             }
@@ -172,37 +176,47 @@ function addupload(file) {
                 return;
             }
             var form = $(this).parent();
-            client.tracksubmit({
-                    'chid': client.channel.id,
-                    'track': {
-                        'live':islive,
-                        'artist': artist.val(),
-                        'title': title.val(),
-                        'info': trackinfo.val(),
-                        'tags': servertags,
-                        'path': serverfilename
-                    }
-                },
-                function(data) {
-                    if (!data.error) {
-                        form.hide(300, function() {
-                            if ($('#console .upfiles .uploaditem').length < 2) {
-                                sendall.remove();
-                            }
-                            this.remove();
-                            if (defered && uploadarray.length) {
-                                uploadarray.shift();
-                                uploadarray[0].submit();
-                            } else {
-                                defered = false;
-                            }
-                        });
 
-                    } else {
-                        errors.html(data.error);
+            uploadercallback=function(){
+                console.log('after adding tags ', artist.val());
+                client.tracksubmit({
+                        'chid': client.channel.id,
+                        'track': {
+                            'live': islive,
+                            'artist': artist.val(),
+                            'title': title.val(),
+                            'info': trackinfo.val(),
+                            'tags': servertags,
+                            'path': serverfilename
+                        }
+                    },
+                    function(data) {
+                        if (!data.error) {
+                            form.hide(300, function() {
+                                if ($('#console .upfiles .uploaditem').length < 2) {
+                                    sendall.remove();
+                                }
+                                this.remove();
+                                if (defered && uploadarray.length) {
+                                    uploadarray.shift();
+                                    uploadarray[0].submit();
+                                } else {
+                                    defered = false;
+                                }
+                            });
+
+                        } else {
+                            errors.html(data.error);
+                        }
                     }
-                }
-            );
+                );
+            }
+            if ($(taginput).val().length) {
+                addtotags(uploadercallback);
+
+            } else {
+                uploadercallback();
+            }
         }
 
     }
