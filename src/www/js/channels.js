@@ -139,7 +139,7 @@ function fillchannelsdata(d) {
                 var instring = '<span><a href="javascript:getuser(' + cd.users[u].id + ');void(0);">' + cd.users[u].n + '</a> </span>'
                 $(instring).appendTo(chd);
             }
-      
+
             if (client.user) {
                 var full = $('<section class="full clearfix" />').appendTo(chdd);
                 var l_roll = $('<div class="l-col"/>').appendTo(full);

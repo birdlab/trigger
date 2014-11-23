@@ -37,11 +37,32 @@ customCodes[7][1] = '<img src="/img/no.jpg" />';
 //customCodes[8][1] = 'кулхацир в чати';
 
 
-
 var messages = [];
 var now = null;
 var sound = new Audio();
 var chatlogupdate = false;
+
+function fillChat() {
+    if (!($('#chatmessages').children().length) || client.channel.chid != client.chat.id) {
+        client.getChat({}, function(d) {
+            $('#chatmessages').html('');
+            fillUserlist();
+            chatlogupdate = true;
+            for (var m in d.m) {
+                var data = d.m[m];
+                addMessage(data);
+            }
+            chatlogupdate = false;
+            $('#messageinput').autofocus();
+            if ($('#chatmessages').height() < $('.log').height()) {
+                scrolltop();
+            }
+        });
+    }
+    $('#chattink').attr('checked', tink);
+    $('#chatshowimg').attr('checked', !noimg);
+}
+
 
 function playTink() {
     if (sound.canPlayType('audio/ogg')) {
@@ -58,9 +79,9 @@ function scrolltop() {
         chatlogupdate = true;
         console.log($(this).scrollTop());
         var sh = Date(Date.parse(Date.now()));
-        console.log('local ',sh);
+        console.log('local ', sh);
         if (messages.length) {
-            sh = new Date(Date.parse(client.chat.m[0].t)+timezone);
+            sh = new Date(Date.parse(client.chat.m[0].t) + timezone);
             var scroll = this;
             client.getChat({shift: sh}, function(data) {
                 var delta = $('#chatmessages').height();
@@ -75,7 +96,7 @@ function scrolltop() {
                 chatlogupdate = false;
             });
         }
-        console.log('final ',sh);
+        console.log('final ', sh);
     }
 }
 
@@ -239,16 +260,16 @@ function addMessage(md) {
                         console.log('sending req');
                         client.track(parseInt(res[1]), function(tr) {
                             str = '<a href="#">' + tr.a + ' - ' + tr.t + '</a>';
-                            var toupdate=$(message).find('.sms').html();
+                            var toupdate = $(message).find('.sms').html();
                             toupdate = toupdate.replace(res[0], str);
                             $(message).find('.sms').html(toupdate);
-                            var href=$(message).find('a').attr('id', tr.id);
+                            var href = $(message).find('a').attr('id', tr.id);
                             console.log('replace ok');
-                            href.click(function(){
+                            href.click(function() {
                                 console.log('opening', tr);
                                 opentrack(tr);
                             })
-                           // analys();
+                            // analys();
                         });
                     }
                 }
@@ -266,7 +287,7 @@ function addMessage(md) {
                 console.log(md.tid);
                 client.track(md.tid, function(data) {
                     $(info).html('<a href="#">' + data.a + ' - ' + data.t + '</a>');
-                    $(info).find('a').click(function(){
+                    $(info).find('a').click(function() {
                         opentrack(data);
                     })
                 });

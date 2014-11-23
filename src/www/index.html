@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta name="verify-reformal" content="8c521f17e906281b90537757" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-	<title>Trigger</title>
-    <link rel="stylesheet" title="nigth" type="text/css" href="css/style.css" />
-    <link rel="stylesheet" title="day" type="text/css" href="css/backupstyle.css" />
-    <link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
-    <link rel="stylesheet" type="text/css" href="css/universal.css" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta name="verify-reformal" content="8c521f17e906281b90537757"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>Trigger</title>
+    <link rel="stylesheet" title="nigth" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" title="day" type="text/css" href="css/backupstyle.css"/>
+    <link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
+    <link rel="stylesheet" type="text/css" href="css/universal.css"/>
     <!--<link rel="stylesheet" type="text/css" href="css/nanoscroller.css" />-->
 
 
@@ -26,6 +26,7 @@
     <script src="js/chrome.js"></script>
     <script src="js/user.js"></script>
     <script src="js/channels.js"></script>
+    <script src="js/history.js"></script>
     <script src="js/resize.js"></script>
     <script src="js/uploader.js"></script>
     <script src="js/player.js"></script>
@@ -40,133 +41,153 @@
     <script src="upload/js/jquery.fileupload.js"></script>
     <link rel="stylesheet" href="upload/css/jquery.fileupload-ui.css">
     <script src="socket.io/socket.io.js"></script>
-    
+
 
 </head>
 <body>
 <div id='radio'></div>
 <div id='content'>
-	<div id='playlist'>
-	<div class='resizer'></div>
-		<div class='current'></div>
-			<div class='innerl'>
-			<div style="margin-top:70px"></div>
-				<div class='inner nano'><ul class='list nano-content'></ul></div>
-			</div>
-	</div>
-	<div id='console'>
-		<div class='streamcontrol'>
-			<div class='play'><img src='/img/off.png' width="100%"></div>
-			<div class='stop'><img src='/img/on.gif' width="100%"></div>
-			<div class='links'></div>
-			<div id='volume'>
-				<div class='slider'>
-					 <div class='bar'></div>
-				</div>
-			</div>
-		</div>
-		<div class='logo'>
-			<a href="http://trigger.fm/start.html"><img src='/img/triggerlogo.png'></a>
-		</div>
-		<div class='info'><div class='chname'></div><div class='chdata'></div></div>
-		<div class='submit_box'><div class='label'>+</div>
-			<div class='uploader'><input id="fileupload" type="file" placeholder="Тащи сюда свою музыку" multiple></div>
-		</div>
-		<div class='upfiles'></div>
-		
-		<div class='loginform'>
-			<input id="lgname" class="username" name="username" type="text" autocomplete="on" placeholder="Юзернейм"><br />
-			<input id="lgpass" class="password" name="pass" type="password" autocomplete="on" placeholder="Пароль">
-			<div class='button'><a href='javascript:void(0);'>Вход</a></div>
-			<div id='save'><input type="checkbox" id="remember" checked> Запомнить</div>
-			<div id='recovery'></div>
-			<div class='alert'></div>
-		</div>
-		<div class='userinfo'></div>
-		<div class='serverinfo greating'>
-		</div>
+    <div id='playlist'>
+        <div class='resizer'></div>
+        <div class='current'></div>
+        <div class='innerl'>
+            <div style="margin-top:70px"></div>
+            <div class='inner nano'>
+                <ul class='list nano-content'></ul>
+            </div>
+        </div>
+    </div>
+    <div id='console'>
+        <div class='streamcontrol'>
+            <div class='play'><img src='/img/off.png' width="100%"></div>
+            <div class='stop'><img src='/img/on.gif' width="100%"></div>
+            <div class='links'></div>
+            <div id='volume'>
+                <div class='slider'>
+                    <div class='bar'></div>
+                </div>
+            </div>
+        </div>
+        <div class='logo'>
+            <a href="http://trigger.fm/start.html"><img src='/img/triggerlogo.png'></a>
+        </div>
+        <div class='info'>
+            <div class='chname'></div>
+            <div class='chdata'></div>
+        </div>
+        <div class='submit_box'>
+            <div class='label'>+</div>
+            <div class='uploader'><input id="fileupload" type="file" placeholder="Тащи сюда свою музыку" multiple></div>
+        </div>
+        <div class='upfiles'></div>
+
+        <div class='loginform'>
+            <input id="lgname" class="username" name="username" type="text" autocomplete="on"
+                   placeholder="Юзернейм"><br/>
+            <input id="lgpass" class="password" name="pass" type="password" autocomplete="on" placeholder="Пароль">
+
+            <div class='button'><a href='javascript:void(0);'>Вход</a></div>
+            <div id='save'><input type="checkbox" id="remember" checked> Запомнить</div>
+            <div id='recovery'></div>
+            <div class='alert'></div>
+        </div>
+        <div class='userinfo'></div>
+        <div class='serverinfo greating'>
+        </div>
 
 
-
-		<div class='serverinfo reformal'>
+        <div class='serverinfo reformal'>
 
             <a href="http://trigger.fm/donate.html">Жертвенник</a>
 
             <br>
-            <a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
+            <a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;"
+               onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
             <script type="text/javascript">
-    var reformalOptions = {
-        project_id: 87627,
-        show_tab: false,
-        project_host: "trigger.reformal.ru"
-    };(function() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript'; script.async = true;
-        script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
-        document.getElementsByTagName('head')[0].appendChild(script);
-    })();
-</script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://trigger.reformal.ru">Уголок потребителя</a></noscript>
-	<br><div id='styleswitch'></div>
+                var reformalOptions = {
+                    project_id: 87627,
+                    show_tab: false,
+                    project_host: "trigger.reformal.ru"
+                };
+                (function() {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.async = true;
+                    script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                })();
+            </script>
+            <noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png"/></a><a
+                    href="http://trigger.reformal.ru">Уголок потребителя</a></noscript>
+            <br>
+
+            <div id='styleswitch'></div>
             <a href="https://docs.google.com/document/d/1ZOPqvWnSIq70cRLr6KWUh0dyLYe79W62mL0X7Kek54s" target="_blank">RTFM</a><br>
-            <a class='goin' href="http://trigger.reformal.ru" onclick="$('.loginform').show(400);$('.goin').hide();return false;" onmouseover="Reformal.widgetPreload();">Вход</a>
+            <a class='goin' href="http://trigger.reformal.ru"
+               onclick="$('.loginform').show(400);$('.goin').hide();return false;"
+               onmouseover="Reformal.widgetPreload();">Вход</a>
         </div>
-		
-		
-		</div>
-	<div id='info'>
-	<table class ='tabs'>
-		<tr>
-    		<td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
-    		<td class='tab history'><a href='javascript:void(0);'>История</a></td>
-    		<td class='tab channels'><a href='javascript:void(0);'>Демократия</a></td>
-    		<td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
-    	</tr>
-    </table>
-    	<div class='content profile'>
-    	</div>
-		<div class='content channels'>
+
+
+    </div>
+    <div id='info'>
+        <table class='tabs'>
+            <tr>
+                <td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
+                <td class='tab history'><a href='javascript:void(0);'>История</a></td>
+                <td class='tab channels'><a href='javascript:void(0);'>Демократия</a></td>
+                <td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
+            </tr>
+        </table>
+        <div class='content profile'>
+        </div>
+        <div class='content channels'>
             <div class='inner'>
                 <ul class='list'></ul>
             </div>
-		</div>
-		<div class='content history'>
+        </div>
+        <div class='content history'>
             <div id="hpanel">
                 <label><input type="checkbox" name="showgold" id="showgold">Золото</label>
             </div>
-			<div class='inner nano'>
+            <div class='inner nano'>
                 <div class="loader">Trigger задумался...</div>
-				<ul class='list nano-content'></ul>
-			</div>
-		</div>
-		<div class='content chat'>
-			
-			<div class='log nano'><div id='chatmessages' class='nano-content'></div></div>
-			<div class='users'>
-				<div class='topline'></div>
-				<div class='scroller'></div>
-			</div>
-			<div class='input'>
-				<textarea id="messageinput" placeholder="начинай вводить..."></textarea>
+                <ul class='list nano-content'></ul>
+            </div>
+        </div>
+        <div class='content chat'>
+
+            <div class='log nano'>
+                <div id='chatmessages' class='nano-content'></div>
+            </div>
+            <div class='users'>
+                <div class='topline'></div>
+                <div class='scroller'></div>
+            </div>
+            <div class='input'>
+                <textarea id="messageinput" placeholder="начинай вводить..."></textarea>
 
 
-			</div>
-
-            <div id='markups'>
-            <a href="#" class="bold" onclick="insertTag.tag('&lt;b&gt;', '&lt;/b&gt;'); return false;">bold</a>
-            <a href="#" class="irony" onclick="insertTag.tag('&lt;span class=\'irony\'&gt;', '&lt;/span&gt;'); return false;">irony</a>
-            <label><input type="checkbox" name="tink" id="chattink">Тиньк</label>
-            <label><input type="checkbox" name="showimg" id="chatshowimg">Картинки</label>
             </div>
 
-		</div>
-		<div class='resizer'></div>
-	</div>
+            <div id='markups'>
+                <a href="#" class="bold" onclick="insertTag.tag('&lt;b&gt;', '&lt;/b&gt;'); return false;">bold</a>
+                <a href="#" class="irony"
+                   onclick="insertTag.tag('&lt;span class=\'irony\'&gt;', '&lt;/span&gt;'); return false;">irony</a>
+                <label><input type="checkbox" name="tink" id="chattink">Тиньк</label>
+                <label><input type="checkbox" name="showimg" id="chatshowimg">Картинки</label>
+            </div>
+
+        </div>
+        <div class='resizer'></div>
+    </div>
 </div>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&subset=latin,cyrillic-ext'
+      rel='stylesheet' type='text/css'>
 <div class="raiting-list">
-	<div class="raiting-list_close" onclick="$('.raiting-list').hide(); return false;">x</div>
-	<ul class="raiting-list_negative">блабла</ul>
-	<ul class="raiting-list_positive">блабла</ul>
+    <div class="raiting-list_close" onclick="$('.raiting-list').hide(); return false;">x</div>
+    <ul class="raiting-list_negative">блабла</ul>
+    <ul class="raiting-list_positive">блабла</ul>
 </div>
 </body>
 </html>
