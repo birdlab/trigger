@@ -41,8 +41,10 @@ function addhistory(track) {
     var full = $('<div class="full"></div>').appendTo(item);
     full.attr('id', track.id);
 
-    if (track.sid == client.user.id) {
-        item.addClass('my');
+    if (client.user) {
+        if (track.sid == client.user.id) {
+            item.addClass('my');
+        }
     }
 
     var voting = $('<div class="votebar"></div>').appendTo(full);
