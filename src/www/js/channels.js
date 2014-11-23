@@ -85,34 +85,33 @@ function fillchannelsdata(d) {
             var cd = d.channels[c];
             var chdd = $('<li class="channel"></li>').appendTo($('#info .content.channels .list'));
             //var channeldom = '<div class="base"><a href="javascript: client.goChannel(' + cd.id + ', onChannel);void(0);" class="name">' + cd.name + '</a><a href="' + streampath + cd.hi;
-           // channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
+            // channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
             //channeldom += '" target="_blank">96kbps</a><div class="listners"><span>Слушают:</span>' + cd.lst + '</div><br /></div>';
             var channeldom = '<div class="base"></div>';
             var chd = $(channeldom).appendTo(chdd);
-           // $('<div class="hint"><<<клик</div>').appendTo(chd);
+            // $('<div class="hint"><<<клик</div>').appendTo(chd);
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
-            var reader=setTimeout(function(){
-                storageinfo=$.Storage.get("channel"+cd.id);
+            var reader = setTimeout(function() {
+                storageinfo = $.Storage.get("channel" + cd.id);
                 console.log(storageinfo);
-                if (storageinfo!=cd.description){
+                if (storageinfo != cd.description) {
                     console.log('info changed');
                     $('#info .tab .channels a').html('Демократия (!)');
                 }
-                if($('#info .content.channels').is(':visible'))
-                {
-                    $.Storage.set("channel"+cd.id, cd.description);
+                if ($('#info .content.channels').is(':visible')) {
+                    $.Storage.set("channel" + cd.id, cd.description);
                     $('#info .tab .channels a').html('Демократия');
                 }
-            },3000);
+            }, 3000);
             if (client.user) {
                 if (client.user.prch) {
                     if (client.user.prch == cd.id) {
                         description.attr('contentEditable', true);
-                        var editor=$('<div class="htmleditor" contenteditable="true"></div>').appendTo(chd);
-                        editor.keyup(function(){
-                           description.html(editor.text());
+                        var editor = $('<div class="htmleditor" contenteditable="true"></div>').appendTo(chd);
+                        editor.keyup(function() {
+                            description.html(editor.text());
                         });
-                        description.keyup(function(){
+                        description.keyup(function() {
                             editor.text(description.html());
                         });
                         editor.text(cd.description);
@@ -130,52 +129,54 @@ function fillchannelsdata(d) {
                     }
                 }
             }
-         //   if (cd.current) {
-                // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(cd.current.a) + ' - ' + encodeURIComponent(cd.current.t) + '" target="_blank">>vk</a></span></div>').appendTo(chd);
-               // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div></div>').appendTo(chd);
-         //   }
+            //   if (cd.current) {
+            // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(cd.current.a) + ' - ' + encodeURIComponent(cd.current.t) + '" target="_blank">>vk</a></span></div>').appendTo(chd);
+            // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div></div>').appendTo(chd);
+            //   }
 
             var users = $('<div class="users"><div class="usershead">Прямо сейчас эфир делают:</div></div>').appendTo(chd);
             for (var u in cd.users) {
                 var instring = '<span><a href="javascript:getuser(' + cd.users[u].id + ');void(0);">' + cd.users[u].n + '</a> </span>'
                 $(instring).appendTo(chd);
             }
-            //if (cd.prid) {
-            var full = $('<section class="full clearfix" />').appendTo(chdd);
-            var l_roll = $('<div class="l-col"/>').appendTo(full);
-            var r_roll = $('<div class="r-col"/>').appendTo(full);
-            var prman = '<div class="prman"><header>Продюсер:</header>';
-            prman += '<a class="prman-crown" href="javascript:getuser(' + cd.prid + ');void(0);">' + cd.prname + '</a></div>';// &mdash; <span class="descr">Продюссер</span>';
-            $(prman).appendTo(l_roll);
-            //<a href="" class="delete"></a></div>'
-            var edir = $('<div class="editors"/>').appendTo(l_roll);
-
-
-            var addstr = '<header>Редакционная коллегия:</header>';
+      
             if (client.user) {
-                if (client.user.prch) {
-                    if (client.user.prch == cd.id) {
-                        addstr += '<label><input class="id" type="text" placeholder="ID"><input class="editorpost" type="text" placeholder="Редактор">';
-                        addstr += '<button id="' + cd.id + '">Ok</button></label>';
+                var full = $('<section class="full clearfix" />').appendTo(chdd);
+                var l_roll = $('<div class="l-col"/>').appendTo(full);
+                var r_roll = $('<div class="r-col"/>').appendTo(full);
+
+                var prman = '<div class="prman"><header>Продюсер:</header>';
+                prman += '<a class="prman-crown" href="javascript:getuser(' + cd.prid + ');void(0);">' + cd.prname + '</a></div>';// &mdash; <span class="descr">Продюссер</span>';
+                $(prman).appendTo(l_roll);
+                //<a href="" class="delete"></a></div>'
+                var edir = $('<div class="editors"/>').appendTo(l_roll);
+
+
+                var addstr = '<header>Редакционная коллегия:</header>';
+                if (client.user) {
+                    if (client.user.prch) {
+                        if (client.user.prch == cd.id) {
+                            addstr += '<label><input class="id" type="text" placeholder="ID"><input class="editorpost" type="text" placeholder="Редактор">';
+                            addstr += '<button id="' + cd.id + '">Ok</button></label>';
+                        }
                     }
                 }
-            }
-            var adder = $(addstr).appendTo(edir);
-            var elist = $('<ul class="editors-list" id="' + cd.id + '"></ul>').appendTo(edir);
-            $(adder).children('button').click(function(e) {
-                var edid = $(e.target.parentNode).find('input.id').val();
-                var edpost = $(e.target.parentNode).find('input.editorpost').val();
-                client.setop({id: edid, post: edpost, chid: e.target.id}, function(cd) {
-                    if (cd.editors) {
-                        filleditorslist($(e.target.parentNode.parentNode).find('.editors-list'), cd.editors);
-                    }
-                });
+                var adder = $(addstr).appendTo(edir);
+                var elist = $('<ul class="editors-list" id="' + cd.id + '"></ul>').appendTo(edir);
+                $(adder).children('button').click(function(e) {
+                    var edid = $(e.target.parentNode).find('input.id').val();
+                    var edpost = $(e.target.parentNode).find('input.editorpost').val();
+                    client.setop({id: edid, post: edpost, chid: e.target.id}, function(cd) {
+                        if (cd.editors) {
+                            filleditorslist($(e.target.parentNode.parentNode).find('.editors-list'), cd.editors);
+                        }
+                    });
 
-            });
-            if (cd.editors) {
-                filleditorslist(elist, cd.editors);
-            }
-            if (client.user) {
+                });
+                if (cd.editors) {
+                    filleditorslist(elist, cd.editors);
+                }
+
                 if (cd.banned || (client.user.prch == cd.id || client.user.opch == cd.id)) {
                     var bn = $('<div class="banned" />').appendTo(r_roll);
                     $('<header>Жертвы репрессий:</header>').appendTo(bn);
@@ -208,15 +209,15 @@ function fillchannelsdata(d) {
 
 
             //   }
-/*            chd.click(function() {
-                var chf = $(this.parentNode).children('.full');
-                if (!$(chf).hasClass('active')) {
-                    $('#info .content.channels .full').hide(400).removeClass('active');
-                    $(chf).show(400).addClass('active');
-                }
-            });}*/
+            /*            chd.click(function() {
+             var chf = $(this.parentNode).children('.full');
+             if (!$(chf).hasClass('active')) {
+             $('#info .content.channels .full').hide(400).removeClass('active');
+             $(chf).show(400).addClass('active');
+             }
+             });}*/
         }
-       // $('#info .content.channels .full').hide();
+        // $('#info .content.channels .full').hide();
     }
 }
 function showChannels(gdata) {
