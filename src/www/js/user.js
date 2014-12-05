@@ -14,7 +14,8 @@ function getuser(id) {
         client.getUser({'id': id}, function(data) {
             var inpositive = false;
             var innegative = false;
-            $('#info .content.profile').html("<div class='main'><div class='karma'><table class ='kr'><tr><td class='but negative'></td><td class='numb'>" + data.r + "</td><td class='but positive'></td></tr></table></div><div class='username'>" + data.name + "</div><div class='uid'>#" + data.id + "</div></div><div class='shift'></div>");
+            var profile = $('#info .content.profile');
+            profile.html("<div class='main'><div class='karma'><table class ='kr'><tr><td class='but negative'></td><td class='numb'>" + data.r + "</td><td class='but positive'></td></tr></table></div><div class='username'>" + data.name + "</div><div class='uid'>#" + data.id + "</div></div><div class='shift'></div>");
             var butpositive = $('#info .content.profile .karma .but.positive');
             var butnegative = $('#info .content.profile .karma .but.negative');
             var numb = $('#info .content.profile .karma .numb');
@@ -71,8 +72,8 @@ function getuser(id) {
                 butpositive.css('visibility', 'hidden');
                 butnegative.css('visibility', 'hidden');
             }
-            console.log(data);
-            var scroller = $("<div class='inner'></div>").appendTo($('#info .content.profile'));
+            var scroller = $("<div class='inner'></div>").appendTo(profile);
+
             if (data.pic) {
                 var upic = $("<div class='pic exist'><img src='" + data.pic + "'></div>").appendTo(scroller);
             } else {
@@ -158,7 +159,7 @@ function getuser(id) {
 
 
             if (data.id != client.user.id) {
-                var muteuser = $('<br><label><input type="checkbox" name="muteuser" id="usermute">ОМММ</label>').appendTo(info);
+                $('<br><label><input type="checkbox" name="muteuser" id="usermute">ОМММ</label>').appendTo(info);
                 var muted = $.Storage.get("muteuser" + data.id);
                 if (muted) {
                     $('#usermute').attr('checked', 'true');
@@ -173,7 +174,6 @@ function getuser(id) {
                         fillUserlist();
                     }
                 });
-
                 var banbutton = $('<br><div class="banplace"><button>Забанить</button></div>').appendTo(info);
             }
 
@@ -371,5 +371,65 @@ function passchanger() {
         }
     } else {
         $('#passchange .errors').html('Старый пароль все же придется ввести');
+    }
+}
+function addprofile(track) {
+    var item = $('<li class="item"></li>').appendTo('#info .content.profile .list');
+    var base = $('<div class="base"></div>').appendTo(item);
+    var date = new Date(track.tt);
+
+    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '</div></td></tr></table>');
+    var art = $(base).find('.artwork');
+    if (track.g) {
+        $(art).css('border', '2px solid #ffcd00');
+    } else {
+        $(art).css('border', '1px solid #aaa');
+    }
+    var inf = track.i;
+    var full = $('<div class="full"></div>').appendTo(item);
+    full.attr('id', track.id);
+    var voting = $('<div class="votebar"></div>').appendTo(full);
+
+    var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
+    var positivelist = $(voters).find(".pvotes");
+    var negativelist = $(voters).find(".nvotes");
+    for (var i in track.n) {
+        $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+    }
+    for (var i in track.p) {
+        $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+    }
+
+    voters.hide();
+    item.click(function() {
+        voters.toggle();
+    })
+
+
+    var tags = $('<div class="tags"></div>').appendTo(full);
+    var info = $('<div class="info">' + inf + '</div>').appendTo(full);
+    full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+    for (var t in track.tg) {
+        var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
+        tagitem.attr('tagid', track.tg[t].id);
+    }
+    $('<span><a href="http://vk.com/audio?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>vk</a></span>').appendTo(tags);
+    $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(tags);
+    $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(tags);
+    item.addClass('trackid' + track.id);
+    lht = new Date(Date.parse(track.tt) + timezone);
+    if (client.user) {
+        for (var vr in track.p) {
+            if (track.p[vr].vid == client.user.id) {
+                base.find('.rating div').css('color', '#ffae00');
+                break;
+            }
+        }
+        for (var vr in track.n) {
+            if (track.n[vr].vid == client.user.id) {
+                base.find('.rating div').css('color', '#000000');
+                break;
+            }
+        }
     }
 }
