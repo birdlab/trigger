@@ -96,7 +96,6 @@ function scrolltop() {
                 chatlogupdate = false;
             });
         }
-        console.log('final ', sh);
     }
 }
 
