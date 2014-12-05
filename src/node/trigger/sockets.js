@@ -51,14 +51,12 @@ function bind(socket) {
     }
     socket.active = false;
     socket.on('login', function(data) {
-            console.log('login - ', data);
             var is = false;
             for (var u in main.users) {
                 if (main.users[u].name == data.u && main.users[u].pass == data.p) {
                     is = true;
                     var user = main.users[u];
                     socket.user = user;
-                    console.log('user in mem - ', user.name);
                     socket.emit('loginstatus', {'user': user.fastinfo(), 'virtual': socket.user.virtual});
                     user.addSocket(socket.id);
                     break;
@@ -76,7 +74,6 @@ function bind(socket) {
                                     is = true;
                                     var user = main.users[u];
                                     socket.user = user;
-                                    console.log('new user - ', user.name);
                                     socket.emit('loginstatus', {'user': user.fastinfo(), 'virtual': socket.user.virtual});
                                     user.addSocket(socket.id);
                                     break;
@@ -112,7 +109,6 @@ function bind(socket) {
 
     socket.on('disconnect', function() {
         if (socket.user) {
-            console.log('disconnect - ', socket.user.name);
             socket.user.delSocket(socket.id);
             for (var c in main.channels) {
                 var ch = main.channels[c];
@@ -144,7 +140,6 @@ function bind(socket) {
         socket.disconnect();
     });
     socket.on('gochannel', function(data) {
-        console.log('gochannel - ', data);
         if (main.channel(data.id)) {
             if (socket.user) {
                 if (main.channel(socket.channel)) {
@@ -230,6 +225,9 @@ function bind(socket) {
                 channeldata.prid = ch.prid;
                 channeldata.prname = ch.prname;
                 channeldata.banned = ch.banned;
+                if (ch.election) {
+                    channeldata.election = ch.getElectionData(socket.user.id);
+                }
             }
             dataforuser.channels.push(channeldata);
         }
@@ -271,7 +269,6 @@ function bind(socket) {
     socket.on('addtag', function(data) {
         if (socket.user) {
             if (data.s) {
-                console.log(data.s);
                 db.addTag(data.s, function(dbdata) {
                     if (!dbdata.error) {
                         dbdata.n = data.s;
@@ -394,41 +391,52 @@ function bind(socket) {
             }
         }
     });
+    socket.on('prvote', function(data, callback) {
+        if (socket.user) {
+            if (socket.user.rating > -1) {
+                if (data.prid) {
+                    var channel = main.channel(data.chid);
+                    if (channel) {
+                        if (callback) {
+                            channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
+                        }
+                    }
+                }
+            }
+        }
+    });
     socket.on('banuser', function(data, callback) {
         if (socket.user) {
-            console.log('ban request');
             if (socket.user.id == 1) {
                 socket.user.prch = socket.channel;
-                console.log('socket.user.prch', socket.user.prch);
             }
             data.chid = socket.user.prch || socket.user.opch;
-            console.log('data.chid', data.chid);
             if (data.chid) {
                 var channel = main.channel(data.chid);
-                channel.banuser(data, function(bandata) {
-                    if (!bandata.error) {
-                        for (var s in sockets) {
-                            var so = sockets[s];
-                            if (so.user) {
-                                if (so.user.id == data.id && data.chid == so.channel) {
-                                    main.channel(data.chid).chat.removeUser(so);
-                                    so.emit('banned', data);
+                if (channel) {
+                    channel.banuser(data, function(bandata) {
+                        if (!bandata.error) {
+                            for (var s in sockets) {
+                                var so = sockets[s];
+                                if (so.user) {
+                                    if (so.user.id == data.id && data.chid == so.channel) {
+                                        main.channel(data.chid).chat.removeUser(so);
+                                        so.emit('banned', data);
+                                    }
                                 }
                             }
                         }
-                    }
-                    callback(bandata);
-                });
+                        callback(bandata);
+                    });
+                }
 
             }
         }
     });
     socket.on('unbanuser', function(data, callback) {
         if (socket.user) {
-            console.log('unban request');
             if (socket.user.id == 1) {
                 socket.user.prch = socket.channel;
-                console.log('socket.user.prch', socket.user.prch);
             }
             data.chid = socket.user.prch || socket.user.opch;
             if (data.chid) {
@@ -451,14 +459,8 @@ function bind(socket) {
                         for (var s in sockets) {
                             var so = sockets[s];
                             if (so.user) {
-                                if (data.pr && so.user.id == oldpr) {
-                                    so.user.prch = false;
-                                    so.emit('loginstatus', {'user': so.user.fastinfo(), 'virtual': so.user.virtual});
-                                }
                                 if (so.user.id == data.id) {
-                                    if (data.pr) {
-                                        so.user.prch = data.chid;
-                                    } else {
+                                    if (!data.pr) {
                                         so.user.opch = data.chid;
                                     }
                                     so.emit('loginstatus', {'user': so.user.fastinfo(), 'virtual': so.user.virtual});
@@ -482,14 +484,19 @@ function bind(socket) {
 
             }
             data.chid = socket.user.prch;
-            console.log('socket.user.prch', socket.user.prch);
-            console.log(data);
             if (data.chid) {
-                main.channel(data.chid).setprops(data, function(d) {
-                    if (callback) {
-                        callback(d);
+                var ch = main.channel(data.chid);
+                if (ch) {
+                    if (ch.prid == socket.user.prch) {
+                        ch.setprops(data, function(d) {
+                            if (callback) {
+                                callback(d);
+                            }
+                        });
                     }
-                });
+
+                }
+
             }
         }
     });
@@ -613,7 +620,6 @@ function bind(socket) {
     socket.on('upduserdata', function(data) {
         var s = socket;
         var changed = false;
-        console.log('start changing userdata');
         if (s.user && data) {
             if (typeof data.g != 'undefined') {
                 if (data.g != s.user.gender) {

@@ -12,6 +12,45 @@ function fillchannelsdata(d) {
         }
     }
 
+
+    var showElection = function(election, cd) {
+        election.html('');
+        var message = ''
+        if (cd.your) {
+            message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Твой кандидат - <a href="javascript:getuser('+cd.your.id+');void(0);">'+cd.your.name+'</a><br></div>';
+
+        } else {
+            message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Исполни свой гражданский долг - введи в поле ниже id своего избранника.<br></div>';
+        }
+        $(message).appendTo(election);
+        var voteinput = $('<input class="prid" type="text" placeholder="id кандидата">').appendTo(election);
+        var summary = $('<div class="electionlist">Сейчас расстановка сил такая:</div>').appendTo(election);
+        console.log(cd);
+        var elstr = '';
+        for (var i in cd.candidates) {
+            var can = cd.candidates[i];
+            elstr += '<li><a class="candidate-name" href="javascript:getuser(' + can.id + ');void(0);">' + can.name + '</a> &mdash; <span class="descr">' + can.votes + '</span>'
+        }
+        $(elstr).appendTo(summary);
+
+        voteinput.bind("keyup", function(event) {
+            if (event.keyCode == 13) {
+                var prvote = $.trim(voteinput.val()).replace('↵', '');
+                if (prvote.length) {
+                    client.sendPRVote({chid: cd.id, prid: prvote}, function(data) {
+                        if (data.error) {
+                        } else {
+                            data.id=cd.id;
+                            showElection(election, data);
+                        }
+                    })
+                }
+            }
+        });
+
+
+    }
+
     var fillbanlist = function(blist, banned) {
         $(blist).html('');
         var chid = blist.attr('id');
@@ -32,7 +71,6 @@ function fillchannelsdata(d) {
             var bnode = $(bstr).appendTo(blist);
             $(bnode).children('.delete').click(function(event) {
                 var bl = event.target.parentNode.parentNode;
-                console.log(event.target.id);
                 client.unbanuser(event.target.id, function(cd) {
                     console.log(cd);
                     if (cd.banned) {
@@ -44,8 +82,6 @@ function fillchannelsdata(d) {
     }
     var filleditorslist = function(elist, editors) {
         $(elist).html('');
-        console.log(elist);
-        console.log(editors);
         var editorscontrol = false;
         var chid = elist.attr('id');
         if (client.user.prch) {
@@ -93,7 +129,6 @@ function fillchannelsdata(d) {
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
             var reader = setTimeout(function() {
                 storageinfo = $.Storage.get("channel" + cd.id);
-                console.log(storageinfo);
                 if (storageinfo != cd.description) {
                     console.log('info changed');
                     $('#info .tab .channels a').html('Демократия (!)');
@@ -142,6 +177,11 @@ function fillchannelsdata(d) {
 
             if (client.user) {
                 var full = $('<section class="full clearfix" />').appendTo(chdd);
+                if (cd.election) {
+                    var election = $('<section class="electionblock" />').appendTo(full);
+                    cd.election.id=cd.id;
+                    showElection(election, cd.election);
+                }
                 var l_roll = $('<div class="l-col"/>').appendTo(full);
                 var r_roll = $('<div class="r-col"/>').appendTo(full);
 

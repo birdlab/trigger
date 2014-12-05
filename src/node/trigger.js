@@ -11,11 +11,11 @@ var channels = [],
     tracks = [],
     files = [],
     users = [];
-    timezone=10800000;
+timezone = 10800000;
 
 var fastdata = {}
 
-exports.timezone=timezone;
+exports.timezone = timezone;
 exports.channels = channels;
 exports.users = users;
 exports.fastdata = fastdata;
@@ -30,22 +30,25 @@ exports.user = function(id) {
 }
 
 exports.getuser = function(id, callback) {
+    var finded = false;
     for (var u in users) {
         if (users[u].id == id) {
+            finded = true;
             if (callback) {
                 callback(users[u]);
-            }
-            else {
+            } else {
                 return(users[u]);
             }
         }
     }
-    if (callback) {
-        db.getuser(id, function(dbdata) {
-            callback(dbdata.user);
-        });
-    } else {
-        return false;
+    if (!finded) {
+        if (callback) {
+            db.getuser(id, function(dbdata) {
+                callback(dbdata.user);
+            });
+        } else {
+            return false;
+        }
     }
 }
 

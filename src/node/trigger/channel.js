@@ -32,6 +32,8 @@ function Channel(i) {
     this.playing = true;
     this.chip = [];
     this.active = 0;
+    this.election = false;
+    this.electionData = {};
     var ch = this;
     setTimeout(function() {
         ch.checkFile();
@@ -54,9 +56,9 @@ Channel.prototype.init = function(id) {
     id = ch.id;
 
     if (ch.id == 1) {
-        command = 'nice -n -10 mpd --no-daemon /home/trigger/mpd/mpd.conf';
+        command = 'mpd --no-daemon /home/trigger/mpd/mpd.conf';
     } else {
-        command = 'nice -n -10 mpd --no-daemon /home/trigger/mpd/' + ch.name + '/mpd.conf';
+        command = 'mpd --no-daemon /home/trigger/mpd/' + ch.name + '/mpd.conf';
     }
     if (!ch.chat) {
         ch.chat = chat.newChat(ch.id);
@@ -66,6 +68,13 @@ Channel.prototype.init = function(id) {
         console.log(ch, ' > ', error);
         setTimeout(ch.init(ch.id), 5000);
     });
+
+
+    exec('date -R', function(error, stdout, stderr) {
+        if (stdout.search('Wed') > -1) {
+            ch.startElection();
+        }
+    });
 }
 
 Channel.prototype.setop = function(data, callback) {
@@ -73,10 +82,25 @@ Channel.prototype.setop = function(data, callback) {
     if (data.pr) {
         main.getuser(data.id, function(user) {
             if (user) {
+                var olduser = main.getuser(ch.prid);
+                if (olduser) {
+                    olduser.prch = false;
+                    for (var os in olduser.sockets) {
+                        var so = sockets[os];
+                        so.emit('loginstatus', {'user': olduser.fastinfo(), 'virtual': olduser.virtual});
+                    }
+                }
+                user.prch = ch.id;
+                for (var s in user.sockets) {
+                    var so = user.sockets[s];
+                    so.emit('loginstatus', {'user': user.fastinfo(), 'virtual': user.virtual});
+                }
                 ch.prid = data.id;
                 ch.prname = user.name;
                 db.setpr(data);
-                callback({id: data.id, name: user.name, chid: ch.id});
+                if (callback) {
+                    callback({id: data.id, name: user.name, chid: ch.id});
+                }
             }
         });
     } else {
@@ -91,14 +115,18 @@ Channel.prototype.setop = function(data, callback) {
                     if (main.channels[c].id != data.chid) {
                         if (!e) {
                             e = 'another';
-                            callback({error: e});
+                            if (callback) {
+                                callback({error: e});
+                            }
                         }
                     } else {
                         if (e) {
                             e = 'changed';
                             channel.editors[o].post = data.post;
                             db.replaceop(data);
-                            callback({editors: ch.editors});
+                            if (callback) {
+                                callback({editors: ch.editors});
+                            }
                         }
                     }
                 }
@@ -117,7 +145,9 @@ Channel.prototype.setop = function(data, callback) {
                                     post: data.post
                                 }
                                 ch.editors.push(editor);
-                                callback({editors: ch.editors});
+                                if (callback) {
+                                    callback({editors: ch.editors});
+                                }
                             }
                         });
 
@@ -125,7 +155,9 @@ Channel.prototype.setop = function(data, callback) {
                 });
             } else {
                 e = 'overload';
-                callback({error: e});
+                if (callback) {
+                    callback({error: e});
+                }
             }
         }
     }
@@ -137,7 +169,9 @@ Channel.prototype.removeop = function(data, callback) {
         if (ch.editors[e].id == data.id) {
             ch.editors.splice(e, 1);
             db.removeop(data);
-            callback({editors: ch.editors});
+            if (callback) {
+                callback({editors: ch.editors});
+            }
             break;
         }
     }
@@ -665,8 +699,154 @@ Channel.prototype.processTrack = function(track) {
             }
         }
     }
+    if (!ch.election) {
+        exec('date -R', function(error, stdout, stderr) {
+            if (stdout.search('Wed') > -1) {
+                ch.startElection();
+            }
+        });
+    } else {
+        exec('date -R', function(error, stdout, stderr) {
+            if (stdout.search('Wed') < 0) {
+                ch.stopElection();
+            }
+        });
+    }
     killfile(track.path);
 }
+
+Channel.prototype.sortElection = function() {
+    var ch = this;
+    var i = ch.electionData.candidates.length;
+    while (i--) {
+        if (ch.electionData.candidates[i].votes.length == 0) {
+            ch.electionData.candidates.splice(i, 1);
+        }
+    }
+    ch.electionData.candidates.sort(function(a, b) {
+        if (a.votes.length > b.votes.length) {
+            return -1;
+        }
+        if (a.votes.length < b.votes.length) {
+            return 1
+        }
+        return 0
+    });
+}
+
+Channel.prototype.startElection = function() {
+    var ch = this;
+    ch.election = true;
+    db.startElection({channel: ch.id}, function(data) {
+        ch.electionData = {candidates: []};
+        if (data.status == 'active') {
+            for (var i in data.votes) {
+                var vote = data.votes[i];
+                var is = false;
+                for (var j in ch.electionData.candidates) {
+                    if (ch.electionData.candidates[j].user.id == vote.prid) {
+                        ch.electionData.candidates[j].votes.push(vote.voterid);
+                        is = true;
+                        break;
+                    }
+                }
+                if (!is) {
+                    var candidateEntry = {votes: [], user: {id: vote.prid}};
+                    candidateEntry.votes.push(vote.voterid);
+                    ch.electionData.candidates.push(candidateEntry);
+                    main.getuser(vote.prid, function(user) {
+                        if (user) {
+                            for (var f in ch.electionData.candidates) {
+                                var can = ch.electionData.candidates[f];
+                                if (can.user.id == user.id) {
+                                    can.user = user;
+                                }
+                            }
+
+                        }
+                    });
+
+                }
+            }
+            ch.sortElection();
+        }
+    });
+
+}
+Channel.prototype.stopElection = function() {
+    var ch = this;
+    ch.election = false;
+    if (ch.electionData.candidates[0].user) {
+        ch.setop({id: ch.electionData.candidates[0].user.id, pr: true});
+
+    }
+}
+
+Channel.prototype.addPRVote = function(data, callback) {
+    var ch = this;
+    var is = false;
+    var already = false;
+    data.prid = parseInt(data.prid);
+    //console.log(ch.electionData.candidates.length);
+    //console.log(data.voterid + ' голосует за ' + data.prid);
+    for (var j in ch.electionData.candidates) {
+        var candidate = ch.electionData.candidates[j];
+        if (candidate) {
+            for (var f in candidate.votes) {
+                if (candidate.votes[f]) {
+                    if (candidate.votes[f] == data.voterid) {
+                        if (candidate.user.id == data.prid) {
+                            already = true;
+                            if (callback) {
+                                callback({error: 'already'});
+                            }
+                            break;
+                        } else {
+                            candidate.votes.splice(f, 1);
+                        }
+                    }
+                }
+            }
+
+            if (candidate.user.id == data.prid && !already) {
+                candidate.votes.push(data.voterid);
+                ch.sortElection();
+                db.addPRVote({channel: ch.id, voterid: data.voterid, prid: data.prid}, function(data) {
+                    console.log(data)
+                });
+                if (callback) {
+                    callback(packElectionData(ch.electionData, data.voterid));
+                }
+                is = true;
+                break;
+            }
+        }
+
+
+    }
+    if (!is && !already) {
+        console.log('не нашли нашли юзера, ищем в базе ' + data.prid + ' - already ' + already + ' is ' + is);
+        main.getuser(data.prid, function(findeduser) {
+            if (findeduser) {
+                var candidateEntry = {votes: [], user: findeduser};
+                candidateEntry.votes.push(data.voterid);
+                ch.electionData.candidates.push(candidateEntry);
+                ch.sortElection();
+                db.addPRVote({channel: ch.id, voterid: data.voterid, prid: data.prid}, function(data) {
+                    console.log(data)
+                });
+                if (callback) {
+                    callback(packElectionData(ch.electionData, data.voterid));
+                }
+            } else {
+                if (callback) {
+                    callback({error: 'no user'});
+                }
+            }
+        });
+    }
+}
+
 
 Channel.prototype.killTrack = function(trackid, self) {
     var ch = this;
@@ -712,6 +892,10 @@ Channel.prototype.skip = function() {
         if (!error) {
         }
     });
+}
+
+Channel.prototype.getElectionData = function(userid) {
+    return packElectionData(this.electionData, userid);
 }
 
 Channel.prototype.setNext = function() {
@@ -783,6 +967,29 @@ function sortFunction(a, b) {
         return parseInt(a.id) - parseInt(b.id);
     }
     return 0
+
+}
+
+function packElectionData(electionData, userid) {
+    var data = {candidates: []};
+    for (var i in electionData.candidates) {
+        var can = {
+            name: electionData.candidates[i].user.name,
+            id: electionData.candidates[i].user.id,
+            votes: electionData.candidates[i].votes.length
+        }
+        data.candidates.push(can);
+        if (userid) {
+            for (var g in electionData.candidates[i].votes) {
+                if (electionData.candidates[i].votes[g] == userid) {
+                    data.your = can;
+                }
+            }
+
+        }
+    }
+    return data;
+
 
 }
 

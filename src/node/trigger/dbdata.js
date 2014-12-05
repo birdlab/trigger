@@ -853,4 +853,42 @@ exports.savechannelstate = function(data, callback) {
         });
     }
 }
-
+exports.startElection = function(data, callback) {
+    if (data.channel) {
+        var ans = {};
+        db.connection.query('SELECT * FROM prvote WHERE chid= ' + data.channel + ' AND date BETWEEN NOW() - INTERVAL 1 DAY AND NOW()', function(error, result, fields) {
+            if (result.length) {
+                ans.status = 'active';
+                ans.votes = result;
+                callback(ans);
+            } else {
+                ans.status = 'started';
+                callback(ans);
+            }
+        });
+    }
+}
+exports.addPRVote = function(data, callback) {
+    if (data) {
+        var ans = {};
+        db.connection.query('SELECT prvote.id FROM prvote WHERE chid= ' + data.channel + ' AND voterid= ' + data.voterid + ' AND date BETWEEN NOW() - INTERVAL 1 DAY AND NOW()', function(error, result, fields) {
+            if (result.length) {
+                db.connection.query('UPDATE prvote SET prid= ' + data.prid + ' WHERE id= ' + result[0].id, function(error, result, fields) {
+                    if (!error) {
+                        //itsok
+                    } else {
+                        //ohshit!
+                    }
+                });
+            } else {
+                db.connection.query('INSERT INTO prvote (voterid, prid, chid, date) VALUES (' + data.voterid + ', ' + data.prid + ',' + data.channel + ', NOW());', function(error, result, fields) {
+                    if (!error) {
+                        //itsok
+                    } else {
+                        //ohshit!
+                    }
+                });
+            }
+        });
+    }
+}

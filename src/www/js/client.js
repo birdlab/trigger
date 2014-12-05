@@ -555,8 +555,6 @@ Client.prototype.removeop = function(data, callback) {
 Client.prototype.setprops = function(data, callback) {
     this.socket.emit('setprops', data, callback);
 }
-Client.prototype.getfu = function(data) {
-    this.socket.emit('getfastuser', {id: data}, function(d) {
-        console.log(d);
-    });
+Client.prototype.sendPRVote = function(data, callback) {
+    this.socket.emit('prvote', data, callback);
 }
