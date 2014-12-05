@@ -1,5 +1,5 @@
 Player = function (divname) {
-	forcehtml5=false;
+	forcehtml5=true;
 	this.playing=false;
 	this.vol=0.5;
 	if (swfobject.getFlashPlayerVersion().major<10||forcehtml5){
@@ -12,6 +12,7 @@ Player = function (divname) {
 		console.log('flash enabled');
 		swfobject.embedSWF("/js/radio.swf", "radio", "0", "0", "11.0.0");
 	}
+    console.log(this.mode);
 	return this;
 
 };
