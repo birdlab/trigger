@@ -144,6 +144,7 @@ Channel.prototype.setop = function(data, callback) {
                                     name: user.name,
                                     post: data.post
                                 }
+                                user.opch = ch.id;
                                 ch.editors.push(editor);
                                 if (callback) {
                                     callback({editors: ch.editors});
@@ -180,6 +181,7 @@ Channel.prototype.removeop = function(data, callback) {
 
 Channel.prototype.setprops = function(channeldata, callback) {
     var ch = this;
+    console.log('channeldata ', channeldata);
     var data = {chid: ch.id};
     if (channeldata.rate) {
         data.rate = channeldata.rate;
@@ -792,7 +794,8 @@ Channel.prototype.addPRVote = function(data, callback) {
     for (var j in ch.electionData.candidates) {
         var candidate = ch.electionData.candidates[j];
         if (candidate) {
-            for (var f in candidate.votes) {
+            var f = candidate.votes.length;
+            while (f--) {
                 if (candidate.votes[f]) {
                     if (candidate.votes[f] == data.voterid) {
                         if (candidate.user.id == data.prid) {
@@ -807,6 +810,7 @@ Channel.prototype.addPRVote = function(data, callback) {
                     }
                 }
             }
+
 
             if (candidate.user.id == data.prid && !already) {
                 candidate.votes.push(data.voterid);
