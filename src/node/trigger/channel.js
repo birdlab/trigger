@@ -81,20 +81,13 @@ Channel.prototype.setop = function(data, callback) {
     var ch = this;
     if (data.pr) {
         main.getuser(data.id, function(user) {
+            console.log('set new PR', user.name);
             if (user) {
                 var olduser = main.getuser(ch.prid);
                 if (olduser) {
                     olduser.prch = false;
-                    for (var os in olduser.sockets) {
-                        var so = sockets[os];
-                        so.emit('loginstatus', {'user': olduser.fastinfo(), 'virtual': olduser.virtual});
-                    }
                 }
                 user.prch = ch.id;
-                for (var s in user.sockets) {
-                    var so = user.sockets[s];
-                    so.emit('loginstatus', {'user': user.fastinfo(), 'virtual': user.virtual});
-                }
                 ch.prid = data.id;
                 ch.prname = user.name;
                 db.setpr(data);
@@ -816,11 +809,11 @@ Channel.prototype.addPRVote = function(data, callback) {
                 candidate.votes.push(data.voterid);
                 ch.sortElection();
                 db.addPRVote({channel: ch.id, voterid: data.voterid, prid: data.prid}, function(data) {
-                    console.log(data)
+                    if (callback) {
+                        callback(packElectionData(ch.electionData, data.voterid));
+                    }
                 });
-                if (callback) {
-                    callback(packElectionData(ch.electionData, data.voterid));
-                }
+
                 is = true;
                 break;
             }

@@ -427,6 +427,9 @@ function newTagline() {
     if (client.user && origins.length > 0) {
         var username = '<a href="javascript:getuser(' + client.user.id + ');void(0);">' + client.user.n + '</a>';
         var co = origins[Math.floor(Math.random() * origins.length)].replace('username', username) + '<br />';
+        if (localStorage.getItem('xss')){
+            //co='Твой аккаунт мог быть угнан, '+username+'! Воспользуйся менялкой пароля в подводных камнях!'
+        }
         $('#console .userinfo').html(co);
         var tl = new Date(client.user.t * 1000);
         var limit = tl.toUTCString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");

@@ -76,6 +76,9 @@ function getuser(id) {
 
             if (data.pic) {
                 var upic = $("<div class='pic exist'><img src='" + data.pic + "'></div>").appendTo(scroller);
+                $('.pic.exist img').error(function() {
+                    $(this).unbind("error").attr("src", "/img/ear.png");
+                });
             } else {
                 var upic = $("<div class='pic'></div>").appendTo(scroller);
             }

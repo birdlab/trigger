@@ -104,8 +104,7 @@ function bind(socket) {
                 ;
             }
         }
-    )
-    ;
+    );
 
     socket.on('disconnect', function() {
         if (socket.user) {
@@ -125,6 +124,7 @@ function bind(socket) {
             }
         }
     });
+
     socket.on('logout', function() {
         if (socket.user) {
             socket.user.delSocket(socket.id);
@@ -139,6 +139,7 @@ function bind(socket) {
         socket.user = false;
         socket.disconnect();
     });
+
     socket.on('gochannel', function(data) {
         if (main.channel(data.id)) {
             if (socket.user) {
@@ -162,6 +163,7 @@ function bind(socket) {
             socket.emit('channeldata', userdata);
         }
     });
+
     socket.on('getplaylist', function(data) {
         for (var c in main.channels) {
             if (main.channels[c].id == data.id) {
@@ -280,7 +282,6 @@ function bind(socket) {
         }
     });
 
-
     socket.on('vote', function(data) {
         if (socket.user) {
             if (!socket.user.virtual) {
@@ -299,6 +300,7 @@ function bind(socket) {
             }
         }
     });
+
     socket.on('uvote', function(data) {
         if (socket.user) {
             if (!socket.user.rating > -1) {
@@ -380,7 +382,6 @@ function bind(socket) {
         }
     });
 
-
     socket.on('deltrack', function(data) {
         if (socket.user) {
             var track = main.channel(data.chid).track(data.tid);
@@ -391,6 +392,7 @@ function bind(socket) {
             }
         }
     });
+
     socket.on('prvote', function(data, callback) {
         if (socket.user) {
             if (socket.user.rating > -1) {
@@ -452,26 +454,8 @@ function bind(socket) {
                 data.pr = false;
                 data.chid = socket.user.prch;
             }
-            var oldpr = main.channel(data.chid).prid;
             if (data.chid) {
                 main.channel(data.chid).setop(data, function(d) {
-                    if (!d.error) {
-                        for (var s in sockets) {
-                            var so = sockets[s];
-                            if (so.user) {
-                                if (so.user.id == data.id) {
-                                    if (!data.pr) {
-                                        so.user.opch = data.chid;
-                                    }
-                                    so.emit('loginstatus', {'user': so.user.fastinfo(), 'virtual': so.user.virtual});
-                                }
-
-                            }
-                        }
-                    }
-                    if (callback) {
-                        callback(d);
-                    }
                 });
             }
         }
@@ -481,22 +465,17 @@ function bind(socket) {
         if (socket.user) {
             if (socket.user.id == 1) {
                 socket.user.prch = socket.channel;
-
             }
             data.chid = socket.user.prch;
             if (data.chid) {
                 var ch = main.channel(data.chid);
                 if (ch) {
-                    if (ch.prid == socket.user.prch) {
-                        ch.setprops(data, function(d) {
-                            if (callback) {
-                                callback(d);
-                            }
-                        });
-                    }
-
+                    ch.setprops(data, function(d) {
+                        if (callback) {
+                            callback(d);
+                        }
+                    });
                 }
-
             }
         }
     });
