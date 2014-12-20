@@ -136,7 +136,6 @@ function bind(socket) {
             }
 
         }
-        socket.user = false;
         socket.disconnect();
     });
 
@@ -558,6 +557,12 @@ function bind(socket) {
             }
         }
     });
+    socket.on('sendextinvite', function(data, callback) {
+            if (data){
+                db.sendextinvite(data, callback);
+            }
+        }
+    );
 
     socket.on('gettrack', function(data, callback) {
         if (data) {

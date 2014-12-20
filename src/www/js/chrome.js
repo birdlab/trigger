@@ -427,7 +427,7 @@ function newTagline() {
     if (client.user && origins.length > 0) {
         var username = '<a href="javascript:getuser(' + client.user.id + ');void(0);">' + client.user.n + '</a>';
         var co = origins[Math.floor(Math.random() * origins.length)].replace('username', username) + '<br />';
-        if (localStorage.getItem('xss')){
+        if (localStorage.getItem('xss')) {
             //co='Твой аккаунт мог быть угнан, '+username+'! Воспользуйся менялкой пароля в подводных камнях!'
         }
         $('#console .userinfo').html(co);
@@ -503,6 +503,10 @@ function onChannel(data) {
 function processLogin(data) {
     console.log('process login', data);
     if (data.user) {
+        var rc = $.Storage.get("constitution");
+        if (!rc){
+            readConstitution();
+        }
         newTagline();
         $('.loginform').hide(400);
         $('.goin').hide();
@@ -733,17 +737,18 @@ function setCurrent(track) {
 }
 
 function logout() {
+    $('#info .content').hide();
+    $.Storage.remove('username');
+    $.Storage.remove('password');
+    $('.loginform').show(400);
+    $('.submit_box').hide(400);
+    $('#info .tabs .chat').hide();
+    $('#info .tabs .profile').hide();
+    $('#console .upfiles').hide();
+    $('#console .userinfo').hide();
+    showChannels();
     client.logout(function() {
-        $('#info .content').hide();
-        $.Storage.remove('username')
-        $.Storage.remove('password');
-        $('.loginform').show(400);
-        $('.submit_box').hide(400);
-        $('#info .tabs .chat').hide();
-        $('#info .tabs .profile').hide();
-        $('#console .upfiles').hide();
-        $('#console .userinfo').hide();
-        showChannels();
+
     });
 }
 
@@ -1122,6 +1127,10 @@ function secToTime(time) {
     } else {
         return min + ':' + sec;
     }
+
+}
+
+function readConstitution(){
 
 }
 

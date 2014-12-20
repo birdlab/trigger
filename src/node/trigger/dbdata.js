@@ -702,6 +702,61 @@ exports.sendinvite = function(code, mail, socket) {
     });
 }
 
+exports.sendextinvite = function(data, callback) {
+    if (callback) {
+        if (data.mail) {
+            data.mail = sanitizer.sanitize(data.mail);
+            db.connection.query('SELECT * FROM users WHERE email = \'' + data.mail + '\'', function(err, result, fields) {
+                if (result.length) {
+                    callback({error: 'exists'});
+                } else {
+                    var code = md5("sds" + Math.random() * 100000000000 + new Date().getTime() + "a");
+                    db.connection.query('insert into invites (parentid, code, give_time, userid) VALUES ( 0, "' + code + '", NOW(), 0)', function(er, result, fields) {
+                        if (!er) {
+                            exec('php /home/trigger/node/sendmail.php ' + data.mail + ' ' + code, function(error, stdout, stderr) {
+                                if (!error) {
+                                    db.connection.query('UPDATE invites SET  email="' + data.mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function(error, result, fields) {
+                                        if (!error) {
+                                            callback({status: 'ok'});
+                                        } else {
+                                            callback({error: 'db error'});
+                                        }
+                                    });
+                                } else {
+                                    callback({error: 'mail error'});
+                                }
+                            });
+                        }
+
+                    });
+                }
+            });
+        }
+    }
+}
+
+exports.recoverpass = function(mail, callback) {
+    mail = sanitizer.sanitize(mail);
+    db.connection.query('SELECT * FROM users WHERE email = \'' + mail + '\'', function(err, result, fields) {
+        if (!err) {
+            if (result[0]) {
+                var pass = md5("pass" + Math.random() * 100000000000 + new Date().getTime() + "a").substring(3, 9);
+                var code = md5(pass);
+                db.connection.query('UPDATE users SET  password="' + code + '" WHERE  email = "' + mail + '" LIMIT 1', function(error, r, fields) {
+                    if (error) {
+                        socket.emit('invitestatus', {ok: false, m: mail});
+                    }
+                    if (result) {
+                        socket.emit('invitestatus', {ok: true, m: mail});
+                    }
+                });
+            } else {
+                socket.emit('invitestatus', {ok: false, m: mail});
+            }
+        }
+    });
+}
+
 exports.recoverpass = function(mail, callback) {
     mail = sanitizer.sanitize(mail);
     db.connection.query('SELECT * FROM users WHERE email = \'' + mail + '\'', function(err, result, fields) {

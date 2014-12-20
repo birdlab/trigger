@@ -17,7 +17,7 @@ function fillchannelsdata(d) {
         election.html('');
         var message = ''
         if (cd.your) {
-            message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Твой кандидат - <a href="javascript:getuser('+cd.your.id+');void(0);">'+cd.your.name+'</a><br></div>';
+            message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Твой кандидат - <a href="javascript:getuser(' + cd.your.id + ');void(0);">' + cd.your.name + '</a><br></div>';
 
         } else {
             message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Исполни свой гражданский долг - введи в поле ниже id своего избранника.<br></div>';
@@ -40,7 +40,7 @@ function fillchannelsdata(d) {
                     client.sendPRVote({chid: cd.id, prid: prvote}, function(data) {
                         if (data.error) {
                         } else {
-                            data.id=cd.id;
+                            data.id = cd.id;
                             showElection(election, data);
                         }
                     })
@@ -179,9 +179,10 @@ function fillchannelsdata(d) {
                 var full = $('<section class="full clearfix" />').appendTo(chdd);
                 if (cd.election) {
                     var election = $('<section class="electionblock" />').appendTo(full);
-                    cd.election.id=cd.id;
+                    cd.election.id = cd.id;
                     showElection(election, cd.election);
                 }
+
                 var l_roll = $('<div class="l-col"/>').appendTo(full);
                 var r_roll = $('<div class="r-col"/>').appendTo(full);
 
@@ -258,6 +259,22 @@ function fillchannelsdata(d) {
              });}*/
         }
         // $('#info .content.channels .full').hide();
+
+        if (!client.user) {
+            var ib = $('<li class="inviteblock"></li>').appendTo($('#info .content.channels .list'));
+            var inv = $("<div class='greating'>Сегодня на триггере атракцион неслыханной щедрости. В экспериментальном режиме мы решили раздавать инвайты!<BR> Впиши в поле ниже свой адрес электронной почты и на нее придет инвайт, который позволит тебе стать полноценным тригганом!</div><br><input class='invitemail' type='text' placeholder='e-mail'><button>Ok</button><br><div class='error'></div>").appendTo(ib);
+            $('.inviteblock button').click(function() {
+                console.log($('.inviteblock input').val());
+                client.sendextinvite({mail: $('.inviteblock input').val()}, function (data){
+                    console.log(data);
+                    if (data.error){
+                        $('.inviteblock .error').html('Что-то пошло не так: '+data.error);
+                    } else {
+                        $(ib).html("<div class='greating'>Похоже у нас все получилось. Проверь свою почту, вероятно там есть что-то новенькое ;)</div>")
+                    }
+                });
+            })
+        }
     }
 }
 function showChannels(gdata) {

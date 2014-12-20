@@ -270,9 +270,6 @@ Client.prototype.init = function(host) {
     socket.on('invitestatus', function(data) {
         cl.callbacks.invitestatus(data);
     });
-    socket.on('logoutok', function(data) {
-        cl.callbacks.logoutstatus(data);
-    });
     socket.on('recoverstatus', function(data) {
         cl.callbacks.recover(data);
     });
@@ -507,10 +504,12 @@ Client.prototype.sendinvite = function(mail, code, callback) {
     this.socket.emit('sendinvite', {m: mail, c: code});
 }
 
+Client.prototype.sendextinvite = function(data, callback) {
+    this.socket.emit('sendextinvite', data, callback);
+}
+
 Client.prototype.logout = function(callback) {
-    cl = this;
-    cl.callbacks.logoutstatus = callback;
-    this.socket.emit('logout', {s: true});
+    this.socket.emit('logout', {s: true}, callback);
 }
 Client.prototype.recover = function(mail, callback) {
     cl = this;

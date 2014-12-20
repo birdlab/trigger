@@ -48,7 +48,6 @@
     padding-right: 4px;
 }
 
-
 #console .uploaditem input {
     max-width: 400px;
 }
@@ -61,6 +60,7 @@
 #console .serverinfo img {
     width: 100%;
 }
+
 #console .serverinfo a {
     padding-left: 3px;
 }
@@ -79,6 +79,7 @@
     border: 0;
     resize: vertical;
 }
+
 .content.chat .input {
     background-color: #eee;
     position: absolute;
@@ -89,10 +90,11 @@
     width: 100%;
 }
 
-.voters .pvotes{
+.voters .pvotes {
     text-align: right;
 }
-.voters .nvotes{
+
+.voters .nvotes {
     text-align: left;
 }
 
@@ -106,17 +108,13 @@
     min-width: 66px;
 }
 
-
 #playlist .inner {
     overflow-x: hidden;
 }
+
 .messageinfo a {
     font-size: 10px !important;
 }
-
-
-
-
 
 .channel .full header {
     font-weight: bold;
@@ -124,11 +122,12 @@
     margin-top: 4px;
 }
 
-.banplace{
+.banplace {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.banplace button{
+
+.banplace button {
     border: none;
     color: #333;
     outline: none;
@@ -140,24 +139,25 @@
 
 }
 
-
-
-#userdescription{
+#userdescription {
     margin-bottom: 15px;
 }
+
 #userdescription:focus {
     outline: none;
 }
-.htmleditor{
+
+.htmleditor {
     padding: 10px;
 }
 
-#info .content.profile .pic.exist{
+#info .content.profile .pic.exist {
     overflow: hidden;
     text-align: center;
     background-image: none !important;
 }
-#info .content.profile .pic img{
+
+#info .content.profile .pic img {
     height: 200px;
 }
 
@@ -180,16 +180,20 @@ input[type="password"] {
 .channel .description {
     margin-top: 20px;
 }
-.channel .description:focus{
+
+.channel .description:focus {
     outline: none;
 }
-.channel .htmleditor:focus{
+
+.channel .htmleditor:focus {
     outline: none;
 }
+
 .channel .usershead {
     font-weight: 100;
     font-size: 13px;
 }
+
 #markups {
     font-size: 11px;
 }
@@ -203,9 +207,11 @@ input[type="password"] {
     color: #aaa !important;
     text-decoration: none;
 }
+
 .content.chat .users a:hover {
     text-decoration: underline;
 }
+
 .content.chat .users .active a {
     color: #eba400 !important;
 }
@@ -248,7 +254,6 @@ input[type="password"] {
     border-left: 1px solid #f6f6f6;
 }
 
-
 .mif {
     text-align: right;
     vertical-align: top;
@@ -261,10 +266,43 @@ input[type="password"] {
 .names {
     vertical-align: top;
 }
+
 .names:hover {
     text-decoration: underline;
 }
 
 .pm {
     color: #666;
+}
+
+.channel .full button, #info button {
+    border: none;
+    color: #FFF;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ffcd00;
+    width: 80px;
+    height: 22px;
+
+}
+
+.channel .full .editors button,
+.channel .full .banned button {
+    width: 35px;
+}
+
+input.id {
+    width: 51px;
+}
+
+.channel .full button:active,
+.channel .full input[type="button"]:active,
+.channel .full input[type="submit"]:active {
+    position: relative;
+    top: 1px;
+}
+
+.inviteblock {
+    padding: 10px;
 }

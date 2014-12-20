@@ -1020,35 +1020,7 @@ span.irony, #markups .irony {
     top: 2px;
 }
 
-.channel .full button {
-    border: none;
-    color: #FFF;
-    outline: none;
-    font-weight: bold;
-    cursor: pointer;
-    background: #ffcd00;
-    width: 80px;
-    height: 22px;
 
-}
-
-.channel .full .editors button,
-.channel .full .banned button {
-    width: 35px;
-}
-
-
-
-input.id {
-    width: 51px;
-}
-
-.channel .full button:active,
-.channel .full input[type="button"]:active,
-.channel .full input[type="submit"]:active {
-    position: relative;
-    top: 1px;
-}
 
 .htmleditor{
     background: #eee;
