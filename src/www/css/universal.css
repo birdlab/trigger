@@ -286,6 +286,16 @@ input[type="password"] {
     height: 22px;
 
 }
+#ender button {
+    border: none;
+    color: #FFF;
+    font-size: 20px;
+    padding: 10px;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: #c8a000;
+}
 
 .channel .full .editors button,
 .channel .full .banned button {
@@ -304,5 +314,30 @@ input.id {
 }
 
 .inviteblock {
+
     padding: 10px;
+}
+
+#con {
+    position: absolute;
+    width: 100%;
+    padding-bottom:0px;
+    background: #333;
+}
+#coninside{
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+#ender {
+    text-align: center;
+}
+#con small {
+    font-weight: 100;
+    color: #cdcdcd;
+}
+#con p {
+    font-weight: 100;
+    color: #cdcdcd;
 }

@@ -504,7 +504,7 @@ function processLogin(data) {
     console.log('process login', data);
     if (data.user) {
         var rc = $.Storage.get("constitution");
-        if (!rc){
+        if (rc!='read'){
             readConstitution();
         }
         newTagline();
@@ -1131,6 +1131,16 @@ function secToTime(time) {
 }
 
 function readConstitution(){
+    var constitution=$('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
+    var jqxhr = $.get( "/constitution.html", function(data) {
+        data+='<div id="ender"></div>';
+        $('#coninside').html(data);
+        $('<button>Я все прочитал, впустите меня уже!</button>').appendTo('#ender').click(function(){
+            $.Storage.set("constitution", 'read')
+            constitution.html('');
+        });
+
+    });
 
 }
 
