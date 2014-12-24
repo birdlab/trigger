@@ -1,0 +1,84 @@
+@mixin border-radius ($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin box-shadow-inner ($x, $y, $size, $color) {
+  -webkit-box-shadow: inset $x $y $size $color;
+  -moz-box-shadow: inset $x $y $size $color;
+  box-shadow: inset $x $y $size $color;
+}
+@mixin box-shadow-outer ($x, $y, $size, $color) {
+  -webkit-box-shadow: $x $y $size $color;
+  -moz-box-shadow: $x $y $size $color;
+  box-shadow: $x $y $size $color;
+}
+@mixin box-shadow-both ($x1, $y1, $size1, $color1, $x2, $y2, $size2, $color2) {
+  -webkit-box-shadow: $x1 $y1 $size1 $color1, inset $x2 $y2 $size2 $color2;
+  -moz-box-shadow: $x1 $y1 $size1 $color1, inset $x2 $y2 $size2 $color2;
+  box-shadow: $x1 $y1 $size1 $color1, inset $x2 $y2 $size2 $color2;
+}
+@mixin box-sizing ($value) {
+  -moz-box-sizing: $value;
+  box-sizing: $value;
+}
+@mixin columns ($count, $gap) {
+  -webkit-column-count: $count;
+  -moz-column-count: $count;
+  column-count: $count;
+  -webkit-column-gap: $gap;
+  -moz-column-gap: $gap;
+  column-gap: $gap;
+}
+@mixin font-face ($name, $url) {
+  @font-face {
+    font-family: '$name';
+    src: url('$url.eot');
+    src: url('$url.eot?#iefix') format('embedded-opentype'),
+    url('$url.svg') format('svg'),
+    url('$url.woff') format('woff'),
+    url('$url.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+@mixin opacity ($opacity) {
+  filter: alpha(opacity=100 * $opacity);
+  opacity: $opacity;
+}
+@mixin transition ($property, $duration, $timing-function, $delay) {
+  -webkit-transition: $property $duration $timing-function $delay;
+  -moz-transition: $property $duration $timing-function $delay;
+  -o-transition: $property $duration $timing-function $delay;
+  transition: $property $duration $timing-function $delay;
+}
+@mixin transform ($value) {
+  -webkit-transform: $value;
+  -moz-transform: $value;
+  -o-transform: $value;
+  -ms-transform: $value;
+  transform: $value;
+}
+@mixin selection ($bg, $color) {
+  ::-moz-selection {
+    background: $bg;
+    color: $color;
+  }
+  ::selection {
+    background: $bg;
+    color: $color;
+  }
+}
+@mixin user-select ($value) {
+  -webkit-touch-callout: $value;
+  -webkit-user-select: $value;
+  -moz-user-select: $value;
+  -ms-user-select: $value;
+  user-select: $value;
+}
+@mixin placeholder ($color) {
+  &::-webkit-input-placeholder { color: #9a9a9a; }
+  &:-moz-placeholder { color: #9a9a9a; }
+  &::-moz-placeholder { color: #9a9a9a; }
+  &:-ms-input-placeholder { color: #9a9a9a; }
+}
