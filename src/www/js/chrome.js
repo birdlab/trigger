@@ -42,14 +42,12 @@ $(document).ready(function() {
     }
     $('.streamcontrol .play').click(function() {
         player.play(client.channel.hi);
-        $('.streamcontrol .play').hide();
-        $('.streamcontrol .stop').show();
+        $('.streamcontrol .switcher').classList.add('play');
         $.Storage.set("play", 'true');
     });
     $('.streamcontrol .stop').click(function() {
         player.stop();
-        $('.streamcontrol .stop').hide();
-        $('.streamcontrol .play').show();
+        $('.streamcontrol .switcher').classList.remove('play');
         $.Storage.set("play", 'false');
     });
     $('.streamcontrol .play').show();
