@@ -50,8 +50,7 @@ $(document).ready(function() {
         $('.streamcontrol .switcher').classList.remove('play');
         $.Storage.set("play", 'false');
     });
-    $('.streamcontrol .play').show();
-    $('.streamcontrol .stop').hide();
+    $('.streamcontrol .switcher').classList.add('play');
 
     $('#volume .slider').bind('mousedown', function(e) {
         e.preventDefault();
