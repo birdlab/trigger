@@ -696,7 +696,7 @@ table .rating .curnum {
 }
 
 .votebar .negative, .karma .negative {
-    background: url(/img/controls.png) no-repeat -24px 5px;
+    background: url(/img/controls.png) no-repeat -24px 5px; 
 }
 
 .messageinfo {
@@ -993,15 +993,15 @@ span.irony, #markups .irony {
 /* Иконочки(((((
 
 .full .editor-name {
-  background: url(img/queen.png) no-repeat 0 1px;
-  display: inline-block;
-  padding-left: 19px;
+	background: url(img/queen.png) no-repeat 0 1px;
+	display: inline-block;
+	padding-left: 19px;
 }
 
 .full .banned-name {
-  background: url(img/plankton.png) no-repeat 0 1px;
-  display: inline-block;
-  padding-left: 19px;
+	background: url(img/plankton.png) no-repeat 0 1px;
+	display: inline-block;
+	padding-left: 19px;
 }
 
 */
@@ -1025,73 +1025,3 @@ span.irony, #markups .irony {
 .htmleditor{
     background: #eee;
 }
-
-.switcher {
-    height: 100%;
-    margin-top: 12px;
-}
-.switcher.play .c {
-    fill: #FFE780;
-}
-.switcher.play .b3 {
-    -webkit-animation-name: dance;
-            animation-name: dance;
-    -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-    -webkit-animation-delay: 2s;
-            animation-delay: 2s;
-    -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-    -webkit-transform-origin: 50% 50%;
-        -ms-transform-origin: 50% 50%;
-            transform-origin: 50% 50%;
-}
-.switcher.play .b2 {
-    -webkit-animation-name: dance;
-            animation-name: dance;
-    -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-    -webkit-animation-delay: 1s;
-            animation-delay: 1s;
-    -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-    -webkit-transform-origin: 50% 50%;
-        -ms-transform-origin: 50% 50%;
-            transform-origin: 50% 50%;
-}
-.switcher.play .b1 {
-    -webkit-animation-name: dance;
-            animation-name: dance;
-    -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-    -webkit-animation-delay: 0s;
-            animation-delay: 0s;
-    -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-    -webkit-transform-origin: 50% 50%;
-        -ms-transform-origin: 50% 50%;
-            transform-origin: 50% 50%;
-}
-@-webkit-keyframes dance {
-    0% {
-        stroke: #FFE780;
-    }
-    100% {
-        stroke: #FFCC00;
-    }
-  }
-  @keyframes dance {
-    0% {
-        stroke: #FFE780;
-    }
-    100% {
-        stroke: #FFCC00;
-    }
-}
-
