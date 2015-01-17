@@ -1,0 +1,252 @@
+/* Console
+---------------------------------------------------------- */
+.console {
+  width: 18%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  background: $dark_grey;
+
+  &__top {
+    padding: 20px 0;
+  }
+
+  &.mini {
+    .logo,
+    .tagline,
+    .statistics,
+    .upload__files {
+      display: none;
+    }
+    .stream-control__volume {
+      width: 80%;
+    }
+  }
+}
+
+/* Stream Controls
+---------------------------------------------------------- */
+.stream-control {
+  margin-bottom: 20px;
+  &__power {
+    margin-bottom: 10px;
+    width: 50px;
+    height: 35px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__links {
+    margin-bottom: 10px;
+    font-size: 9px;
+  }
+  &__volume {
+    width: 125px;
+    .slider {
+      height: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #777;
+      &,
+      .bar {
+        @include border-radius(4px);
+      }
+      .bar {
+        width: 65%;
+        height: 100%;
+        background: #FFF;
+      }
+    }
+  }
+}
+
+/* Logo
+---------------------------------------------------------- */
+.logo {
+  width: 125px;
+  height: 25px;
+  margin: 0 auto;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Logo
+---------------------------------------------------------- */
+.elections {
+  text-align: center;
+  padding: 10px 0;
+  button {
+    padding: 8px 20px 7px;
+    color: #FFF;
+    border: 0;
+    background: red;
+  }
+}
+
+/* Upload
+---------------------------------------------------------- */
+.upload {
+  &__box {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: $orange;
+    .plus-icon {
+      font-size: 40px;
+      color: #FFF;
+    }
+  }
+  &__files {
+    @include box-sizing(border-box);
+    padding: 15px 10px 20px;
+    overflow-y: auto;
+    .upfile {
+      position: relative;
+      margin-bottom: 20px;
+      font-size: 11px;
+      color: #BBB;
+      &:last-child {
+        margin: 0;
+      }
+      input[type="text"],
+      textarea {
+        height: 23px;
+        margin-bottom: 3px;
+        padding: 0 5px;
+        font-size: 11px;
+        border: 0;
+        &:focus {
+          outline: $orange;
+          background: #ffeb9a;
+        }
+      }
+      textarea {
+        height: 46px;
+        padding: 5px;
+        line-height: 16px;
+      }
+      button {
+        display: inline-block;
+        border: 0;
+        outline: none;
+        cursor: pointer;
+        background: none;
+      }
+
+      /**
+       * Upfile components
+       */
+      &-path {
+        margin-bottom: 8px;
+        font-weight: 700;
+        line-height: 17px;
+        color: #FFF;
+      }
+      &-delete {
+
+      }
+      &-artist {}
+      &-title {}
+      &-descr {}
+      &-tags {
+        margin-bottom: 5px;
+      }
+      &-buttons {
+        position: absolute;
+        right: 0;
+        bottom: 6px;
+        %-upfile-button {
+          width: 16px;
+          padding: 0 2px;
+          font-size: 14px;
+        }
+        .f-upload,
+        .f-send {
+          @extend %-upfile-button;
+          color: $orange;
+          &:hover,
+          &:focus {
+            color: #00bc16;
+          }
+        }
+        .f-delete {
+          @extend %-upfile-button;
+          color: red;
+          &:hover,
+          &:focus {
+
+          }
+        }
+      }
+      &-progress {
+        height: 2px;
+        background: #777;
+        .bar {
+          width: 25%; /* temporary */
+          height: 100%;
+          background: $orange;
+        }
+      }
+    }
+  }
+}
+
+
+/* Theme Trigger
+---------------------------------------------------------- */
+.theme-trigger {
+  width: 100%;
+  padding: 4px 4px 3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #424242;
+  @include box-sizing(border-box);
+  .button {
+    display: list-item;
+    list-style: none;
+    float: left;
+    width: 20px;
+    height: 20px;
+    padding: 0 3px;
+    font-size: 16px;
+    vertical-align: middle;
+    text-align: center;
+    color: #FFF;
+    cursor: pointer;
+    &:hover,
+    &:focus,
+    &.active {
+      color: $orange;
+    }
+    &.active {
+      cursor: default;
+    }
+  }
+  .toggle-console {
+    float: right;
+  }
+}
+
+/* Tagline
+---------------------------------------------------------- */
+.tagline {
+  position: relative;
+  padding: 0 10px 0 28px;
+  color: #FFF;
+  &-icon {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    font-size: 12px;
+  }
+  &-text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

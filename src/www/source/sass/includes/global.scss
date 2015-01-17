@@ -1,0 +1,200 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700&subset=latin,cyrillic-ext);
+@import url(font-awesome.min.css);
+$light_gray: #BBB;
+ $dark_grey: #333;
+    $orange: #ffcd00;
+
+/* GENERAL
+---------------------------------------------------------- */
+@include selection(#c41230, #FFF); // $bg , $color
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: $dark_grey;
+}
+
+h1 { }
+h2 { }
+h3 { }
+h4 { }
+
+p {
+  margin-bottom: 10px;
+  &:last-child {
+    margin: 0;
+  }
+}
+
+ul,
+ol { list-style-position: inside; }
+
+img {
+  display: block;
+  @include user-select(none);
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+a {
+  color: $orange;
+  &:hover,
+  &:focus {
+    color: purple;
+    outline: 0;
+  }
+  &:active { color: red; }
+  &:visited { color: orange; }
+}
+
+.dashed {
+  &:hover,
+  &:focus { }
+}
+
+b,
+strong { font-weight: bold; }
+
+i,
+em { font-style: italic; }
+
+blockquote {
+  > h3 { }
+  > p { }
+}
+
+sup,
+sub
+ {
+  position: relative;
+  vertical-align: top;
+  font-size: .7em;
+}
+sup { top: -0.5em; }
+sub { bottom: -0.6em; }
+
+hr {
+  display: block;
+  height: 1px;
+  margin: 1em 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+/* UI Elements
+---------------------------------------------------------- */
+button,
+input[type="reset"],
+input[type="submit"],
+input[type="button"] {
+  padding: 7px 20px 6px;
+  color: #FFF;
+  border: 0;
+  background-color: #7C7C7C;
+  cursor: pointer;
+  @include border-radius(2px);
+  &:hover,
+  &:focus {
+    background-color: #6F6F6F;
+  }
+
+  &.green {
+    background-color: #43A047;
+    &:hover { background-color: #388E3C; }
+  }
+}
+
+input[type="tel"],
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="password"],
+textarea {
+  @include box-sizing(border-box);
+  display: block;
+  width: 100%;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  color: #141414;
+  &:hover { }
+  &:focus { }
+
+  // Placeholder color
+  @include placeholder(#9a9a9a);
+
+  @media screen and (max-width: 960px) {
+    font-size: 16px; // disable zoom-in on focus
+  }
+}
+
+textarea {
+  resize: none;
+  overflow: auto; /* Scroll fix in IE & FF */
+}
+
+/* Tables
+---------------------------------------------------------- */
+table {
+  thead {
+    tr { }
+    td { }
+  }
+  tbody {
+    tr { }
+    td { }
+  }
+}
+
+/* Layout
+---------------------------------------------------------- */
+.grid {
+  width: 940px;
+  margin: 0 auto;
+
+  // Tablet
+  @media screen and (max-width: 959px) {
+    width: 750px;
+  }
+
+  // Mini-tablet
+  @media screen and (max-width: 767px) {
+    width: 460px;
+  }
+
+  // Mobile
+  @media screen and (max-width: 479px) {
+    width: 300px;
+  }
+}
+
+/* Snipets
+---------------------------------------------------------- */
+.clearfix:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.hide { display: none; }
+.show { display: block; }
+.l-col,
+.left { float: left; }
+.r-col,
+.right { float: right; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-justify { text-align: justify; }
+.center-block { margin: 0 auto; }
+.list-reset { list-style: none; }
+.valign {
+  position: relative;
+  top: 50%;
+  @include transform(translateY(-50%));
+}

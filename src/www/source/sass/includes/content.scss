@@ -1,0 +1,319 @@
+/* Content
+---------------------------------------------------------- */
+.content {
+  width: 50%;
+  position: absolute;
+  top :0;
+  bottom: 0;
+  left: 50%;
+
+  @include box-sizing(border-box);
+  border-left: 1px solid #EEE;
+}
+
+.tabs {
+  display: table;
+  width: 100%;
+  .tab {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #BBB;
+    border-right: 1px solid #EEE;
+    border-bottom: 3px solid #bbb;
+    &:last-child {
+      border-right: none;
+    }
+    a {
+      display: block;
+      line-height: 57px;
+      text-decoration: none;
+      color: #BBB;
+    }
+
+    &:hover {
+      border-bottom-color: #424242;
+      a { color: #424242; }
+    }
+    &.active {
+      border-bottom-color: $orange;
+      a {
+        color: #424242;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.tabs-box {
+  padding: 15px;
+}
+
+// .transition {
+//   -webkit-transition: all .3s ease-in-out;
+//   -moz-transition: all .3s ease-in-out;
+//   -o-transition: all .3s ease-in-out;
+//   -ms-transition: all .3s ease-in-out;
+//   transition: all .3s ease-in-out;
+
+//   -webkit-transition-delay: .3s;
+//   -moz-transition-delay: .3s;
+//   -o-transition-delay: .3s;
+//   -ms-transition-delay: .3s;
+//   transition-delay: .3s;
+// }
+
+// .make_transist {
+//   -webkit-transition: all .3s ease-in-out;
+//   -moz-transition: all .3s ease-in-out;
+//   -o-transition: all .3s ease-in-out;
+//   -ms-transition: all .3s ease-in-out;
+//   transition: all .3s ease-in-out;
+// }
+
+// .hidescale {
+//   -webkit-transform: scale(0.9);
+//   -moz-transform: scale(0.9);
+//   -o-transform: scale(0.9);
+//   -ms-transform: scale(0.9);
+//   transform: scale(0.9);
+//   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+//   filter: alpha(opacity=0);
+//   filter: alpha(opacity=0);
+//   opacity: 0;
+// }
+
+// .showscale {
+//   -webkit-transform: scale(1);
+//   -moz-transform: scale(1);
+//   -o-transform: scale(1);
+//   -ms-transform: scale(1);
+//   transform: scale(1);
+//   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+//   filter: alpha(opacity=100);
+//   opacity: 1;
+
+//   -webkit-transition-delay: .3s;
+//   -moz-transition-delay: .3s;
+//   -o-transition-delay: .3s;
+//   -ms-transition-delay: .3s;
+//   transition-delay: .3s;
+// }
+
+/* Chat
+---------------------------------------------------------- */
+.chat {
+
+  /* Messages list */
+  &__log {
+    width: 80%;
+    float: left;
+    padding: 5px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid #EEE;
+    @include box-sizing(border-box);
+
+    .message {
+      display: table;
+      width: 100%;
+      padding: 6px 5px;
+      border-top: 1px solid #f6f6f6;
+      @include box-sizing(border-box);
+      &-author,
+      &-text,
+      &-info {
+        display: table-cell;
+        vertical-align: top;
+      }
+
+      &-author {
+        padding-right: 6px;
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      &-text {
+        width: 100%;
+        padding-right: 5px;
+        font-size: 13px;
+        .irony {
+          font-style: italic;
+          color: red;
+        }
+        img {
+          max-height: 300px !important;
+          max-width: 100% !important;
+          margin: 8px 0;
+        }
+      }
+      &-info {
+        font-size: 10px;
+        min-width: 90px;
+        text-align: right;
+      }
+      &-time {
+        display: block;
+        color: #CCC;
+      }
+      &-track {
+        font-size: 12px;
+        text-decoration: none;
+        color: #DDD;
+        &:hover {
+          cursor: pointer;
+          color: $orange;
+        }
+      }
+
+    }
+  }
+
+  /* Users list */
+  &__users {
+    width: 20%;
+    float: right;
+    padding: 5px;
+    @include box-sizing(border-box);
+  }
+
+  /* Chat textarea */
+  &__input {
+    clear: both;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    textarea {
+      -webkit-appearance: none;
+      outline: 0 none;
+      width: 100%;
+      height: 73px;
+      min-height: 73px;
+      overflow-y: auto;
+      padding: 5px;
+      font-size: 12px;
+      border: 0;
+      border-top: 3px solid #BBB;
+    }
+  }
+  &-settings {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    .but {
+      display: list-item;
+      list-style: none;
+      float: left;
+      font-size: 14px;
+      padding: 0 3px;
+      cursor: pointer;
+      &:hover,
+      &:focus,
+      .active {
+        color: $orange;
+      }
+    }
+    .irony {
+      color: red;
+    }
+    .tink {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+/* Democrasy
+---------------------------------------------------------- */
+.democrasy {
+  padding: 15px;
+}
+.voting {
+  margin-bottom: 30px;
+  padding: 12px 15px 15px;
+  background: #EEE;
+  header {
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .candidate {
+    float: left;
+    line-height: 28px;
+  }
+  input {
+    padding: 2px 5px;
+    margin-bottom: 10px;
+  }
+  button {
+    float: right; }
+}
+.moderators {
+  b {
+    display: block;
+    margin-bottom: 5px;
+  }
+  &__prman {
+    margin-bottom: 20px;
+    a {
+      padding-left: 20px;
+      background: url(../images/crown.png) 0 0 no-repeat;
+    }
+  }
+  &__editors {
+    li { margin-bottom: 2px; }
+  }
+}
+
+/* SPLITTER */
+#splitter {
+  width: 100%;
+  height: auto;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+}
+.splitter-wrap {
+  width: 82%;
+  height: auto;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  left: 18%;
+}
+.jqx-splitter {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border: 0;
+  &-panel {
+    overflow: hidden;
+    position: absolute;
+    border: none;
+    outline: none;
+  }
+  &-splitbar-vertical {
+    position: absolute;
+    cursor: e-resize;
+    cursor: col-resize;
+    border: 1px solid transparent;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    background: #BBB;
+    &:hover {
+      background: $orange;
+    }
+  }
+}
+
+.jqx-splitter-collapse-button-vertical {
+  background: url(../images/splitVert.gif) 0px 13px no-repeat;
+  //width: 4px !important;
+  left: 0px !important;
+  &.jqx-fill-state-pressed {}
+}
