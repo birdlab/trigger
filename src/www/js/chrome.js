@@ -63,7 +63,6 @@ $(document).ready(function() {
     // $(".nano").nanoScroller();
 
     var sheet = $.Storage.get("style");
-    console.log(sheet);
     if (sheet) {
         switch_style(sheet);
     } else {
@@ -103,7 +102,6 @@ $(document).ready(function() {
 
 
     client = new Client();
-    console.log(client);
     $(client).bind('welcome', function(event, data) {
         if (data) {
             showChannels(data);
@@ -470,16 +468,31 @@ function onChannel(data) {
     $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank">192kbps</a>');
     var list = $('#playlist .list');
     list.html('');
-    for (var t in data.pls) {
-        addtrack(data.pls[t]);
+    var t = 0;
+    var addtr = function() {
+        var fin = false;
+        for (var dt = t; dt < t + 1; dt++) {
+            if (dt < data.pls.length) {
+                addtrack(data.pls[dt]);
+            } else {
+                fin = true;
+                break;
+            }
+        }
+        t = dt;
+        if (!fin) {
+            setTimeout(addtr, 50);
+        }
     }
+    addtr();
+
+
     if (list.height() < $('#playlist .inner').height()) {
         $('#playlist .list .advice').remove();
         list.append('<li class="advice">Самое время нести!</li>');
     } else {
         $('#playlist .list .advice').remove();
     }
-    updatetimes();
     if (client.user) {
         $('#info .tabs .chat').trigger('click');
     }
@@ -493,7 +506,6 @@ function onChannel(data) {
         }
     }
     newTagline();
-
 }
 
 
@@ -501,7 +513,7 @@ function processLogin(data) {
     console.log('process login', data);
     if (data.user) {
         var rc = $.Storage.get("constitution");
-        if (rc!='read'){
+        if (rc != 'read') {
             readConstitution();
         }
         newTagline();
@@ -756,8 +768,9 @@ function removetrack(trackid) {
     });
 }
 function addtrack(track) {
-    var item = $('<li class="item"></li>').appendTo($('#playlist .list'));
+    var item = $('<li class="item"></li>');
     var base = $('<div class="base"></div>').appendTo(item);
+
 
     var fastag = ''
     if (track.tg.length > 0) {
@@ -771,7 +784,6 @@ function addtrack(track) {
     var trackartist = base.find('.artist');
     var tracktitle = base.find('.title');
     if (client.user) {
-        console.log(client.channel.prch);
         if (track.sid == client.user.id) {
             item.addClass('my');
         }
@@ -919,6 +931,7 @@ function addtrack(track) {
             var numb = $('<div class="numb">' + client.track(track.id).vote + '</div>').appendTo(voting);
             var positive = $('<div class="positive but"></div>').appendTo(voting);
             var up = $('<div class="up but"></div>').appendTo(voting);
+            $('<br>').appendTo(voting);
 
             var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
             var positivelist = $(voters).find(".pvotes");
@@ -979,7 +992,9 @@ function addtrack(track) {
         $(this).removeClass('tru');
         updatetimes();
     });
+    item.appendTo($('#playlist .list'));
     sortTracks();
+
 }
 
 function opentrack(track) {
@@ -1097,15 +1112,39 @@ function setcurtime(fast) {
         $('#playlist .current .timer .cursor').css({'width': client.channel.ct / client.channel.current.tt * $('#playlist .current .timer').width()});
     }
 }
+function isElementInViewport(el) {
+
+    //special bonus for those using jQuery
+    if (typeof jQuery === "function" && el instanceof jQuery) {
+        el = el[0];
+    }
+    if (el) {
+        var rect = el.getBoundingClientRect();
+
+        return (
+            rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+            );
+    } else {
+        return false;
+    }
+}
+
 function updatetimes() {
     var offset = client.channel.current.tt - client.channel.ct;
 
+
     for (var t in client.channel.pls) {
-        var item = $('#playlist .trackid' + client.channel.pls[t].id + ' .base');
-        if (!item.hasClass('tru')) {
-            $('#playlist .trackid' + client.channel.pls[t].id + ' .time').html("+" + secToTime(offset));
-        } else {
-            $('#playlist .trackid' + client.channel.pls[t].id + ' .time').html(secToTime(client.channel.pls[t].tt));
+        var item = $('#' + client.channel.pls[t].id + ' .base');
+        if (isElementInViewport(item)) {
+            if (!item.hasClass('tru')) {
+                $('#' + client.channel.pls[t].id + ' .time').html("+" + secToTime(offset));
+            } else {
+                $('#' + client.channel.pls[t].id + ' .time').html(secToTime(client.channel.pls[t].tt));
+            }
+
         }
         offset += client.channel.pls[t].tt;
     }
@@ -1127,12 +1166,12 @@ function secToTime(time) {
 
 }
 
-function readConstitution(){
-    var constitution=$('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
-    var jqxhr = $.get( "/constitution.html", function(data) {
-        data+='<div id="ender"></div>';
+function readConstitution() {
+    var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
+    var jqxhr = $.get("/constitution.html", function(data) {
+        data += '<div id="ender"></div>';
         $('#coninside').html(data);
-        $('<button>Я все прочитал, впустите меня уже!</button>').appendTo('#ender').click(function(){
+        $('<button>Я все прочитал, впустите меня уже!</button>').appendTo('#ender').click(function() {
             $.Storage.set("constitution", 'read')
             constitution.html('');
         });
