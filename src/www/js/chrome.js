@@ -470,7 +470,7 @@ function onChannel(data) {
     //$('#console .info .chname').html('<a href="javascript:showChannels();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
-    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank">192kbps</a>');
+    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank" onclick="player.play('+client.channel.hi+'); return false">ogg</a> | <a href="' + client.channel.hi+'mp3" target="_blank" onclick="player.play('+client.channel.hi+'mp3); return false">mp3</a>');
     var list = $('#playlist .list');
     list.html('');
     var t = 0;

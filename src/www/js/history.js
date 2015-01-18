@@ -5,7 +5,7 @@
 function showHistory(g, shift) {
     $('.content.history').show();
     $('#info .tabs .tab').removeClass('active').children('a').removeClass('hover');
-    $('#info .tabs .tab .content .history').addClass('active').children('a').addClass('hover');
+    $('#info .tabs .tab.history').addClass('active').children('a').addClass('hover');
     historyprocess = true;
     var sh = 0;
     if (shift) {
