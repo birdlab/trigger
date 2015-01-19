@@ -296,7 +296,7 @@ function addMessage(md) {
             if (trtm) {
                 clearTimeout(trtm);
             }
-            upadateMT(message);
+            updateMT(message);
         });
         message.time = new Date(md.t).getTime();
         if (messages.length) {
@@ -317,11 +317,11 @@ function addMessage(md) {
             message.find("img").css('display', 'none').after('<span class="pc">картинка</span>');
         }
         now = new Date().getTime();
-        upadateMT(message);
+        updateMT(message);
     }
 }
 
-function upadateMT(message) {
+function updateMT(message) {
     var delta = now - message.time;
     var timediv = $(message).find('.messageinfo');
     if (delta < 5000) {
@@ -351,12 +351,15 @@ function upadateMT(message) {
     if (delta > 3600000 && delta < 7200000) {
         timediv.html('час назад');
     }
-    if (delta > 7200000) {
+    if (delta > 7200000 && delta < 86400000) {
         if (delta < 10800000) {
             timediv.html(Math.round((now - message.time) / 3600000) + ' часа назад');
         } else {
             timediv.html(Math.round((now - message.time) / 3600000) + ' часов назад');
         }
+    }
+    if (delta > 86400000) {
+        timediv.html(Math.round((now - message.time) / 86400000) + ' дней назад');
     }
 }
 

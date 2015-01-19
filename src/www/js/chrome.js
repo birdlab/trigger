@@ -470,7 +470,7 @@ function onChannel(data) {
     //$('#console .info .chname').html('<a href="javascript:showChannels();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
-    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank" onclick="player.play('+client.channel.hi+'); return false">ogg</a> | <a href="' + client.channel.hi+'mp3" target="_blank" onclick="player.play('+client.channel.hi+'mp3); return false">mp3</a>');
+    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank" onclick="player.play(\'' + client.channel.hi + '\'); return false">ogg</a> | <a href="' + client.channel.hi + 'mp3" target="_blank" onclick="player.play(' + client.channel.hi + 'mp3); return false">mp3</a>');
     var list = $('#playlist .list');
     list.html('');
     var t = 0;
@@ -517,7 +517,7 @@ function onChannel(data) {
 function processLogin(data) {
     console.log('process login', data);
     if (data.user) {
-        var rc = $.Storage.get("constitution");
+        var rc = $.Storage.get("constitution_1");
         if (rc != 'read') {
             readConstitution();
         }
@@ -1022,8 +1022,8 @@ function opentrack(track) {
             base.trigger('click');
         }
     } else {
-        if (track.tt) {
-            showHistory(false, new Date(Date.parse(track.tt)));
+        if (track.tl) {
+            showHistory(false, new Date(Date.parse(track.tl)+10800000+12000));
         }
     }
 
@@ -1171,11 +1171,14 @@ function secToTime(time) {
 
 function readConstitution() {
     var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
+    $('#con').css('left', $('#console').css('width'));
+    $('#con').css('width', $('#content').css('width')-$('#console').css('width'));
+
     var jqxhr = $.get("/constitution.html", function(data) {
         data += '<div id="ender"></div>';
         $('#coninside').html(data);
         $('<button>Я все прочитал, впустите меня уже!</button>').appendTo('#ender').click(function() {
-            $.Storage.set("constitution", 'read')
+            $.Storage.set("constitution_1", 'read')
             constitution.html('');
         });
 
@@ -1189,7 +1192,9 @@ var sectrack = setInterval(function() {
         now = new Date().getTime();
         for (var a = messages.length; a > 0; a--) {
             if (messages.length > a) {
-                upadateMT(messages[a]);
+                if (isElementInViewport(messages[a])) {
+                    updateMT(messages[a]);
+                }
             }
         }
     }

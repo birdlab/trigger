@@ -344,7 +344,8 @@ exports.getTrackByID = function(id, callback) {
                 a: result[0].artist,
                 t: result[0].title,
                 id: result[0].id,
-                tt: result[0].playdate
+                tl: result[0].playdate,
+                tt: result[0].time
             }
             callback(track);
         }
