@@ -4,8 +4,7 @@
     };
 })(jQuery);
 
-
-var timezone = 10800000, client = null, remember_name = true, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
+var timezone = 10800000, stream_mode = '', client = null, remember_name = true, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
 function switch_style(css_title) {
 // You may use this script on your site free of charge provided
 // you do not remove this notice or the URL below. Script from
@@ -106,7 +105,6 @@ $(document).ready(function() {
 
 
     client = new Client();
-    console.log(client);
     $(client).bind('welcome', function(event, data) {
         if (data) {
             showChannels(data);
@@ -133,9 +131,6 @@ $(document).ready(function() {
         $('#info .tabs .chat').hide();
         $('.loginform .alert').html('потеряно соединение с сервером');
         $('#console .upfiles').hide();
-        player.stop();
-        $('#console .streamcontrol .stop').hide();
-        $('#console .streamcontrol .play').show();
 
     });
     $(client).bind('message', function(event, data) {
@@ -467,10 +462,48 @@ function onChannel(data) {
     setCurrent(data.current);
     setcurtime(true);
     $.Storage.set("channel", client.channel.chid + ' ');
+    stream_mode = $.Storage.get("stream_mode");
+    if (!stream_mode) {
+        stream_mode = 'ogg';
+    }
+    console.log('stream_mode', stream_mode);
     //$('#console .info .chname').html('<a href="javascript:showChannels();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
-    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" target="_blank" onclick="player.play(\'' + client.channel.hi + '\'); return false">ogg</a> | <a href="' + client.channel.hi + 'mp3" target="_blank" onclick="player.play(' + client.channel.hi + 'mp3); return false">mp3</a>');
+    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="192kbps" target="_blank">mp3</a>');
+    if (stream_mode == 'ogg') {
+        $('#console .streamcontrol .links .mp3').addClass('blured');
+    } else {
+        $('#console .streamcontrol .links .ogg').addClass('blured');
+    }
+    $('#console .streamcontrol .links .ogg').click(function(e) {
+        if (stream_mode != 'ogg') {
+            if (player.canplay('audio/ogg')) {
+                e.preventDefault();
+                $('#console .streamcontrol .links').children().removeClass('blured');
+                $('#console .streamcontrol .links .mp3').addClass('blured');
+                player.play(client.channel.hi);
+                stream_mode = 'ogg';
+                $.Storage.set('stream_mode', stream_mode);
+                return false;
+            }
+        }
+
+    });
+    $('#console .streamcontrol .links .mp3').click(function(e) {
+        if (stream_mode != 'mp3') {
+            if (player.canplay('audio/mpeg')) {
+                e.preventDefault();
+                $('#console .streamcontrol .links').children().removeClass('blured');
+                $('#console .streamcontrol .links .ogg').addClass('blured');
+                player.play(client.channel.low);
+                stream_mode = 'mp3';
+                $.Storage.set('stream_mode', stream_mode);
+                return false;
+            }
+
+        }
+    });
     var list = $('#playlist .list');
     list.html('');
     var t = 0;
@@ -504,7 +537,11 @@ function onChannel(data) {
         var startplay = $.Storage.get("play");
         if (startplay == 't' +
             'rue') {
-            player.play(client.channel.hi);
+            if (stream_mode == 'ogg') {
+                player.play(client.channel.hi);
+            } else {
+                player.play(client.channel.low);
+            }
             $.Storage.set("play", 'false');
             $('#console .streamcontrol .play').click();
         }
@@ -515,7 +552,6 @@ function onChannel(data) {
 
 
 function processLogin(data) {
-    console.log('process login', data);
     if (data.user) {
         var rc = $.Storage.get("constitution_1");
         if (rc != 'read') {
@@ -788,7 +824,7 @@ function addtrack(track) {
     var trackartist = base.find('.artist');
     var tracktitle = base.find('.title');
     if (client.user) {
-        console.log(client.channel.prch);
+
         if (track.sid == client.user.id) {
             item.addClass('my');
         }
@@ -848,7 +884,11 @@ function addtrack(track) {
     }
 
 //Автор трека
-    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+    if (track.ut) {
+        //  var trackuploadtime = track.ut.format("HH:MM");
+    }
+
+    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a> <span class="howold"></span></div>');
     if (inf == '') {
         $(".sender").css('padding-top', '0');
     }
@@ -987,6 +1027,48 @@ function addtrack(track) {
             full.toggle({step: onresize});
         } else {
             full.toggle(400);
+            if ($(this).hasClass('expanded')) {
+
+                var now = new Date(Date.now() + 10800000);
+                var delta = Date.parse(now) - Date.parse(track.ut);
+                var uptext = '';
+
+                if (delta < 5000) {
+
+                    uptext = 'только что';
+                }
+                if (delta > 5000 && delta < 60000) {
+                    uptext = Math.round(delta / 1000) + ' секунд назад';
+                }
+                if (delta > 60000 && delta < 1800000) {
+                    var tm = Math.round(delta / 60000);
+                    var str = tm.toString();
+                    var ttm = parseInt(str[length - 1]);
+                    var mes = ' минут назад';
+                    if (tm < 2) {
+                        tm = '';
+                        mes = ' минуту назад';
+                    }
+                    if (tm > 1 && tm < 5) {
+                        mes = ' минуты назад';
+                    }
+                    uptext = tm + mes;
+                }
+                if (delta > 1800000 && delta < 3600000) {
+                    uptext = 'полчаса назад';
+                }
+                if (delta > 3600000 && delta < 7200000) {
+                    uptext = 'час назад';
+                }
+                if (delta > 7200000 && delta < 86400000) {
+                    if (delta < 10800000+3600000) {
+                        uptext = Math.round(delta / 3600000) + ' часа назад';
+                    } else {
+                        uptext = Math.round(delta / 3600000) + ' часов назад';
+                    }
+                }
+                full.find('.howold').html(uptext);
+            }
         }
     });
     base.hover(function(ein) {
@@ -1023,7 +1105,7 @@ function opentrack(track) {
         }
     } else {
         if (track.tl) {
-            showHistory(false, new Date(Date.parse(track.tl)+10800000+12000));
+            showHistory(false, new Date(Date.parse(track.tl) + 10800000 + 12000));
         }
     }
 
@@ -1172,7 +1254,7 @@ function secToTime(time) {
 function readConstitution() {
     var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
     $('#con').css('left', $('#console').css('width'));
-    $('#con').css('width', $('#content').css('width')-$('#console').css('width'));
+    $('#con').css('width', $('#content').css('width') - $('#console').css('width'));
 
     var jqxhr = $.get("/constitution.html", function(data) {
         data += '<div id="ender"></div>';

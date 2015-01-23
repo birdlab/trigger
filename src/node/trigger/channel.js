@@ -498,6 +498,7 @@ Channel.prototype.addTrack = function(data, callback) {
             if (ans) {
                 track.time = ans;
                 if (track.id) {
+                    track.date=new Date(Date.parse(track.date)+10800000);
                     ch.playlist.push(track);
                     ch.sort();
                     if (!ch.current && ch.playlist.length > 0) {
@@ -519,6 +520,7 @@ Channel.prototype.addTrack = function(data, callback) {
                             track.info = san.sanitize(track.info);
                             db.addTrack(track, function() {
                                 track.rating = 0;
+                                track.date=new Date(Date.now()+10800000);
                                 track.positive = [];
                                 track.negative = [];
                                 if (!track.novote) {
@@ -782,8 +784,6 @@ Channel.prototype.addPRVote = function(data, callback) {
     var is = false;
     var already = false;
     data.prid = parseInt(data.prid);
-    //console.log(ch.electionData.candidates.length);
-    //console.log(data.voterid + ' голосует за ' + data.prid);
     for (var j in ch.electionData.candidates) {
         var candidate = ch.electionData.candidates[j];
         if (candidate) {
@@ -852,12 +852,10 @@ Channel.prototype.killTrack = function(trackid, self) {
     }
     for (var t in this.playlist) {
         if (ch.playlist[t].id == trackid) {
-            if (self) {
-                var tr = ch.playlist[t];
-                db.removeTrack(trackid, function() {
-                    main.user(tr.submiter).updateLimits();
-                });
-            }
+            var tr = ch.playlist[t];
+            db.removeTrack(trackid, function() {
+                main.user(tr.submiter).updateLimits();
+            });
             killfile(ch.playlist[t].path);
             ch.playlist.splice(t, 1);
             ch.sort();
@@ -872,6 +870,13 @@ Channel.prototype.sort = function() {
     if (this.playlist.length > 0) {
         var nxt = this.playlist[0].id;
         this.playlist.sort(sortFunction);
+        var now = new Date(Date.now()+10800000)
+        for (var i in this.playlist) {
+            var track = this.playlist[i];
+            if (Date.parse(now) - Date.parse(track.date) > 43200000) {
+                this.killTrack(track.id);
+            }
+        }
         if (this.playlist[0].id != nxt || this.playlist.length == 1) {
             this.setNext();
         }
@@ -1000,6 +1005,7 @@ function packTrackData(track) {
             id: track.id,
             sid: track.submiter,
             tt: track.time,
+            ut: track.date,
             i: track.info,
             tg: track.tags,
             p: [],

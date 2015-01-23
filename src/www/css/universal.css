@@ -286,6 +286,7 @@ input[type="password"] {
     height: 22px;
 
 }
+
 #ender button {
     border: none;
     color: #FFF;
@@ -321,27 +322,35 @@ input.id {
 #con {
     position: absolute;
     width: 100%;
-    padding-bottom:0px;
+    padding-bottom: 0px;
     background: #333;
 }
-#coninside{
+
+#coninside {
     width: 50%;
     margin: 0 auto;
     padding-top: 100px;
     padding-bottom: 100px;
 }
+
 #ender {
     text-align: center;
 }
+
 #con small {
     font-weight: 100;
     color: #cdcdcd;
 }
+
 #con p {
     font-weight: 100;
     color: #cdcdcd;
 }
 
 #coninside {
-    color:#ffffff !important;
+    color: #ffffff !important;
+}
+
+#console .links .blured {
+    color: #aaa !important;
 }

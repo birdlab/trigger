@@ -5,11 +5,9 @@ Player = function(divname) {
     this.mode = 'html5';
     this.sound = new Audio();
     if (this.sound.canPlayType('audio/ogg')) {
-        console.log('audio/ogg');
     } else {
         this.prefix = 'mp3';
         if (this.sound.canPlayType('audio/mpeg')) {
-            console.log('audio/mpeg');
         } else {
             this.flname = 'radio';
             this.mode = 'flash';
@@ -25,8 +23,16 @@ Player.prototype = {
 
     constructor: Player,
 
+    canplay: function(format) {
+        var can=this.sound.canPlayType(format);
+        if (!can&&format==audio/mpeg){
+            can=true;
+        }
+        return can;
+    },
+
     play: function(path) {
-        path=path+this.prefix;
+        path = path + this.prefix;
         if (this.mode == 'flash') {
             var p = this;
             if (getflashinstance(this.flname)) {
@@ -46,6 +52,8 @@ Player.prototype = {
             this.sound.loop = 'loop';
             this.sound.play();
             this.playing = true;
+            $('.streamcontrol .play').hide();
+            $('.streamcontrol .stop').show();
         }
         this.path = path;
     },
