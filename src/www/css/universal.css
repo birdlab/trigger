@@ -358,3 +358,7 @@ input.id {
 .item .rating .real {
     font-size: 12px;
 }
+
+.tab.channels a.new{
+    color: #ffcd00 !important;
+}

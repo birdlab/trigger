@@ -1,3 +1,5 @@
+var reader=false;
+
 function fillchannelsdata(d) {
     var sorting = function(a, b) {
         if (a.lst) {
@@ -100,7 +102,6 @@ function fillchannelsdata(d) {
             $(enode).children('.delete').click(function(event) {
                 console.log(event);
                 var bl = event.target.parentNode.parentNode;
-                console.log(bl.id);
                 client.removeop({id: event.target.id, chid: bl.id}, function(cd) {
                     console.log(cd);
                     if (cd.editors) {
@@ -127,17 +128,24 @@ function fillchannelsdata(d) {
             var chd = $(channeldom).appendTo(chdd);
             // $('<div class="hint"><<<клик</div>').appendTo(chd);
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
-            var reader = setTimeout(function() {
-                storageinfo = $.Storage.get("channel" + cd.id);
-                if (storageinfo != cd.description) {
-                    console.log('info changed');
-                    $('#info .tab .channels a').html('Демократия (!)');
-                }
-                if ($('#info .content.channels').is(':visible')) {
+            var storageinfo = $.Storage.get("channel" + cd.id);
+            if (storageinfo != cd.description) {
+                console.log('info changed');
+                $('#info .tab.channels a').html('Демократия (!)');
+                $('#info .tab.channels a').addClass('new');
+            } else {
+                $('#info .tab.channels a').html('Демократия');
+                $('#info .tab.channels a').removeClass('new');
+            }
+            clearTimeout(reader);
+            reader = setTimeout(function() {
+                if ($('#info .tab.channels').hasClass('active')) {
                     $.Storage.set("channel" + cd.id, cd.description);
-                    $('#info .tab .channels a').html('Демократия');
+                    $('#info .tab.channels a').html('Демократия');
+                    $('#info .tab.channels a').removeClass('new');
                 }
-            }, 3000);
+
+            }, 5000);
             if (client.user) {
                 if (client.user.prch) {
                     if (client.user.prch == cd.id) {

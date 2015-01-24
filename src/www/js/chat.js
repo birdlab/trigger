@@ -256,19 +256,16 @@ function addMessage(md) {
                 if (res) {
                     var str = '';
                     if (i == 0) {
-                        console.log('sending req');
                         client.track(parseInt(res[1]), function(tr) {
                             str = '<a href="#">' + tr.a + ' - ' + tr.t + '</a>';
                             var toupdate = $(message).find('.sms').html();
                             toupdate = toupdate.replace(res[0], str);
                             $(message).find('.sms').html(toupdate);
                             var href = $(message).find('a').attr('id', tr.id);
-                            console.log('replace ok');
                             href.click(function() {
                                 console.log('opening', tr);
                                 opentrack(tr);
                             })
-                            // analys();
                         });
                     }
                 }
