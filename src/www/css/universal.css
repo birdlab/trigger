@@ -27,6 +27,14 @@
     margin: 0 auto;
 }
 
+#coninside {
+    color: #ffffff !important;
+}
+
+#console .links .blured {
+    color: #aaa !important;
+}
+
 #console {
     width: 15%;
     position: fixed;
@@ -347,10 +355,6 @@ input.id {
     color: #cdcdcd;
 }
 
-#coninside {
-    color: #ffffff !important;
-}
-
-#console .links .blured {
-    color: #aaa !important;
+.item .rating .real {
+    font-size: 12px;
 }

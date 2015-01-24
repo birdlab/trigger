@@ -27,7 +27,8 @@ function addhistory(track) {
     var item = $('<li class="item"></li>').appendTo('#info .content.history .list');
     var base = $('<div class="base"></div>').appendTo(item);
     var date = new Date(track.tt);
-    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '</div></td></tr></table>');
+    track.rr=track.p.length-track.n.length;
+    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r +'<span class="real">/'+track.rr+ '</span></div></td></tr></table>');
 
 
     var art = $(base).find('.artwork');

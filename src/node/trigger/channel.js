@@ -34,6 +34,7 @@ function Channel(i) {
     this.active = 0;
     this.election = false;
     this.electionData = {};
+    this.weightrate=10;
     var ch = this;
     setTimeout(function() {
         ch.checkFile();
@@ -156,6 +157,7 @@ Channel.prototype.setop = function(data, callback) {
         }
     }
 }
+
 
 Channel.prototype.removeop = function(data, callback) {
     var ch = this;
@@ -498,7 +500,7 @@ Channel.prototype.addTrack = function(data, callback) {
             if (ans) {
                 track.time = ans;
                 if (track.id) {
-                    track.date=new Date(Date.parse(track.date)+10800000);
+                    track.date = new Date(Date.parse(track.date) + 10800000);
                     ch.playlist.push(track);
                     ch.sort();
                     if (!ch.current && ch.playlist.length > 0) {
@@ -520,7 +522,7 @@ Channel.prototype.addTrack = function(data, callback) {
                             track.info = san.sanitize(track.info);
                             db.addTrack(track, function() {
                                 track.rating = 0;
-                                track.date=new Date(Date.now()+10800000);
+                                track.date = new Date(Date.now() + 10800000);
                                 track.positive = [];
                                 track.negative = [];
                                 if (!track.novote) {
@@ -654,25 +656,27 @@ Channel.prototype.addVote = function(data, callback) {
         track = ch.track(data.id);
     }
     if (track) {
-        if (Math.abs(data.v) <= data.user.weight) {
-            var vdata = findvote(track, data.user.id);
-            if (vdata) {
-                if (vdata.value != data.v) {
-                    vdata.group.splice(vdata.index, 1);
+        if (Number(data.v) | 0 === Number(data.v)) {
+            if (Math.abs(data.v) <= data.user.weight) {
+                var vdata = findvote(track, data.user.id);
+                if (vdata) {
+                    if (vdata.value != data.v) {
+                        vdata.group.splice(vdata.index, 1);
+                        addv();
+                        if (!data.inside) {
+                            ch.sort();
+                            sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
+                        }
+                    }
+                } else {
                     addv();
                     if (!data.inside) {
                         ch.sort();
                         sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
                     }
                 }
-            } else {
-                addv();
-                if (!data.inside) {
-                    ch.sort();
-                    sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
-                }
+                db.addVote(data);
             }
-            db.addVote(data);
         }
     }
     if (callback) {
@@ -870,7 +874,7 @@ Channel.prototype.sort = function() {
     if (this.playlist.length > 0) {
         var nxt = this.playlist[0].id;
         this.playlist.sort(sortFunction);
-        var now = new Date(Date.now()+10800000)
+        var now = new Date(Date.now() + 10800000)
         for (var i in this.playlist) {
             var track = this.playlist[i];
             if (Date.parse(now) - Date.parse(track.date) > 43200000) {

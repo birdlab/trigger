@@ -373,7 +373,7 @@ exports.getChannels = function(callback) {
                             }
                         }
                     }
-                    var req = 'SELECT banned.*, users.name FROM banned LEFT JOIN users ON banned.id=users.id;';
+                    var req = 'SELECT banned.*, users.name, killer_user.name as killername FROM banned LEFT JOIN users ON banned.id=users.id LEFT JOIN users AS killer_user ON banned.killerid=killer_user.id;';
                     db.connection.query(req, function(err, res, fields) {
                         if (!err) {
                             for (var t in result) {
@@ -383,6 +383,8 @@ exports.getChannels = function(callback) {
                                         var ban = {
                                             id: res[v].id,
                                             name: res[v].name,
+                                            killerid:res[v].killerid,
+                                            killername:res[v].killername,
                                             reason: res[v].reason
                                         };
                                         result[t].banned.push(ban);

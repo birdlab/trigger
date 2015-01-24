@@ -42,8 +42,8 @@ User.prototype.init = function(data) {
                 }
             }
             user.rating = sum;
-            // user.weight = Math.floor(user.rating / 10) + 1;
-            user.weight = 1;
+            user.weight = Math.floor(user.rating / 10) + 1;
+            //user.weight = 1;
         }
     }
     if (main.fastdata.users){
