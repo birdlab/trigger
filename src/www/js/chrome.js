@@ -614,9 +614,6 @@ function goLogin() {
 }
 
 
-function proc(pos) {
-    return (pos / $(window).width()) * 100 + '%';
-}
 
 function setCurrent(track) {
     var cur = $('#playlist .current').html('');

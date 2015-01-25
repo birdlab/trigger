@@ -47,7 +47,6 @@ $(document).ready(function() {
         });
     });
     $('#usersresizer').mousedown(function(e) {
-        console.log('mouse in users resizer');
         e.preventDefault();
         $('body').css({'cursor': 'ew-resize'});
         $(window).bind('mousemove', userlistresize);
@@ -59,6 +58,7 @@ $(document).ready(function() {
     var consolesize = $.Storage.get("console_size");
     var playlistsize = $.Storage.get("playlist_size");
     var infosize = $.Storage.get("info_size");
+    var userlistsize=$.Storage.get("userlist_size");
 
 
     if (consolesize) {
@@ -69,6 +69,10 @@ $(document).ready(function() {
     }
     if (infosize) {
         $('#info').css({'width': infosize});
+    }
+    if (userlistsize) {
+        $('#info .content.chat .users').css({'margin-left': userlistsize});
+        $('#info .content.chat .log').css({'width': userlistsize});
     }
 
 });
@@ -113,12 +117,16 @@ function consoleresize(e) {
 }
 function userlistresize(e) {
     var ww = $('#info').width();
-    console.log(e);
     var uproc=function(pos){
-        return (pos / $(window).width()) * 100 + '%';
+        var calcpos=ww-($(window).width()-pos);
+        if (calcpos>ww-80){
+            calcpos=ww-80;
+        }
+        return calcpos / ww * 100 + '%';
     }
     $('#info .content.chat .users').css({'margin-left': uproc(e.pageX)});
     $('#info .content.chat .log').css({'width': uproc(e.pageX)});
+    $.Storage.set("userlist_size", uproc(e.pageX));
 
 }
 

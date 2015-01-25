@@ -268,7 +268,6 @@ input[type="password"] {
     width:8px;
     position: absolute;
     height: 76%;
-    background: red;
     cursor: ew-resize;
 }
 
