@@ -583,14 +583,6 @@ table .rating .curnum {
     margin-top: -70px;
 }
 
-.resizer {
-    width: 6px;
-    cursor: ew-resize;
-    height: 100%;
-    position: absolute;
-    z-index: 200;
-    top: 0px;
-}
 
 #playlist .resizer {
     left: 0px;
@@ -601,11 +593,6 @@ table .rating .curnum {
 
 }
 
-
-
-.content.chat .users .scroller {
-    overflow-y: auto;
-}
 
 .content.chat .log {
     background-color: #fff;

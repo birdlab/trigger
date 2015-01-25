@@ -245,6 +245,10 @@ input[type="password"] {
     vertical-align: top;
     cursor: pointer
 }
+.content.chat .users .scroller {
+    overflow-y: auto;
+    padding-left: 6px;
+}
 
 .content a {
     color: #eba400;
@@ -258,8 +262,14 @@ input[type="password"] {
 .content.chat .users {
     margin-left: 85%;
     font-size: 14px;
-    padding-left: 2px;
     border-left: 1px solid #f6f6f6;
+}
+#usersresizer {
+    width:8px;
+    position: absolute;
+    height: 76%;
+    background: red;
+    cursor: ew-resize;
 }
 
 .mif {
@@ -361,4 +371,14 @@ input.id {
 
 .tab.channels a.new{
     color: #ffcd00 !important;
+}
+
+#playlist .resizer, #info .resizer {
+    width: 5px;
+    cursor: ew-resize;
+    height: 100%;
+    position: absolute;
+    z-index: 200;
+    top: 0px;
+
 }
