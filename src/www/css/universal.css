@@ -245,6 +245,20 @@ input[type="password"] {
     vertical-align: top;
     cursor: pointer
 }
+
+.content.chat .info {
+    font-size: 8px;
+    font-weight: 100 !important;
+    color: #000;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #cdcdcd;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 2px;
+}
+
 .content.chat .users .scroller {
     overflow-y: auto;
     padding-left: 6px;
@@ -264,8 +278,9 @@ input[type="password"] {
     font-size: 14px;
     border-left: 1px solid #f6f6f6;
 }
+
 #usersresizer {
-    width:8px;
+    width: 8px;
     position: absolute;
     height: 76%;
     cursor: ew-resize;
@@ -286,10 +301,6 @@ input[type="password"] {
 
 .names:hover {
     text-decoration: underline;
-}
-
-.pm {
-    color: #666;
 }
 
 .channel .full button, #info button {
@@ -318,6 +329,18 @@ input[type="password"] {
 .channel .full .editors button,
 .channel .full .banned button {
     width: 35px;
+}
+
+.banned-list {
+    color: #9c9c9c;
+}
+
+.banned-list .ban-details, .banned-list .ban-details a {
+    font-size: 10px;
+}
+
+.banned-list .delete {
+    position: inherit !important;
 }
 
 input.id {
@@ -368,7 +391,7 @@ input.id {
     font-size: 12px;
 }
 
-.tab.channels a.new{
+.tab.channels a.new {
     color: #ffcd00 !important;
 }
 
@@ -381,3 +404,80 @@ input.id {
     top: 0px;
 
 }
+
+.content.history .inner, .content.channels .inner {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#info .channels .p_tabs {
+    position: absolute;
+    bottom: 0px;
+}
+
+#info .channels .p_tabs .tab {
+    border-bottom: 0px;
+    border-top: 3px solid #777;
+}
+
+.post .cin {
+    padding: 20px;
+    font-size: 13px;
+    padding-bottom: 10px;
+}
+
+.comment {
+    margin-left: 30px;
+}
+
+.comment .info {
+    padding-bottom: 10px;
+}
+
+.post .info {
+    padding-top: 10px;
+    font-size: 10px;
+    color: #777;
+}
+
+.post img {
+    max-width: 100%;
+}
+
+#blogtop {
+    width: 100%;
+    padding: 20px;
+}
+
+#info .content.channels .button {
+    border: none;
+    color: #FFF;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto;
+    padding: 8px;
+    background: #ffcd00;
+    display: inline;
+}
+
+#blogtop .button {
+    margin-top: 20px;
+}
+
+.redactor_box {
+    margin-bottom: 20px;
+    margin-right: 40px;
+    width: auto;
+    border: none !important;
+    min-height: 100px;
+    position: relative;
+    overflow: visible;
+}
+
+.comments form{
+    margin-left: 30px;
+    margin-right: 0px;
+}
+
+

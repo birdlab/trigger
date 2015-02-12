@@ -110,6 +110,7 @@ User.prototype.fullinfo = function(self, callback) {
         'r': user.rating,
         'pic':user.picture,
         'i':user.info,
+        'onln':user.sockets.length>0,
         'prch': this.prch,
         'opch': this.opch,
         'n': [],

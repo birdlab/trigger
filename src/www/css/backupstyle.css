@@ -42,6 +42,9 @@ body {
     text-decoration: none;
     text-align: center;
 }
+#info .channels .p_tabs .tab:hover {
+    border-top: 3px solid #000;
+}
 
 .p_tabs a {
     font-size: 13px !important;
@@ -49,6 +52,15 @@ body {
 
 .tabs a.hover, .p_tabs a.hover {
     color: #333 !important;
+}
+
+.content.channels .p_tabs .tab.active {
+    font-weight: 400 !important;
+    border-top: 3px solid #ffcd00 !important;
+}
+.content.profile .p_tabs .tab.active {
+    font-weight: 400 !important;
+    border-bottom: 3px solid #ffcd00 !important;
 }
 
 .tab {
@@ -70,7 +82,7 @@ body {
     border-bottom: 3px solid #333;
 }
 
-.tab.active {
+#info .tabs .tab.active {
     font-weight: 400 !important;
     border-bottom: 3px solid #ffcd00 !important;
 }
@@ -115,10 +127,6 @@ body {
     padding-right: 6px;
 }
 
-.content.history .inner, .content.channels .inner {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
 
 .channel .current {
     padding-top: 5px;
@@ -381,19 +389,15 @@ body {
     max-width: 220px;
 }
 
-
-
-
 /* Треки в плейлисте
 ---------------------------------------------*/
 
- #playlist .full, #info .item .full {
+#playlist .full, #info .item .full {
     padding: 0px 7px 10px 7px;
     overflow: hidden;
 }
 
 /*Текущий трек */
-
 
 #playlist .full table,
 #playlist .full tbody,
@@ -408,17 +412,23 @@ body {
     vertical-align: top;
 }
 
-#playlist .full .l-col { width: 47px; }
+#playlist .full .l-col {
+    width: 47px;
+}
 
-#playlist .full .l-col .kill {margin-left:15px;}
+#playlist .full .l-col .kill {
+    margin-left: 15px;
+}
 
-#playlist .full .r-col { padding-left: 5px;}
+#playlist .full .r-col {
+    padding-left: 5px;
+}
 
 #playlist .full .kill {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  top:3px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    top: 3px;
 }
 
 #playlist .full .info img,
@@ -447,7 +457,6 @@ body {
     background: #ffcd00;
 }
 
-
 ul {
     font-size: 12px;
     list-style: none;
@@ -471,12 +480,9 @@ li {
     background: #f2f2f2 !important;
 }
 
-
 .item.hiligth {
     background: #ffcd00;
 }
-
-
 
 .item table, .current table {
     width: 100%;
@@ -497,14 +503,15 @@ table .cover {
     margin-top: -2px;
     font-size: 10px;
 }
-.track_links span:first-child { margin-left: 0;}
 
-
+.track_links span:first-child {
+    margin-left: 0;
+}
 
 .item .tags {
     display: block;
     float: left;
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 .item a {
@@ -529,7 +536,6 @@ table .cover {
 table .rating {
     width: 80px;
 }
-
 
 .full .info,
 .full .sender {
@@ -583,7 +589,6 @@ table .rating .curnum {
     margin-top: -70px;
 }
 
-
 #playlist .resizer {
     left: 0px;
 }
@@ -592,7 +597,6 @@ table .rating .curnum {
     background: #fbfbfb;
 
 }
-
 
 .content.chat .log {
     background-color: #fff;
@@ -641,9 +645,6 @@ table .rating .curnum {
     font-size: 11px !important;
 }
 
-
-
-
 /* Рейтинг трека
 --------------------------------------------------*/
 .votebar {
@@ -682,7 +683,7 @@ table .rating .curnum {
 }
 
 .votebar .negative, .karma .negative {
-    background: url(/img/controls.png) no-repeat -24px 5px; 
+    background: url(/img/controls.png) no-repeat -24px 5px;
 }
 
 .messageinfo {
@@ -878,7 +879,7 @@ span.irony, #markups .irony {
 }
 
 .content.chat .log .action {
-    font-size: 11px;
+    font-size: 12px;
     color: #777777;
 }
 
@@ -913,7 +914,6 @@ span.irony, #markups .irony {
     text-align: center;
     padding: 17px;
 }
-
 
 .channel .base .hint {
     font-size: 10px;
@@ -1006,8 +1006,37 @@ span.irony, #markups .irony {
     top: 2px;
 }
 
-
-
-.htmleditor{
+.htmleditor {
     background: #eee;
+}
+
+.private {
+    color: #666;
+}
+
+.pm {
+    color: #000;
+}
+
+.banned-list span {
+    color: #000000;
+}
+
+.post  {
+    background: #f5f5f5;
+    border-bottom: 1px solid #eee;
+}
+
+.post .cin  {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.comment .info {
+    border-bottom: 1px solid #eee;
+}
+
+.redactor_box, .redactor_box textarea {
+    background-color: #fff;
+    color:#333;
 }

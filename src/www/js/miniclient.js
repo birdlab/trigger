@@ -80,8 +80,15 @@ Client.prototype.init = function(host) {
         socket.emit('ver', {'v': cl.version, 'init': true});
     });
 
+
+
+    lastfm = new LastFM({
+        apiKey: '4366bdedfe39171be1b5581b52ddee90',
+        apiSecret: '5def31e9198fa02af04873239bcb38f5'
+    });
+
+
     socket.on('addtrack', function(data) {
-        data.track.src = 'img/nocover.png';
         var track = data.track
         track.vote = 0;
         if (cl.user) {
@@ -102,10 +109,6 @@ Client.prototype.init = function(host) {
         cl.channel.pls.push(track);
         cl.channel.pls.sort(sortFunction);
         $(cl).trigger('addtrack', data);
-        getcover(track.a, track.t, function(src) {
-            track.src = src;
-            $(cl).trigger('cover', {id: data.track.id, 'src': src});
-        });
 
     });
     socket.on('removetrack', function(data) {
@@ -131,36 +134,19 @@ Client.prototype.init = function(host) {
             }
             cl.channel.current = data.track;
             cl.channel.ct = 0;
+            var track=data.track;
+            getcover(track.a, track.t, function(src) {
+                track.src = src;
+                $(cl).trigger('cover', {id: data.track.id, 'src': src});
+            });
         }
 
         $(cl).trigger('newcurrent', data);
         $(cl).trigger('removetrack', data);
     });
-    socket.on('lst', function(data) {
-        for (var i in cl.channels) {
-            if (data.chid == cl.channels[i].id) {
-                cl.channels[i].lst = data.l;
-            }
-        }
-        if (data.chid == cl.channel.chid) {
-            cl.channel.lst = data.l;
-            cl.channel.a = data.a;
-        }
-        $(cl).trigger('listners', data);
-    });
     socket.on('channeldata', function(data) {
+
         var i = 0;
-        var gg = function() {
-            var tr = cl.channel.pls[i];
-            getcover(tr.a, tr.t, function(src) {
-                tr.src = src;
-                $(cl).trigger('cover', {id: tr.id, 'src': src});
-                i += 1;
-                if (i < cl.channel.pls.length) {
-                    gg();
-                }
-            });
-        }
         data.changed = true;
         data.hi = streampath + data.hi;
         data.low = streampath + data.low;
@@ -206,6 +192,7 @@ Client.prototype.init = function(host) {
             }
         }
         getcover(data.current.a, data.current.t, function(src) {
+            console.log(src);
             data.current.src = src;
             $(cl).trigger('cover', {id: data.current.id, 'src': src});
         });
@@ -220,36 +207,11 @@ Client.prototype.init = function(host) {
         cl.chat.m.push(data);
         $(cl).trigger('message', data);
     });
-    socket.on('history', function(data) {
-        cl.callbacks.history(data);
-    });
+
 
     socket.on('channelsdata', function(data) {
         cl.channels = data.channels;
         cl.callbacks.channelsdata(data);
-    });
-    socket.on('userdata', function(data) {
-        console.log(data);
-        cl.callbacks.userdata(data);
-    });
-    socket.on('uvd', function(data) {
-        cl.callbacks.uvotedata(data);
-    });
-    socket.on('invitestatus', function(data) {
-        cl.callbacks.invitestatus(data);
-    });
-    socket.on('logoutok', function(data) {
-        cl.callbacks.logoutstatus(data);
-    });
-    socket.on('recoverstatus', function(data) {
-        cl.callbacks.recover(data);
-    });
-    socket.on('changepass', function(data) {
-        cl.callbacks.changepass(data);
-    });
-
-    socket.on('banned', function(data) {
-        $(cl).trigger('banned', data);
     });
 
     socket.on('newuser', function(data) {

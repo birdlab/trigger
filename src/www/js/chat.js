@@ -63,17 +63,6 @@ function fillChat() {
     $('#chatshowimg').attr('checked', !noimg);
 }
 
-
-function playTink() {
-    if (sound.canPlayType('audio/ogg')) {
-        sound.src = '/sounds/tink.ogg';
-        sound.play();
-    } else {
-        sound.src = '/sounds/tink.mp3';
-        sound.play();
-    }
-}
-
 function scrolltop() {
     if ($(this).scrollTop() < 300 && !chatlogupdate) {
         chatlogupdate = true;
@@ -216,10 +205,9 @@ function addMessage(md) {
         if (md.pm) {
             if (client.user.n == md.pm) {
                 tome = true;
-                console.log('private message ', md);
-                md.m = '<b style="color:#8d8d8d">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</b>';
+                md.m = '<b class="private">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</b>';
             } else {
-                md.m = '<div style="color:#8d8d8d">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</div>';
+                md.m = '<div class="private">&gt;&gt;' + md.pm + md.m.replace('&gt;&gt;' + md.pm, '') + '</div>';
             }
         } else {
             if (md.m.replace('&gt;' + client.user.n, '') != md.m) {
@@ -229,9 +217,17 @@ function addMessage(md) {
         }
         for (var i = 0; i < customCodes.length; i++) {
             if (md.m.replace(customCodes[i][0], '') != md.m) {
-                md.m = md.m.replace(customCodes[i][0], customCodes[i][1]);
                 if (i < 2) {
+
+                    if (noimg) {
+                        var a = i + 2;
+                        md.m = md.m.replace(customCodes[i][0], customCodes[a][1]);
+                    } else {
+                        md.m = md.m.replace(customCodes[i][0], customCodes[i][1]);
+                    }
                     break;
+                } else {
+                    md.m = md.m.replace(customCodes[i][0], customCodes[i][1]);
                 }
             }
         }
@@ -249,7 +245,7 @@ function addMessage(md) {
             pm = '';
         }
         if (!useraction) {
-            var message = $('<div class="message ' + md.uname + '"><table><tr><td class="names ' + pm + '"><span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + ': </span></td><td class="sms">' + md.m + '</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
+            var message = $('<div class="message ' + md.uname + '"><table><tr><td class="names ' + pm + '"><span class="info">i</span><span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + ': </span></td><td class="sms">' + md.m + '</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
             meta[0] = /\/track(\w*)/gim;
             var analys = function() {
                 var res = meta[i].exec(md.m);
@@ -276,6 +272,9 @@ function addMessage(md) {
         } else {
             var message = $('<div class="message ' + md.uname + '"><table><tr><td class="sms"><div class="action">' + md.m + '</div></td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
         }
+        message.find('span.info').click(function() {
+            getuser(md.uid);
+        });
         var info = message.find('.messageinfo');
         var trtm = null;
         $(info).mouseenter(function(e) {
@@ -299,7 +298,13 @@ function addMessage(md) {
         if (messages.length) {
             if (message.time > messages[0].time) {
                 if (tome && tink) {
-                    playTink();
+                    if (sound.canPlayType('audio/ogg')) {
+                        sound.src = '/sounds/tink.ogg';
+                        sound.play();
+                    } else {
+                        sound.src = '/sounds/tink.mp3';
+                        sound.play();
+                    }
                 }
                 message.appendTo($('#chatmessages'));
                 messages.push(message);
@@ -309,9 +314,6 @@ function addMessage(md) {
         } else {
             message.appendTo($('#chatmessages'));
             messages.push(message);
-        }
-        if (noimg) {
-            message.find("img").css('display', 'none').after('<span class="pc">картинка</span>');
         }
         now = new Date().getTime();
         updateMT(message);

@@ -2,11 +2,10 @@ var deviceAgent = navigator.userAgent.toLowerCase();
 $iOS = deviceAgent.match(/(iphone|ipod|ipad)/);
 $ipad = deviceAgent.match(/(ipad)/);
 $android = deviceAgent.match(/(android)/);
-$mobile = $iOS && $android;
+$mobile = $iOS || $android||($(window).width()<1200);
 if ($mobile) {
-    alert('mobile');
     $('#console').css({
-        'width': console_minsize
+        'width': '110pt'
     });
     $('#playlist').css({
         'width': playlist_minsize,
@@ -46,6 +45,7 @@ $(document).ready(function() {
             $(window).unbind('mousemove', consoleresize);
         });
     });
+
     $('#usersresizer').mousedown(function(e) {
         e.preventDefault();
         $('body').css({'cursor': 'ew-resize'});
@@ -74,6 +74,7 @@ $(document).ready(function() {
         $('#info .content.chat .users').css({'margin-left': userlistsize});
         $('#info .content.chat .log').css({'width': userlistsize});
     }
+    onresize();
 
 });
 
@@ -138,9 +139,9 @@ function onresize() {
     $('#playlist .inner').height($(window).height() - $('#playlist .current').height());
     var tabsheight = $('#info .tabs').height();
     var chatheight = $(window).height() - $('#info .content.chat .input').height() - tabsheight;
-
+    var bottomtabsheight=$('#info .channels .p_tabs').height();
     $('#info .content.history .inner').height($(window).height() - tabsheight - 20);
-    $('#info .content.channels .inner').height($(window).height() - tabsheight);
+    $('#info .content.channels .inner').height($(window).height() - tabsheight-bottomtabsheight);
 
     var profileshift = $('#info .tabs').height() + $('#info .content.profile .main').height();
     if ($('#info .content.profile .p_tabs').hasClass('top')) {
@@ -167,6 +168,3 @@ function onresize() {
 }
 
 $(window).resize(onresize);
-$('#console').resize(function() {
-    console.log(this);
-});

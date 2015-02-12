@@ -1,4 +1,27 @@
-var reader=false;
+var reader = false;
+var controldesk_mode = 'democracy';
+var edition = false;
+
+$(document).ready(function() {
+    $('#info .p_tabs .tab').bind('click', function() {
+        console.log(this);
+        if (!$(this).hasClass('active')) {
+            $('#info .p_tabs .tab').removeClass('active').children('a').removeClass('hover');
+            $(this).addClass('active').children('a').addClass('hover');
+            if ($(this).hasClass('blog')) {
+                controldesk_mode = 'blog';
+                client.getBlog(fillblog);
+
+            }
+            if ($(this).hasClass('democracy')) {
+                controldesk_mode = 'democracy';
+                client.getChannels(fillchannelsdata);
+            }
+
+        }
+    });
+
+});
 
 function fillchannelsdata(d) {
     var sorting = function(a, b) {
@@ -65,7 +88,19 @@ function fillchannelsdata(d) {
         }
         for (var b in banned) {
             var bu = banned[b];
-            var bstr = '<li><a class="banned-name" href="javascript:getuser(' + bu.id + ');void(0);">' + bu.name + '</a> &mdash; <span class="descr">' + bu.reason + '</span>';
+            bu.bantime = new Date(bu.bantime);
+            console.log(bu.bantime);
+            var m_names = new Array("Января", "Февраля", "Марта",
+                "April", "May", "June", "July", "August", "September",
+                "October", "November", "December");
+            var curr_date = bu.bantime.getDate();
+            var curr_month = bu.bantime.getMonth();
+            var curr_year = bu.bantime.getFullYear();
+            var curr_hour = bu.bantime.getHours();
+            var curr_min = bu.bantime.getMinutes();
+
+            // var bantill=bu.bantime.format('YYYY-MM-DD');
+            var bstr = '<li><a class="banned-name" href="javascript:getuser(' + bu.id + ');void(0);">' + bu.name + '</a> за <span class="descr">' + bu.reason + '</span> <div class="ban-details">збнл <a class="banned-name" href="javascript:getuser(' + bu.killerid + ');void(0);">' + bu.killername + '</a> до ' + bu.bantime + '</div>';
             if (bancontrol) {
                 bstr += '<a href="javascript:void(0);" id="' + bu.id + '" class="delete"></a>';
             }
@@ -131,17 +166,14 @@ function fillchannelsdata(d) {
             var storageinfo = $.Storage.get("channel" + cd.id);
             if (storageinfo != cd.description) {
                 console.log('info changed');
-                $('#info .tab.channels a').html('Демократия (!)');
                 $('#info .tab.channels a').addClass('new');
             } else {
-                $('#info .tab.channels a').html('Демократия');
                 $('#info .tab.channels a').removeClass('new');
             }
             clearTimeout(reader);
             reader = setTimeout(function() {
                 if ($('#info .tab.channels').hasClass('active')) {
                     $.Storage.set("channel" + cd.id, cd.description);
-                    $('#info .tab.channels a').html('Демократия');
                     $('#info .tab.channels a').removeClass('new');
                 }
 
@@ -273,10 +305,10 @@ function fillchannelsdata(d) {
             var inv = $("<div class='greating'>Сегодня на триггере атракцион неслыханной щедрости. В экспериментальном режиме мы решили раздавать инвайты!<BR> Впиши в поле ниже свой адрес электронной почты и на нее придет инвайт, который позволит тебе стать полноценным тригганом!</div><br><input class='invitemail' type='text' placeholder='e-mail'><button>Ok</button><br><div class='error'></div>").appendTo(ib);
             $('.inviteblock button').click(function() {
                 console.log($('.inviteblock input').val());
-                client.sendextinvite({mail: $('.inviteblock input').val()}, function (data){
+                client.sendextinvite({mail: $('.inviteblock input').val()}, function(data) {
                     console.log(data);
-                    if (data.error){
-                        $('.inviteblock .error').html('Что-то пошло не так: '+data.error);
+                    if (data.error) {
+                        $('.inviteblock .error').html('Что-то пошло не так: ' + data.error);
                     } else {
                         $(ib).html("<div class='greating'>Похоже у нас все получилось. Проверь свою почту, вероятно там есть что-то новенькое ;)</div>")
                     }
@@ -284,14 +316,27 @@ function fillchannelsdata(d) {
             })
         }
     }
+    onresize();
 }
+
 function showChannels(gdata) {
+    if (client.user){
+        $('#info .p_tabs').show();
+    } else {
+        $('#info .p_tabs').hide();
+    }
     if ($('#info .content.channels').css('display') == 'none' || gdata) {
         $('#info .tabs .channels').trigger('click');
+        $('#info .p_tabs .tab.' + controldesk_mode).addClass('active').children('a').addClass('hover');
         if (gdata) {
             fillchannelsdata(gdata);
         } else {
-            client.getChannels(fillchannelsdata);
+            if (controldesk_mode == 'democracy') {
+                client.getChannels(fillchannelsdata);
+            } else {
+                client.getBlog(fillblog);
+            }
+
         }
     }
 }

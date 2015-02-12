@@ -335,6 +335,14 @@ exports.getTracksByShift = function(channel, shift, gold, callback) {
     var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + channel + ' AND tracks.playdate < ' + db.connection.escape(shift) + getgold + ' order by tracks.playdate desc LIMIT 20';
     getTracksFromQery(q, callback);
 }
+exports.getTracksByRating = function(channel, gold, callback) {
+    var getgold = '';
+    if (gold) {
+        getgold = ' AND tracks.gold = 1';
+    }
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + channel + ' AND tracks.playdate > ' + db.connection.escape(shift) + getgold + ' order by tracks.playdate desc LIMIT 20';
+    getTracksFromQery(q, callback);
+}
 
 exports.getTrackByID = function(id, callback) {
     var q = 'SELECT tracks.* FROM tracks WHERE tracks.id=' + id + ' LIMIT 1';
@@ -383,8 +391,9 @@ exports.getChannels = function(callback) {
                                         var ban = {
                                             id: res[v].id,
                                             name: res[v].name,
-                                            killerid:res[v].killerid,
-                                            killername:res[v].killername,
+                                            bantime: res[v].bantime,
+                                            killerid: res[v].killerid,
+                                            killername: res[v].killername,
                                             reason: res[v].reason
                                         };
                                         result[t].banned.push(ban);
@@ -490,11 +499,25 @@ exports.addUserVote = function(vote) {
     processUserVote();
 
 }
+exports.updateTrack = function(track) {
+    var a = db.connection.escape(track.artist);
+    var t = db.connection.escape(track.title);
+    var i = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
+    db.connection.query('UPDATE tracks SET artist =' + a + ', title = ' + t + ' info = ' + i + ',  WHERE id = ' + track.id, function(err, result, fields) {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+        } else {
+            console.log('track update ok');
+        }
+    });
+}
+
 exports.addTrack = function(track, callback) {
     track.artist = sanitizer.escape(track.artist);
     track.title = sanitizer.escape(track.title);
     track.info = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
-    db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, ?, ?, ?, ?, ?, NOW(), NULL,?)',
+    db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, ?, ?, ?, ?, ?, NOW(), NULL,?,NULL,NULL)',
         [track.path,
             track.channel,
             track.artist,
@@ -521,6 +544,8 @@ exports.addTrack = function(track, callback) {
                 } else {
                     callback();
                 }
+            } else {
+                console.log(err);
             }
         }
     );
@@ -841,18 +866,6 @@ exports.changeuserdata = function(user) {
 
 }
 
-exports.updateTrack = function(track) {
-    var a = db.connection.escape(track.artist);
-    var t = db.connection.escape(track.title);
-    db.connection.query('UPDATE tracks SET artist =' + a + ', title = ' + t + '  WHERE id = ' + track.id, function(err, result, fields) {
-        if (err) {
-            console.log('fail');
-            console.log(err);
-        } else {
-            console.log('track update ok');
-        }
-    });
-}
 
 exports.setLiveTime = function(id, time) {
     var q = 'UPDATE tracks SET time = ' + time + ' WHERE id =' + id;
@@ -866,7 +879,7 @@ exports.generateinvite = function(userid) {
 }
 exports.banuser = function(data) {
     console.log('to base - ', data);
-    db.connection.query('insert into banned (id, chid, reason) VALUES (' + data.id + ', ' + data.chid + ',"' + data.r + '")', function(error, result, fields) {
+    db.connection.query('insert into banned (id, chid, reason, killerid, bantime) VALUES (' + data.id + ', ' + data.chid + ', ' + db.connection.escape(data.reason) + ',' + data.killerid + ',"' + data.bantime + '")', function(error, result, fields) {
         console.log(error);
     });
 }
@@ -949,4 +962,73 @@ exports.addPRVote = function(data, callback) {
             }
         });
     }
+}
+exports.addPost = function(data, callback) {
+    if (data.content) {
+        var q = 'INSERT INTO post (content, senderid, date, lastupdate) VALUES (' + db.connection.escape(data.content) + ', ' + data.senderid + ', NOW(), NOW());';
+        dumbquery(q, callback);
+    }
+}
+exports.addComment = function(data, callback) {
+    if (!data.parentid) {
+        data.parentid = 'NULL';
+    }
+    var q = 'INSERT INTO comment (content, senderid, postid, parentid, date) VALUES (' + db.connection.escape(data.content) + ', ' + data.senderid + ',' + data.postid + ',' + data.parentid + ', NOW());'
+    dumbquery(q, function(a) {
+        if (!a.error) {
+            q = 'UPDATE post SET lastupdate = NOW() WHERE id= ' + data.postid;
+            dumbquery(q, callback);
+        } else {
+            console.log(a.error);
+            callback(a);
+        }
+    });
+}
+
+exports.getPosts = function(data, callback) {
+    if (callback) {
+        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL ORDER BY post.lastupdate DESC LIMIT 20'
+        dumbquery(q, callback);
+    }
+}
+exports.killPost = function(data, callback) {
+    if (data.id) {
+        var q = 'SELECT post.date FROM post WHERE post.id=' + data.id + ' LIMIT 1';
+        dumbquery(q, function(a) {
+            if (!a.error) {
+                q = 'SELECT prvote.date FROM prvote ORDER BY prvote.date DESC LIMIT 1';
+                dumbquery(q, function(b) {
+                    if (!b.error) {
+                        console.log(a[0].date);
+                        console.log(b[0].date);
+                        if ((a[0].date - b[0].date) > 0) {
+                            q = 'UPDATE post SET post.killer= ' + data.killerid + ' WHERE id = ' + data.id + ' LIMIT 1;';
+                            dumbquery(q, callback);
+                        } else {
+                            callback({error: 'Пост был написан раньше'});
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+}
+
+exports.getComments = function(data, callback) {
+    if (data.id) {
+        var q = 'SELECT comment.*, users.name FROM comment LEFT JOIN users ON comment.senderid=users.id WHERE postid=' + data.id + ' ORDER BY parentid, date';
+        dumbquery(q, callback);
+    }
+}
+
+function dumbquery(query, callback) {
+    db.connection.query(query, function(er, result, fields) {
+        if (!er) {
+            callback(result);
+        } else {
+            console.log(er);
+            callback({error: er})
+        }
+    });
 }

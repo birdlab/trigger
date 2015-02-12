@@ -439,6 +439,21 @@ Client.prototype.getChannels = function(callback) {
     cl.callbacks.channelsdata = callback;
     this.socket.emit('getchannels');
 }
+Client.prototype.getBlog = function(callback) {
+    this.socket.emit('getposts', {}, callback);
+}
+Client.prototype.addPost = function(data, callback) {
+    this.socket.emit('addpost', data, callback);
+}
+Client.prototype.addComment = function(data, callback) {
+    this.socket.emit('addcomment', data, callback);
+}
+Client.prototype.getComments = function(data, callback) {
+    this.socket.emit('getcomments', data, callback);
+}
+Client.prototype.killPost = function(idtokill, callback) {
+    this.socket.emit('killpost', {id: idtokill}, callback);
+}
 Client.prototype.getChat = function(data, callback) {
     var cl = this;
     this.socket.emit('getchat', {'shift': data.shift, 'id': this.channel.chid}, function(data) {

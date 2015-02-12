@@ -72,6 +72,9 @@ $(document).ready(function() {
             setCurrent(data.track);
         }
     });
+    $(client).bind('cover', function(event, data) {
+        console.log(data);
+    });
 
 
     client.init(location.host);

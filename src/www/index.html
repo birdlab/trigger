@@ -4,14 +4,13 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Cache-Control" content="no-cache"/>
     <meta name="verify-reformal" content="8c521f17e906281b90537757"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5,minimum-scale=0.5 , maximum-scale=0.5"/>
     <title>Trigger</title>
     <link rel="stylesheet" title="nigth" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" title="day" type="text/css" href="css/backupstyle.css"/>
     <link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
     <link rel="stylesheet" type="text/css" href="css/universal.css"/>
-    <!--<link rel="stylesheet" type="text/css" href="css/nanoscroller.css" />-->
-
+    <link rel="stylesheet" href="upload/css/jquery.fileupload-ui.css">
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -26,6 +25,7 @@
     <script src="js/chrome.js"></script>
     <script src="js/user.js"></script>
     <script src="js/channels.js"></script>
+    <script src="js/blog.js"></script>
     <script src="js/history.js"></script>
     <script src="js/resize.js"></script>
     <script src="js/uploader.js"></script>
@@ -35,12 +35,14 @@
     <script src="js/paths.local.js"></script>
     <script src="js/dateformat.js"></script>
 
-    <!--<script src="js/jquery.nanoscroller.min.js"></script>-->
+
     <script src="upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="upload/js/jquery.iframe-transport.js"></script>
     <script src="upload/js/jquery.fileupload.js"></script>
-    <link rel="stylesheet" href="upload/css/jquery.fileupload-ui.css">
     <script src="socket.io/socket.io.js"></script>
+
+    <link rel="stylesheet" href="js/redactor/redactor.css" />
+    <script src="js/redactor/redactor.js"></script>
 
 
 </head>
@@ -135,7 +137,7 @@
             <tr>
                 <td class='tab chat'><a href='javascript:void(0);'>Чат</a></td>
                 <td class='tab history'><a href='javascript:void(0);'>История</a></td>
-                <td class='tab channels'><a href='javascript:void(0);'>Демократия</a></td>
+                <td class='tab channels'><a href='javascript:void(0);'>ЦУП</a></td>
                 <td class='tab profile'><a href='javascript:void(0);'>Профиль</a></td>
             </tr>
         </table>
@@ -145,6 +147,12 @@
             <div class='inner'>
                 <ul class='list'></ul>
             </div>
+            <table class='p_tabs'>
+                <tr>
+                    <td class='tab blog'><a href='javascript:void(0);'>Блог</a></td>
+                    <td class='tab democracy'><a href='javascript:void(0);'>Демократия</a></td>
+                </tr>
+            </table>
         </div>
         <div class='content history'>
             <div id="hpanel">

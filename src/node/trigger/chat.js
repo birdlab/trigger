@@ -126,7 +126,7 @@ Chat.prototype.getActive = function() {
     }
     return act;
 }
-//Bugaga
+
 Chat.prototype.compactUsers = function() {
     var c = this;
     var us = [];

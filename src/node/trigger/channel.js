@@ -9,6 +9,7 @@ var sockets = require('./sockets.js');
 var san = require('sanitizer');
 
 function Channel(i) {
+    console.log(i);
     this.id = i.id;
     this.port = i.port;
     this.name = i.name;
@@ -25,6 +26,7 @@ function Channel(i) {
     this.next = false;
     this.chat = chat.newChat(this.id);
     this.currentTime = 0;
+    this.overalTime = 0;
     this.processing = false;
     this.query = [];
     this.listeners = 0
@@ -34,7 +36,7 @@ function Channel(i) {
     this.active = 0;
     this.election = false;
     this.electionData = {};
-    this.weightrate=10;
+    this.weightrate = 10;
     var ch = this;
     setTimeout(function() {
         ch.checkFile();
@@ -74,8 +76,11 @@ Channel.prototype.init = function(id) {
     exec('date -R', function(error, stdout, stderr) {
         if (stdout.search('Wed') > -1) {
             ch.startElection();
+        } else {
+            console.log('no election');
         }
     });
+    console.log(this.banned);
 }
 
 Channel.prototype.setop = function(data, callback) {
@@ -101,6 +106,7 @@ Channel.prototype.setop = function(data, callback) {
         if (!data.post) {
             data.post = 'редактор';
         }
+        data.post=san.sanitize(data.post);
         var e = false;
         for (var c in main.channels) {
             var channel = main.channels[c];
@@ -194,18 +200,26 @@ Channel.prototype.setprops = function(channeldata, callback) {
 Channel.prototype.banuser = function(data, callback) {
     var ch = this;
     if (data.id) {
-        console.log('try to get user', data.id);
         main.getuser(data.id, function(user) {
             if (user) {
-                console.log(user.name);
                 if (!ch.isbanned(data.id)) {
+                    if (!data.time) {
+                        data.time = 1;
+                    }
+                    var bt = new Date(Date.now() + (3600000 * data.time) + 10800000);
+                    console.log(bt);
+                    data.r=san.sanitize(data.r);
                     var newbanned = {
                         id: data.id,
+                        chid: ch.id,
                         name: user.name,
+                        bantime: bt,
+                        killerid: data.killerid,
+                        killername: data.killername,
                         reason: data.r
                     }
                     ch.banned.push(newbanned);
-                    db.banuser(data);
+                    db.banuser(newbanned);
                     callback({banned: ch.banned});
                 } else {
                     callback({error: 'in'});
@@ -579,6 +593,7 @@ Channel.prototype.track = function(id) {
         }
     }
 }
+
 Channel.prototype.updateTrack = function(data) {
     var ch = this;
     if (data) {
@@ -591,6 +606,9 @@ Channel.prototype.updateTrack = function(data) {
                 if (data.t) {
                     track.title = san.sanitize(data.t);
                 }
+                if (data.i) {
+                    track.info = san.sanitize(data.i);
+                }
                 if (data.time) {
                     track.time = data.time;
                 }
@@ -601,6 +619,7 @@ Channel.prototype.updateTrack = function(data) {
     }
 
 }
+
 Channel.prototype.addVote = function(data, callback) {
     var ch = this;
     var addv = function() {
@@ -655,28 +674,33 @@ Channel.prototype.addVote = function(data, callback) {
     } else {
         track = ch.track(data.id);
     }
-    if (track) {
-        if (Number(data.v) | 0 === Number(data.v)) {
-            if (Math.abs(data.v) <= data.user.weight) {
-                var vdata = findvote(track, data.user.id);
-                if (vdata) {
-                    if (vdata.value != data.v) {
-                        vdata.group.splice(vdata.index, 1);
+    if (data.id) {
+        if (track) {
+
+            data.v = Number(data.v);
+            if (data.v | 0 === data.v) {
+                if (Math.abs(data.v) <= data.user.weight || data.user.prch == ch.id || data.user.opch == ch.id) {
+                    var vdata = findvote(track, data.user.id);
+                    if (vdata) {
+                        if (vdata.value != data.v) {
+                            vdata.group.splice(vdata.index, 1);
+                            addv();
+                            if (!data.inside) {
+                                ch.sort();
+                                sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
+                            }
+                        }
+                    } else {
                         addv();
                         if (!data.inside) {
                             ch.sort();
                             sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
                         }
                     }
-                } else {
-                    addv();
-                    if (!data.inside) {
-                        ch.sort();
-                        sockets.sendUpdateTrack({'chid': ch.id, 't': packTrackData(track)});
-                    }
+                    db.addVote(data);
                 }
-                db.addVote(data);
             }
+
         }
     }
     if (callback) {
@@ -738,6 +762,7 @@ Channel.prototype.sortElection = function() {
 Channel.prototype.startElection = function() {
     var ch = this;
     ch.election = true;
+    console.log('election started');
     db.startElection({channel: ch.id}, function(data) {
         ch.electionData = {candidates: []};
         if (data.status == 'active') {
@@ -774,11 +799,28 @@ Channel.prototype.startElection = function() {
     });
 
 }
+
 Channel.prototype.stopElection = function() {
     var ch = this;
     ch.election = false;
     if (ch.electionData.candidates[0].user) {
         ch.setop({id: ch.electionData.candidates[0].user.id, pr: true});
+        for (var e in ch.editors) {
+            var data = {
+                chid: ch.id,
+                id: ch.editors[e].id
+            }
+            db.removeop(data);
+        }
+        for (var b in ch.banned) {
+            var data = {
+                chid: ch.id,
+                id: ch.banned[b].id
+            }
+            db.unbanuser(data);
+        }
+        ch.banned = [];
+        ch.editors = [];
 
     }
 }
@@ -858,7 +900,9 @@ Channel.prototype.killTrack = function(trackid, self) {
         if (ch.playlist[t].id == trackid) {
             var tr = ch.playlist[t];
             db.removeTrack(trackid, function() {
-                main.user(tr.submiter).updateLimits();
+                if (main.user(tr.submiter)) {
+                    main.user(tr.submiter).updateLimits();
+                }
             });
             killfile(ch.playlist[t].path);
             ch.playlist.splice(t, 1);
@@ -874,10 +918,13 @@ Channel.prototype.sort = function() {
     if (this.playlist.length > 0) {
         var nxt = this.playlist[0].id;
         this.playlist.sort(sortFunction);
-        var now = new Date(Date.now() + 10800000)
+        var now = new Date(Date.now() + 10800000);
+        var ot = this.overalTime;
+        this.overalTime = 0;
         for (var i in this.playlist) {
             var track = this.playlist[i];
-            if (Date.parse(now) - Date.parse(track.date) > 43200000) {
+            this.overalTime += track.time;
+            if (Date.parse(now) - Date.parse(track.date) > 43200000 && ot > 43200) {
                 this.killTrack(track.id);
             }
         }
@@ -995,8 +1042,6 @@ function packElectionData(electionData, userid) {
         }
     }
     return data;
-
-
 }
 
 

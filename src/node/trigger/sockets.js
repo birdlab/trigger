@@ -8,6 +8,13 @@ var io = require('socket.io')(40033);
 
 var version = 2205;
 var sockets = [];
+
+function isFunction(functionToCheck) {
+    var getType = {};
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+}
+
+
 io.sockets.on('connection', function(socket) {
     socket.on('ver', function(data) {
         if (data.v == version) {
@@ -173,7 +180,7 @@ function bind(socket) {
     });
 
     socket.on('getchat', function(data, callback) {
-        if (callback) {
+        if (isFunction(callback)) {
             if (socket.user) {
                 if (socket.channel) {
                     if (!data.shift) {
@@ -201,7 +208,9 @@ function bind(socket) {
                     data.uname = socket.user.name;
                     data.chid = socket.channel;
                     data.tid = ch.current.id;
-                    ch.chat.addMessage(data, socket.user, callback);
+                    if (isFunction(callback)) {
+                        ch.chat.addMessage(data, socket.user, callback);
+                    }
                 }
             }
         }
@@ -247,11 +256,13 @@ function bind(socket) {
     socket.on('tracksubmit', function(data, callback) {
         if (socket.user && !socket.user.virtual) {
             data.track.submiter = socket.user.id;
-            data.track.name = socket.user.name;
-            if (main.channel(data.chid)) {
-                main.channel(data.chid).addTrack(data.track, callback);
-            } else {
-                callback({'error': 'Канала не существует'});
+            data.track.name = socket.user.name
+            if (isFunction(callback)) {
+                if (main.channel(data.chid)) {
+                    main.channel(data.chid).addTrack(data.track, callback);
+                } else {
+                    callback({'error': 'Канала не существует'});
+                }
             }
         }
     });
@@ -270,6 +281,7 @@ function bind(socket) {
     socket.on('addtag', function(data) {
         if (socket.user) {
             if (data.s) {
+                data.s = san.sanitize(data.s);
                 db.addTag(data.s, function(dbdata) {
                     if (!dbdata.error) {
                         dbdata.n = data.s;
@@ -398,7 +410,7 @@ function bind(socket) {
                 if (data.prid) {
                     var channel = main.channel(data.chid);
                     if (channel) {
-                        if (callback) {
+                        if (isFunction(callback)) {
                             channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
                         }
                     }
@@ -413,6 +425,9 @@ function bind(socket) {
             }
             data.chid = socket.user.prch || socket.user.opch;
             if (data.chid) {
+                data.killerid = socket.user.id;
+                data.killername = socket.user.name;
+                console.log(data);
                 var channel = main.channel(data.chid);
                 if (channel) {
                     channel.banuser(data, function(bandata) {
@@ -427,7 +442,9 @@ function bind(socket) {
                                 }
                             }
                         }
-                        callback(bandata);
+                        if (isFunction(callback)) {
+                            callback(bandata);
+                        }
                     });
                 }
 
@@ -442,7 +459,9 @@ function bind(socket) {
             data.chid = socket.user.prch || socket.user.opch;
             if (data.chid) {
                 main.channel(data.chid).unbanuser(data, function(data) {
-                    callback(data);
+                    if (isFunction(callback)) {
+                        callback(data);
+                    }
                 });
             }
         }
@@ -455,6 +474,9 @@ function bind(socket) {
             }
             if (data.chid) {
                 main.channel(data.chid).setop(data, function(d) {
+                    if (isFunction(callback)) {
+                        callback(d);
+                    }
                 });
             }
         }
@@ -470,7 +492,7 @@ function bind(socket) {
                 var ch = main.channel(data.chid);
                 if (ch) {
                     ch.setprops(data, function(d) {
-                        if (callback) {
+                        if (isFunction(callback)) {
                             callback(d);
                         }
                     });
@@ -495,7 +517,7 @@ function bind(socket) {
                             }
                         }
                     }
-                    if (callback) {
+                    if (isFunction(callback)) {
                         callback(d);
                     }
                 });
@@ -505,7 +527,7 @@ function bind(socket) {
 
 
     socket.on('getuser', function(data, callback) {
-        if (data) {
+        if (data && isFunction(callback)) {
             if (socket.user) {
                 if (data.id) {
                     if (data.uplshift !== undefined) {
@@ -514,15 +536,11 @@ function bind(socket) {
                         }
                         if (data.p == undefined) {
                             db.getuploads(data.id, data.uplshift, function(dbdata) {
-                                if (callback) {
-                                    callback(dbdata);
-                                }
+                                callback(dbdata);
                             });
                         } else {
                             db.getVoted(data.id, data.uplshift, data.p, function(dbdata) {
-                                if (callback) {
-                                    callback(dbdata);
-                                }
+                                callback(dbdata);
                             });
                         }
                     } else {
@@ -543,36 +561,37 @@ function bind(socket) {
                     }
                 }
             } else {
-                if (callback) {
-                    callback(false);
-                }
+                callback(false);
             }
         }
     });
 
     socket.on('sendinvite', function(data) {
         if (data) {
-            if (socket.user) {
-                db.sendinvite(data.c, data.m, socket);
+            if (data.c && data.m) {
+                data.m = san.sanitize(data.m);
+                if (socket.user) {
+                    db.sendinvite(data.c, data.m, socket);
+                }
             }
         }
     });
     socket.on('sendextinvite', function(data, callback) {
-            if (data){
+            if (data && isFunction(callback)) {
                 db.sendextinvite(data, callback);
             }
         }
     );
 
     socket.on('gettrack', function(data, callback) {
-        if (data) {
+        if (data && isFunction(callback)) {
             if (data.id) {
                 db.getTrackByID(data.id, callback);
             }
         }
     });
     socket.on('getfastuser', function(data, callback) {
-        if (data) {
+        if (data && isFunction(callback)) {
             if (data.id) {
                 callback(parser.getUser[data.id]);
             }
@@ -602,6 +621,7 @@ function bind(socket) {
 
     });
     socket.on('upduserdata', function(data) {
+        console.log(data);
         var s = socket;
         var changed = false;
         if (s.user && data) {
@@ -639,6 +659,88 @@ function bind(socket) {
                 }
 
             }
+        }
+    });
+    socket.on('getposts', function(data, callback) {
+        if (socket.user) {
+            if (isFunction(callback)) {
+                db.getPosts(data, callback);
+            }
+        }
+    });
+    socket.on('getcomments', function(data, callback) {
+        if (data) {
+            if (socket.user) {
+                if (data&&isFunction(callback)) {
+                    db.getComments(data, callback);
+                }
+            }
+        }
+    });
+    socket.on('killpost', function(data, callback) {
+        if (data) {
+            if (socket.user) {
+
+                if (socket.user.id == 1) {
+                    socket.user.prch = socket.channel;
+                }
+                var chid = socket.user.prch || socket.user.opch;
+                if (chid && data && isFunction(callback)) {
+                    data.killerid=socket.user.id;
+                    db.killPost(data, callback);
+
+                }
+            }
+        }
+    });
+    socket.on('addpost', function(data, callback) {
+        if (socket.user) {
+
+            if (socket.user.id == 1) {
+                socket.user.prch = socket.channel;
+            }
+            var chid = socket.user.prch || socket.user.opch;
+            //if (chid) {
+
+
+            var banned = false;
+            for (var c in main.channels) {
+                if (main.channels[c].isbanned(socket.user.id)) {
+                    banned = true;
+                    break;
+                }
+            }
+            if (!banned && data && isFunction(callback)) {
+                if (data.content) {
+                    //    data.content = san.sanitize(data.content);
+                    data.senderid = socket.user.id;
+
+                    db.addPost(data, callback);
+                }
+            }
+
+
+            // }
+        }
+    });
+    socket.on('addcomment', function(data, callback) {
+        if (socket.user) {
+            var banned = false;
+            for (var c in main.channels) {
+                if (main.channels[c].isbanned(socket.user.id)) {
+                    banned = true;
+                    break;
+                }
+            }
+            if (!banned && data && isFunction(callback)) {
+                if (data.content) {
+                    data.senderid = socket.user.id;
+                    db.addComment(data, callback);
+                }
+            }
+
+
+            // }
         }
     });
 
@@ -758,4 +860,5 @@ exports.updateLimits = function(user) {
         }
     }
 };
+
 
