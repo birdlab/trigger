@@ -183,19 +183,21 @@ function addupload(file) {
 
             uploadercallback = function() {
                 console.log('after adding tags ', artist.val());
-                var votevalue = voteadjust.children('input').attr('value');
+                var votevalue = parseInt(voteadjust.children('input').attr('value'));
                 console.log(votevalue);
+                var trk = {
+                    'live': islive,
+                    'artist': artist.val(),
+                    'title': title.val(),
+                    'info': trackinfo.val(),
+                    'tags': servertags,
+                    'vote': votevalue,
+                    'path': serverfilename
+                };
+                console.log(trk);
                 client.tracksubmit({
                         'chid': client.channel.id,
-                        'track': {
-                            'live': islive,
-                            'artist': artist.val(),
-                            'title': title.val(),
-                            'info': trackinfo.val(),
-                            'tags': servertags,
-                            'vote': votevalue,
-                            'path': serverfilename
-                        }
+                        'track': trk
                     },
                     function(data) {
                         if (!data.error) {

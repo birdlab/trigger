@@ -106,7 +106,7 @@ Channel.prototype.setop = function(data, callback) {
         if (!data.post) {
             data.post = 'редактор';
         }
-        data.post=san.sanitize(data.post);
+        data.post = san.sanitize(data.post);
         var e = false;
         for (var c in main.channels) {
             var channel = main.channels[c];
@@ -208,7 +208,7 @@ Channel.prototype.banuser = function(data, callback) {
                     }
                     var bt = new Date(Date.now() + (3600000 * data.time) + 10800000);
                     console.log(bt);
-                    data.r=san.sanitize(data.r);
+                    data.r = san.sanitize(data.r);
                     var newbanned = {
                         id: data.id,
                         chid: ch.id,
@@ -539,16 +539,21 @@ Channel.prototype.addTrack = function(data, callback) {
                                 track.date = new Date(Date.now() + 10800000);
                                 track.positive = [];
                                 track.negative = [];
-                                if (!track.novote) {
-                                    var weight = user.fastinfo().w;
-                                    if (track.vote){
-                                        track.vote=parseInt(track.vote);
-                                        if (!track.vote>weight){
-                                            weight=track.vote;
-                                        } else {
-                                            weight=0;
-                                        }
+                                var weight = user.fastinfo().w;
+                                console.log('user weight - ' + weight);
+                                if (track.vote) {
+                                    console.log('track.vote - ' + track.vote);
+                                    track.vote = parseInt(track.vote);
+                                    console.log('after parse - ' + track.vote);
+                                    console.log('track.vote > weight - ' + track.vote > weight);
+                                    if (!(track.vote > weight)) {
+                                        weight = track.vote;
+                                    } else {
+                                        weight = 0;
                                     }
+                                }
+                                console.log('result vote ' + weight);
+                                if (weight) {
                                     ch.addVote({'track': track.id, 'user': user, 'v': weight, inside: true, 'fulltrack': track}, function() {
                                         ch.sort();
                                         if (!ch.current && ch.playlist.length > 0) {
@@ -560,6 +565,16 @@ Channel.prototype.addTrack = function(data, callback) {
                                         sockets.sendAddTrack({'chid': ch.id, 'track': packTrackData(track)});
                                         user.updateLimits();
                                     });
+                                } else {
+                                    ch.sort();
+                                    if (!ch.current && ch.playlist.length > 0) {
+                                        ch.pushNext();
+                                    }
+                                    if (callback) {
+                                        callback({'ok': true });
+                                    }
+                                    sockets.sendAddTrack({'chid': ch.id, 'track': packTrackData(track)});
+                                    user.updateLimits();
                                 }
                             });
                         } else {
