@@ -541,6 +541,14 @@ Channel.prototype.addTrack = function(data, callback) {
                                 track.negative = [];
                                 if (!track.novote) {
                                     var weight = user.fastinfo().w;
+                                    if (track.vote){
+                                        track.vote=parseInt(track.vote);
+                                        if (!track.vote>weight){
+                                            weight=track.vote;
+                                        } else {
+                                            weight=0;
+                                        }
+                                    }
                                     ch.addVote({'track': track.id, 'user': user, 'v': weight, inside: true, 'fulltrack': track}, function() {
                                         ch.sort();
                                         if (!ch.current && ch.playlist.length > 0) {

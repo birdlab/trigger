@@ -823,11 +823,6 @@ td.sms img .hide {
     margin-top: 2px;
 }
 
-#sendall {
-    margin: 20px;
-    padding: 5px;
-}
-
 #info .content.profile .list .sendform .send a, #sendall a {
     color: #fff !important;
     text-decoration: none;

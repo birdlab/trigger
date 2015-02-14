@@ -56,6 +56,13 @@
     padding-right: 4px;
 }
 
+#sendall {
+    margin: 15px;
+    padding: 5px;
+    width: 70%;
+    overflow: hidden;
+}
+
 #console .uploaditem input {
     max-width: 400px;
 }
@@ -478,6 +485,21 @@ input.id {
 .comments form{
     margin-left: 30px;
     margin-right: 0px;
+}
+#buttoncontainer {
+    padding:20px;
+}
+#voteadjust {
+    padding: 5px 15px 0px 15px;
+    font-size: 11px;
+}
+#voteadjust input {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 5px;
+    width: 40px;
+    font-size: 14px;
 }
 
 

@@ -7,6 +7,7 @@ function loadUrl(url, reader, file, callback) {
     });
 }
 var sendall = $('<div id="sendall"><a href="javascript:void(0);">Отправить все!</a></div>');
+var voteadjust = $('<div id="voteadjust">Отправить с рейтингом: <input type="number" name="vote"></div>');
 var defered = false;
 
 function addupload(file) {
@@ -59,6 +60,9 @@ function addupload(file) {
             if ($('#console .upfiles .uploaditem').length < 2) {
                 sendall.remove();
             }
+            if ($('#console .upfiles .uploaditem').length < 1) {
+                voteadjust.remove();
+            }
         });
     });
     var ready = false;
@@ -68,7 +72,7 @@ function addupload(file) {
     var servertags = [];
     var temptags = [];
     var requested = false;
-    var uploadercallback=false;
+    var uploadercallback = false;
 
 
     var addtotags = function(callback) {
@@ -177,8 +181,10 @@ function addupload(file) {
             }
             var form = $(this).parent();
 
-            uploadercallback=function(){
+            uploadercallback = function() {
                 console.log('after adding tags ', artist.val());
+                var votevalue = voteadjust.children('input').attr('value');
+                console.log(votevalue);
                 client.tracksubmit({
                         'chid': client.channel.id,
                         'track': {
@@ -187,6 +193,7 @@ function addupload(file) {
                             'title': title.val(),
                             'info': trackinfo.val(),
                             'tags': servertags,
+                            'vote': votevalue,
                             'path': serverfilename
                         }
                     },
@@ -195,6 +202,9 @@ function addupload(file) {
                             form.hide(300, function() {
                                 if ($('#console .upfiles .uploaditem').length < 2) {
                                     sendall.remove();
+                                }
+                                if ($('#console .upfiles .uploaditem').length < 1) {
+                                    voteadjust.remove();
                                 }
                                 this.remove();
                                 if (defered && uploadarray.length) {
@@ -252,11 +262,15 @@ function addupload(file) {
     });
     trackupload.click(trackupload.upload);
     tracksubmit.click(tracksubmit.submit);
+    voteadjust.prependTo($('#console .upfiles'));
+    voteadjust.children('input').attr('value', client.user.w).attr('max', client.user.w).attr('min', client.user.w - (client.user.w * 2));
+
     if ($('#console .upfiles .uploaditem').length > 1 && $('#sendall').length == 0) {
         sendall.prependTo($('#console .upfiles'));
         sendall.click(function() {
             $('#console .upfiles .uploaditem .button.send').trigger('click');
         });
     }
+
 }
 
