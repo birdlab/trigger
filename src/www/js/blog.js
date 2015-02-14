@@ -67,10 +67,21 @@ function openpost(postid) {
             for (var c in d) {
                 placeComment(d[c]);
             }
+
+            var place = $('#post' + postid).children('.comments').first();
+            var add=$('<div id="buttoncontainer"></div>').appendTo(place)
+            $('<div id="newcomment" class="button">Комментировать</div>').appendTo(add);
+            $('#newcomment').click(function() {
+                $('#buttoncontainer').remove();
+                addCommentEditor(postid);
+            });
+
         } else {
             $('<div class="advice">Возможно ты будешь первым</div>').appendTo('#post' + postid + ' .comments');
+            addCommentEditor(postid);
         }
-        addCommentEditor(postid);
+
+
     });
 
 }
