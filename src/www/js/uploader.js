@@ -7,7 +7,7 @@ function loadUrl(url, reader, file, callback) {
     });
 }
 var sendall = $('<div id="sendall"><a href="javascript:void(0);">Отправить все!</a></div>');
-var voteadjust = $('<div id="voteadjust">Отправить с рейтингом: <input type="number" name="vote"></div>');
+var voteadjust = $('<div id="voteadjust">Рейтинг: <input type="number" name="vote"></div>');
 var defered = false;
 
 function addupload(file) {
@@ -182,9 +182,7 @@ function addupload(file) {
             var form = $(this).parent();
 
             uploadercallback = function() {
-                console.log('after adding tags ', artist.val());
                 var votevalue = parseInt(voteadjust.children('input').attr('value'));
-                console.log(votevalue);
                 var trk = {
                     'live': islive,
                     'artist': artist.val(),
@@ -194,7 +192,6 @@ function addupload(file) {
                     'vote': votevalue,
                     'path': serverfilename
                 };
-                console.log(trk);
                 client.tracksubmit({
                         'chid': client.channel.id,
                         'track': trk
@@ -202,13 +199,13 @@ function addupload(file) {
                     function(data) {
                         if (!data.error) {
                             form.hide(300, function() {
+                                this.remove();
                                 if ($('#console .upfiles .uploaditem').length < 2) {
                                     sendall.remove();
                                 }
                                 if ($('#console .upfiles .uploaditem').length < 1) {
                                     voteadjust.remove();
                                 }
-                                this.remove();
                                 if (defered && uploadarray.length) {
                                     uploadarray.shift();
                                     uploadarray[0].submit();
