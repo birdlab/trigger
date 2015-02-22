@@ -42,7 +42,7 @@ body {
     text-decoration: none;
     text-align: center;
 }
-#info .channels .p_tabs .tab:hover {
+#info .controlpanel .p_tabs .tab:hover {
     border-top: 3px solid #000;
 }
 
@@ -54,7 +54,7 @@ body {
     color: #333 !important;
 }
 
-.content.channels .p_tabs .tab.active {
+.controlpanel .p_tabs .tab.active {
     font-weight: 400 !important;
     border-top: 3px solid #ffcd00 !important;
 }
@@ -91,23 +91,23 @@ body {
     background-color: #ffffff;
 }
 
-.content.channels .channel {
+.controlpage.channels .channel {
     background: #fff;
     margin-bottom: 1px;
 
 }
 
-.content.channels .channel span {
+.controlpage.channels .channel span {
     padding-top: 10px;
 
 }
 
-.content.channels .channel .base {
+.controlpage.channels .channel .base {
     padding: 10px;
     cursor: pointer;
 }
 
-.content.channels .channel .name {
+.controlpage.channels .channel .name {
     font-size: 25px;
     font-weight: 100;
     float: left;
@@ -115,14 +115,14 @@ body {
     padding-right: 10px;
 }
 
-.content.channels .channel .listners {
+.controlpage.channels .channel .listners {
     font-size: 24px;
     font-weight: 300;
     float: right;
     color: #aaa;
 }
 
-.content.channels .channel .listners span {
+.controlpage.channels .channel .listners span {
     font-size: 12px;
     padding-right: 6px;
 }
@@ -687,10 +687,7 @@ table .rating .curnum {
 }
 
 .messageinfo {
-    text-align: right;
-    font-size: 10px;
     color: #ddd;
-    min-width: 90px;
 }
 
 .content.chat .sms img {

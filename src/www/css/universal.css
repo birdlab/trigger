@@ -127,8 +127,15 @@
     overflow-x: hidden;
 }
 
+.messageinfo {
+    text-align: right;
+    font-size: 10px;
+    min-width: 120px;
+}
+
 .messageinfo a {
     font-size: 10px !important;
+
 }
 
 .channel .full header {
@@ -412,17 +419,17 @@ input.id {
 
 }
 
-.content.history .inner, .content.channels .inner {
+.content.history .inner, .content.controlpanel .controlpage {
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-#info .channels .p_tabs {
+.controlpanel .p_tabs {
     position: absolute;
     bottom: 0px;
 }
 
-#info .channels .p_tabs .tab {
+.controlpanel .p_tabs .tab {
     border-bottom: 0px;
     border-top: 3px solid #777;
 }
@@ -432,6 +439,7 @@ input.id {
     font-size: 13px;
     padding-bottom: 10px;
 }
+
 
 .comment {
     margin-left: 30px;
@@ -456,7 +464,7 @@ input.id {
     padding: 20px;
 }
 
-#info .content.channels .button {
+#info .content .controlpage .button {
     border: none;
     color: #FFF;
     outline: none;
@@ -482,17 +490,20 @@ input.id {
     overflow: visible;
 }
 
-.comments form{
+.comments form {
     margin-left: 30px;
     margin-right: 0px;
 }
+
 #buttoncontainer {
-    padding:20px;
+    padding: 20px;
 }
+
 #voteadjust {
     padding: 5px 15px 0px 15px;
     font-size: 11px;
 }
+
 #voteadjust input {
     outline: 0 none;
     -webkit-appearance: none;
@@ -500,6 +511,10 @@ input.id {
     padding: 5px;
     width: 32px;
     font-size: 14px;
+}
+
+.content.chat .log {
+    -webkit-transform: translateZ(0);
 }
 
 

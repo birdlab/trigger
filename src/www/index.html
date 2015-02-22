@@ -35,13 +35,15 @@
     <script src="js/paths.local.js"></script>
     <script src="js/dateformat.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+
 
     <script src="upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="upload/js/jquery.iframe-transport.js"></script>
     <script src="upload/js/jquery.fileupload.js"></script>
     <script src="socket.io/socket.io.js"></script>
 
-    <link rel="stylesheet" href="js/redactor/redactor.css" />
+    <link rel="stylesheet" href="js/redactor/redactor.css"/>
     <script src="js/redactor/redactor.js"></script>
 
 
@@ -143,8 +145,12 @@
         </table>
         <div class='content profile'>
         </div>
-        <div class='content channels'>
-            <div class='inner'>
+        <div class='content controlpanel'>
+            <div class='controlpage channels'>
+                <ul class='list'></ul>
+            </div>
+            <div class='controlpage blogs'>
+                <div id="blogtop"><div id="newpost" class="button">Новый пост</div></div>
                 <ul class='list'></ul>
             </div>
             <table class='p_tabs'>

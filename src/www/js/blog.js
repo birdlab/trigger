@@ -11,17 +11,18 @@ function addblogpost(post) {
     var kill = '';
     var edit = '';
     var expand = '';
+    console.log(post);
     if (client.user.prch || client.user.opch) {
         kill = ' <br><a href="#" onclick="killpost(' + post.id + '); return false;">[x]</a>';
     }
     if (client.user) {
-        if (post.comments) {
-            expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;"> ' + post.comments + ' комментариев</a>';
+        if (post.counter) {
+            expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;"> комментарии (' + post.counter + ')</a>';
         } else {
             expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;">комментарии</a>';
         }
     }
-    $('<div class="post" id="post' + post.id + '"><div class="cin"><div class="content">' + post.content + '</div><div class="info">написал <a href="javascript:getuser(' + post.senderid + ');void(0);">' + post.name + '</a> ' + post.date + ' #' + post.id + expand + kill + '</div></div><div class="comments"></div></div>').appendTo('#info .content.channels .list');
+    $('<div class="post" id="post' + post.id + '"><div class="cin"><div class="content">' + post.content + '</div><div class="info">написал <a href="javascript:getuser(' + post.senderid + ');void(0);">' + post.name + '</a> ' + moment(post.date).calendar() + ' #' + post.id + expand + kill + '</div></div><div class="comments"></div></div>').appendTo('#info .controlpage.blogs .list');
 }
 
 function addCommentEditor(postid, commentid) {
@@ -54,7 +55,7 @@ function placeComment(comment) {
         place = $('#comment' + comment.parentid).children('.comments').first();
 
     }
-    $('<div class="comment" id="comment' + comment.id + '"><div class="content">' + comment.content + '</div><div class="info">написал <a href="javascript:getuser(' + comment.senderid + ');void(0);">' + comment.name + '</a> ' + comment.date + ' #' + comment.id + expand + '</div><div class="comments"></div></div>').appendTo(place);
+    $('<div class="comment" id="comment' + comment.id + '"><div class="content">' + comment.content + '</div><div class="info">написал <a href="javascript:getuser(' + comment.senderid + ');void(0);">' + comment.name + '</a> ' + moment(comment.date).calendar() + ' #' + comment.id + expand + '</div><div class="comments"></div></div>').appendTo(place);
 
 
 }
@@ -69,7 +70,7 @@ function openpost(postid) {
             }
 
             var place = $('#post' + postid).children('.comments').first();
-            var add=$('<div id="buttoncontainer"></div>').appendTo(place)
+            var add = $('<div id="buttoncontainer"></div>').appendTo(place)
             $('<div id="newcomment" class="button">Комментировать</div>').appendTo(add);
             $('#newcomment').click(function() {
                 $('#buttoncontainer').remove();
@@ -97,20 +98,18 @@ function killpost(id) {
 }
 
 function fillblog(d) {
-    console.log('blog data - ', d);
-    $('#info .content.channels .list').html('');
-    $('#info .content.channels').show();
-    var blogtop = $('<div id="blogtop"><div id="newpost" class="button">Новый пост</div></div>').appendTo($('#info .content.channels .list'));
+    $('#info .controlpage').hide();
+    $('#info .controlpage.blogs .list').html('');
+    $('#info .controlpage.blogs').show();
+    var blogtop = $('#blogtop');
     $('#newpost').click(function() {
-
-
         blogtop.html('<form action="" id="postform" method="post"><textarea id="contenteditor" name="content"></textarea><div class="button">Пст</div></p></form>');
         $('#contenteditor').redactor(redactorsettings);
 
         $('#postform .button').click(function() {
             console.log($('#contenteditor').redactor('code.get')[0].value);
             client.addPost({content: $('#contenteditor').redactor('code.get')[0].value}, function(d) {
-                console.log(d);
+                blogtop.html('<div id="newpost" class="button">Новый пост</div>');
                 client.getBlog(fillblog);
             });
         });

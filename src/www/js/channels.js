@@ -24,6 +24,8 @@ $(document).ready(function() {
 });
 
 function fillchannelsdata(d) {
+
+    controldesk_mode = 'democracy';
     var sorting = function(a, b) {
         if (a.lst) {
             var dif = b.lst - a.lst;
@@ -117,6 +119,7 @@ function fillchannelsdata(d) {
             });
         }
     }
+
     var filleditorslist = function(elist, editors) {
         $(elist).html('');
         var editorscontrol = false;
@@ -147,20 +150,25 @@ function fillchannelsdata(d) {
         }
     }
 
-    $('#info .content.channels .list').html('');
-    $('#info .content.channels').show();
+    $('#info .controlpage').hide();
+    $('#info .controlpage.channels').show();
+    $('#info .controlpage.channels .list').html('');
+
     if (d.channels.length > 0) {
         if (d.channels[0].lst) {
             d.channels.sort(sorting);
         }
         for (var c in d.channels) {
+            console.log('in channel');
             var cd = d.channels[c];
-            var chdd = $('<li class="channel"></li>').appendTo($('#info .content.channels .list'));
+            var chdd = $('<li class="channel"></li>').appendTo($('#info .controlpage.channels .list'));
             //var channeldom = '<div class="base"><a href="javascript: client.goChannel(' + cd.id + ', onChannel);void(0);" class="name">' + cd.name + '</a><a href="' + streampath + cd.hi;
             // channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
             //channeldom += '" target="_blank">96kbps</a><div class="listners"><span>Слушают:</span>' + cd.lst + '</div><br /></div>';
             var channeldom = '<div class="base"></div>';
+
             var chd = $(channeldom).appendTo(chdd);
+            console.log(chd);
             // $('<div class="hint"><<<клик</div>').appendTo(chd);
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
             var storageinfo = $.Storage.get("channel" + cd.id);
@@ -301,7 +309,7 @@ function fillchannelsdata(d) {
         // $('#info .content.channels .full').hide();
 
         if (!client.user) {
-            var ib = $('<li class="inviteblock"></li>').appendTo($('#info .content.channels .list'));
+            var ib = $('<li class="inviteblock"></li>').appendTo($('#info .controlpage.channels .list'));
             var inv = $("<div class='greating'>Сегодня на триггере атракцион неслыханной щедрости. В экспериментальном режиме мы решили раздавать инвайты!<BR> Впиши в поле ниже свой адрес электронной почты и на нее придет инвайт, который позволит тебе стать полноценным тригганом!</div><br><input class='invitemail' type='text' placeholder='e-mail'><button>Ok</button><br><div class='error'></div>").appendTo(ib);
             $('.inviteblock button').click(function() {
                 console.log($('.inviteblock input').val());
@@ -319,15 +327,18 @@ function fillchannelsdata(d) {
     onresize();
 }
 
-function showChannels(gdata) {
-    if (client.user){
-        $('#info .p_tabs').show();
+function showControlPanel(gdata) {
+    if (client.user) {
+        $('#info .controlpanel .p_tabs').show();
     } else {
-        $('#info .p_tabs').hide();
+        $('#info .controlpanel .p_tabs').hide();
     }
-    if ($('#info .content.channels').css('display') == 'none' || gdata) {
+
+    if ($('#info .content.controlpanel').css('display') == 'none' || gdata) {
+
         $('#info .tabs .channels').trigger('click');
-        $('#info .p_tabs .tab.' + controldesk_mode).addClass('active').children('a').addClass('hover');
+        $('#info .content.controlpanel').show();
+        $('#info .controlpanel .p_tabs .tab.' + controldesk_mode).addClass('active').children('a').addClass('hover');
         if (gdata) {
             fillchannelsdata(gdata);
         } else {

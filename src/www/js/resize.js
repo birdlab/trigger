@@ -2,7 +2,7 @@ var deviceAgent = navigator.userAgent.toLowerCase();
 $iOS = deviceAgent.match(/(iphone|ipod|ipad)/);
 $ipad = deviceAgent.match(/(ipad)/);
 $android = deviceAgent.match(/(android)/);
-$mobile = $iOS || $android||($(window).width()<1200);
+$mobile = $iOS || $android || ($(window).width() < 1200);
 if ($mobile) {
     $('#console').css({
         'width': '110pt'
@@ -58,7 +58,7 @@ $(document).ready(function() {
     var consolesize = $.Storage.get("console_size");
     var playlistsize = $.Storage.get("playlist_size");
     var infosize = $.Storage.get("info_size");
-    var userlistsize=$.Storage.get("userlist_size");
+    var userlistsize = $.Storage.get("userlist_size");
 
 
     if (consolesize) {
@@ -118,10 +118,10 @@ function consoleresize(e) {
 }
 function userlistresize(e) {
     var ww = $('#info').width();
-    var uproc=function(pos){
-        var calcpos=ww-($(window).width()-pos);
-        if (calcpos>ww-80){
-            calcpos=ww-80;
+    var uproc = function(pos) {
+        var calcpos = ww - ($(window).width() - pos);
+        if (calcpos > ww - 80) {
+            calcpos = ww - 80;
         }
         return calcpos / ww * 100 + '%';
     }
@@ -139,9 +139,12 @@ function onresize() {
     $('#playlist .inner').height($(window).height() - $('#playlist .current').height());
     var tabsheight = $('#info .tabs').height();
     var chatheight = $(window).height() - $('#info .content.chat .input').height() - tabsheight;
-    var bottomtabsheight=$('#info .channels .p_tabs').height();
+
     $('#info .content.history .inner').height($(window).height() - tabsheight - 20);
-    $('#info .content.channels .inner').height($(window).height() - tabsheight-bottomtabsheight);
+    if ($('#info .content.controlpanel').css('display') != 'none') {
+        var bottomtabsheight = $('#info .content.controlpanel .p_tabs').height();
+        $('#info .content.controlpanel .controlpage').height($(window).height() - tabsheight - bottomtabsheight);
+    }
 
     var profileshift = $('#info .tabs').height() + $('#info .content.profile .main').height();
     if ($('#info .content.profile .p_tabs').hasClass('top')) {

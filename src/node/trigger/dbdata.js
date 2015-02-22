@@ -987,7 +987,11 @@ exports.addComment = function(data, callback) {
 
 exports.getPosts = function(data, callback) {
     if (callback) {
-        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL ORDER BY post.lastupdate DESC LIMIT 20'
+        var datestring = '';
+        if (data.date) {
+            datestring = 'AND p.lastupdate > '+db.connection.escape(data.date);
+        }
+        var q = 'SELECT DISTINCT p.*, COUNT(c.postid) AS counter, users.name FROM post AS p LEFT JOIN users ON p.senderid=users.id, comment AS c  WHERE c.postid=p.id AND p.killer IS NULL GROUP BY p.id ORDER BY p.lastupdate DESC LIMIT 20'
         dumbquery(q, callback);
     }
 }

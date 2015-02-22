@@ -321,45 +321,7 @@ function addMessage(md) {
 }
 
 function updateMT(message) {
-    var delta = now - message.time;
-    var timediv = $(message).find('.messageinfo');
-    if (delta < 5000) {
-
-        timediv.html('только что');
-    }
-    if (delta > 5000 && delta < 60000) {
-        timediv.html(Math.round((now - message.time) / 1000) + ' секунд назад');
-    }
-    if (delta > 60000 && delta < 1800000) {
-        var tm = Math.round((now - message.time) / 60000);
-        var str = tm.toString();
-        var ttm = parseInt(str[length - 1]);
-        var mes = ' минут назад';
-        if (tm < 2) {
-            tm = '';
-            mes = ' минуту назад';
-        }
-        if (tm > 1 && tm < 5) {
-            mes = ' минуты назад';
-        }
-        timediv.html(tm + mes);
-    }
-    if (delta > 1800000 && delta < 3600000) {
-        timediv.html('полчаса назад');
-    }
-    if (delta > 3600000 && delta < 7200000) {
-        timediv.html('час назад');
-    }
-    if (delta > 7200000 && delta < 86400000) {
-        if (delta < 10800000) {
-            timediv.html(Math.round((now - message.time) / 3600000) + ' часа назад');
-        } else {
-            timediv.html(Math.round((now - message.time) / 3600000) + ' часов назад');
-        }
-    }
-    if (delta > 86400000) {
-        timediv.html(Math.round((now - message.time) / 86400000) + ' дней назад');
-    }
+    $(message).find('.messageinfo').html(moment(message.time).from());
 }
 
 

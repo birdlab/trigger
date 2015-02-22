@@ -76,6 +76,7 @@ body .redactor_box_fullscreen {
 	box-shadow: none !important;
 	padding: 15px !important;
 	margin: 0 !important;
+    font-size: 13px;
 	background: none;
 	overflow: auto;
 	white-space: normal;
