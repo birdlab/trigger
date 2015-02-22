@@ -3,6 +3,7 @@ Player = function(divname) {
     this.vol = 0.5;
     this.prefix = '';
     this.mode = 'html5';
+    this._mute = false;
     this.sound = new Audio();
     if (this.sound.canPlayType('audio/ogg')) {
     } else {
@@ -14,6 +15,7 @@ Player = function(divname) {
             swfobject.embedSWF("/js/radio.swf", "radio", "0", "0", "11.0.0");
         }
     }
+    this.path='';
     console.log(this.mode);
     return this;
 
@@ -24,15 +26,15 @@ Player.prototype = {
     constructor: Player,
 
     canplay: function(format) {
-        var can=this.sound.canPlayType(format);
-        if (!can&&format==audio/mpeg){
-            can=true;
+        var can = this.sound.canPlayType(format);
+        if (!can && format == audio / mpeg) {
+            can = true;
         }
         return can;
     },
 
     play: function(path) {
-        path = path + this.prefix;
+        this.path = path + this.prefix;
         if (this.mode == 'flash') {
             var p = this;
             if (getflashinstance(this.flname)) {
@@ -90,7 +92,34 @@ Player.prototype = {
         } else {
             return this.vol;
         }
+    },
+    mute: function(bol) {
+        if (bol != this._mute) {
+            this._mute = bol;
+
+            if (this._mute) {
+                this.stop();
+            } else {
+                var targetvol = this.vol;
+                this.vol = 0;
+                this.fade(targetvol);
+                this.play(this.path);
+            }
+        }
+    },
+    fade: function(to) {
+        var player = this;
+        this.volume(this.vol + (to-this.vol) / 30);
+        if (Math.abs(this.vol - to) > 0.01) {
+            player.to=to;
+            setTimeout(function() {
+                console.log(player.to);
+                console.log(player.vol);
+                player.fade(player.to);
+            }, 50);
+        }
     }
+
 
 };
 function getflashinstance(name) {

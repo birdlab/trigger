@@ -190,10 +190,16 @@ function getuser(id) {
                     $(this).addClass('active').children('a').addClass('hover');
 
                     if ($(this).hasClass('options')) {
-                            $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">Тинькать когда мне приходит сообщение</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div><div class="option"><label><input type="checkbox" name="female" id="female">Ура! Я женщина!</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
+                            $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">Тинькать когда мне приходит сообщение</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div>  <div class="option"><label><input type="checkbox" name="mutetrack" id="mutetrack">Заглушать трек когда я ставлю минус</label></div>   <div class="option"><label><input type="checkbox" name="female" id="female">Ура! Я женщина!</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
                         $('#tink').attr('checked', tink);
                         $('#female').attr('checked', !data.g);
                         $('#showimg').attr('checked', !noimg);
+                        $('#mutetrack').attr('checked', mutetrack);
+
+                        $('#mutetrack').click(function() {
+                            mutetrack = $(this).is(':checked');
+                            setmute();
+                        });
 
                         $('#tink').click(function() {
                             tink = $(this).is(':checked');

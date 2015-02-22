@@ -4,7 +4,7 @@
     };
 })(jQuery);
 
-var timezone = 10800000, stream_mode = '', client = null, remember_name = true, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
+var timezone = 10800000, stream_mode = '', client = null, remember_name = true, mutetrack = false, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
 function switch_style(css_title) {
 // You may use this script on your site free of charge provided
 // you do not remove this notice or the URL below. Script from
@@ -28,7 +28,7 @@ function switch_style(css_title) {
 
 
 $(document).ready(function() {
-
+    moment.lang('ru');
     jQuery.easing.def = "easeOutExpo";
     $('.loginform').hide();
     player = new Player();
@@ -82,6 +82,16 @@ $(document).ready(function() {
     } else {
         $.Storage.set("tink", 'true');
     }
+    var mtr = $.Storage.get("mutetrack");
+    if (mtr) {
+        if (t == 'false') {
+            mutetrack = false;
+        } else {
+            mutetrack = true;
+        }
+    } else {
+        mutetrack = false;
+    }
     var ni = $.Storage.get("noimg");
     if (ni) {
         if (ni == 'false') {
@@ -107,7 +117,7 @@ $(document).ready(function() {
     client = new Client();
     $(client).bind('welcome', function(event, data) {
         if (data) {
-            showChannels(data);
+            showControlPanel(data);
             var user = $.Storage.get("username"), pass = $.Storage.get("password");
             if (user) {
                 if (pass) {
@@ -174,11 +184,11 @@ $(document).ready(function() {
         fillUserlist();
     });
     $(client).bind('listners', function(event, data) {
-        $('#info .content.channels #' + data.chid + ' .listners').html('<span>Слушают:</span>' + data.l);
+        $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>Слушают:</span>' + data.l);
         if (data.chid == client.channel.chid) {
             $('#console .info .chdata').html('<span>Слушают: </span>' + data.l + '<span> из них активно: </span>' + data.a);
         }
-        if ($('.content.channels').hasClass('active')) {
+        if ($('.controlpage.channels').hasClass('active')) {
             fillchannelsdata(client.channels);
         }
 
@@ -192,10 +202,11 @@ $(document).ready(function() {
     $(client).bind('newcurrent', function(event, data) {
         if (data.chid == client.channel.chid) {
             setCurrent(data.track);
+            player.mute(false);
             setcurtime(true);
         }
 
-        $('#info .content.channels #' + data.chid + ' .current').html('<div class="cap">Сейчас:</div><div class="artist">' + data.track.a + '</div><div class="title">' + data.track.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(data.track.a) + ' - ' + encodeURIComponent(data.track.t) + '" target="_blank">>vk</a></span>');
+        $('#info .controlpage.channels #' + data.chid + ' .current').html('<div class="cap">Сейчас:</div><div class="artist">' + data.track.a + '</div><div class="title">' + data.track.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(data.track.a) + ' - ' + encodeURIComponent(data.track.t) + '" target="_blank">>vk</a></span>');
     });
     $(client).bind('trackupdate', function(event, data) {
         if (data.current) {
@@ -264,7 +275,7 @@ $(document).ready(function() {
                 onresize();
             }
             if ($(this).hasClass('channels')) {
-                showChannels();
+                showControlPanel();
             }
             if ($(this).hasClass('history')) {
                 $('#showgold').attr('checked', false);
@@ -358,6 +369,14 @@ function recoverymode(b) {
         $('.loginform .alert').html('');
     }
 
+}
+
+function setmute() {
+    if (mutetrack) {
+        $.Storage.set("mutetrack", 'true');
+    } else {
+        $.Storage.set("mutetrack", 'false');
+    }
 }
 
 function settink() {
@@ -614,7 +633,6 @@ function goLogin() {
 }
 
 
-
 function setCurrent(track) {
     var cur = $('#playlist .current').html('');
     var base = $('<div class="base"></div>').appendTo(cur);
@@ -644,6 +662,9 @@ function setCurrent(track) {
             vote = 0;
         } else {
             client.addvote({'id': track.id, 'v': client.user.w});
+            if (mutetrack){
+                player.mute(false);
+            }
             vote = 1;
         }
         e.stopPropagation();
@@ -652,9 +673,15 @@ function setCurrent(track) {
     $(down).click(function(e) {
         if (vote < 0) {
             client.addvote({'id': track.id, 'v': 0});
+            if (mutetrack){
+                player.mute(false);
+            }
             vote = 0;
         } else {
             client.addvote({'id': track.id, 'v': -client.user.w});
+            if (mutetrack){
+                player.mute(true);
+            }
             vote = -1;
         }
         e.stopPropagation();
@@ -793,7 +820,7 @@ function logout() {
     $('#info .tabs .profile').hide();
     $('#console .upfiles').hide();
     $('#console .userinfo').hide();
-    showChannels();
+    showControlPanel();
     client.logout(function() {
 
     });
@@ -1025,45 +1052,7 @@ function addtrack(track) {
         } else {
             full.toggle(400);
             if ($(this).hasClass('expanded')) {
-
-                var now = new Date(Date.now() + 10800000);
-                var delta = Date.parse(now) - Date.parse(track.ut);
-                var uptext = '';
-
-                if (delta < 5000) {
-
-                    uptext = 'только что';
-                }
-                if (delta > 5000 && delta < 60000) {
-                    uptext = Math.round(delta / 1000) + ' секунд назад';
-                }
-                if (delta > 60000 && delta < 1800000) {
-                    var tm = Math.round(delta / 60000);
-                    var str = tm.toString();
-                    var ttm = parseInt(str[length - 1]);
-                    var mes = ' минут назад';
-                    if (tm < 2) {
-                        tm = '';
-                        mes = ' минуту назад';
-                    }
-                    if (tm > 1 && tm < 5) {
-                        mes = ' минуты назад';
-                    }
-                    uptext = tm + mes;
-                }
-                if (delta > 1800000 && delta < 3600000) {
-                    uptext = 'полчаса назад';
-                }
-                if (delta > 3600000 && delta < 7200000) {
-                    uptext = 'час назад';
-                }
-                if (delta > 7200000 && delta < 86400000) {
-                    if (delta < 10800000+3600000) {
-                        uptext = Math.round(delta / 3600000) + ' часа назад';
-                    } else {
-                        uptext = Math.round(delta / 3600000) + ' часов назад';
-                    }
-                }
+                var uptext = moment(track.ut).subtract(3, 'hour').from();
                 full.find('.howold').html(uptext);
             }
         }
