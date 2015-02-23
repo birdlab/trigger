@@ -515,6 +515,8 @@ Channel.prototype.addTrack = function(data, callback) {
                 track.time = ans;
                 if (track.id) {
                     track.date = new Date(Date.parse(track.date) + 10800000);
+                    track.artist = track.artist.replace('&amp;', '&');
+                    track.title = track.title.replace('&amp;', '&');
                     ch.playlist.push(track);
                     ch.sort();
                     if (!ch.current && ch.playlist.length > 0) {
@@ -534,6 +536,8 @@ Channel.prototype.addTrack = function(data, callback) {
                             track.artist = san.sanitize(track.artist);
                             track.title = san.sanitize(track.title);
                             track.info = san.sanitize(track.info);
+                            track.artist = track.artist.replace('&amp;', '&');
+                            track.title = track.title.replace('&amp;', '&');
                             db.addTrack(track, function() {
                                 track.rating = 0;
                                 track.date = new Date(Date.now() + 10800000);
@@ -738,7 +742,9 @@ Channel.prototype.processTrack = function(track) {
     }
     db.setPlayDate(track.id, track.time);
     if (ch.active > 9) {
-        if ((track.positive.length / ch.active) > 0.8 && track.negative.length < 3) {
+        console.log(track.artist + ' - ' + track.title + ' can be gold');
+        console.log(track.positive.length / ch.active);
+        if (((track.positive.length / ch.active) > 0.8) && (track.negative.length < 3)) {
             db.setGold(track.id);
             db.generateinvite(track.submiter);
             var submiter = main.user(track.submiter);
