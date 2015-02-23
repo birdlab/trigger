@@ -491,19 +491,24 @@ Client.prototype.adduservote = function(data, callback) {
 Client.prototype.getUser = function(data, callback) {
     this.socket.emit('getuser', data, callback);
 }
-Client.prototype.getHistory = function(shift, gold, callback) {
-    cl = this;
-    cl.callbacks.history = callback;
-    this.socket.emit('gethistory', {chid: cl.channel.chid, s: shift, g: gold});
+Client.prototype.getHistory = function(data, callback) {
+    console.log(data);
+    this.socket.emit('gethistory', {
+        chid: this.channel.chid,
+        s: data.shift,
+        a: data.artist,
+        t: data.title,
+        top: data.top,
+        g: data.gold
+    }, callback);
 }
 Client.prototype.getTags = function(str, callback) {
     cl = this;
     cl.callbacks.tags = callback;
-
     this.socket.emit('gettags', {s: str});
 }
 Client.prototype.getTrackTags = function(artist, title, callback) {
-    cl = this;
+    var cl = this;
     cl.callbacks.tags = callback;
     this.socket.emit('gettags', {a: artist, t: title});
 }

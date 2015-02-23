@@ -244,14 +244,32 @@ function bind(socket) {
         socket.emit('channelsdata', dataforuser);
     });
 
-    socket.on('gethistory', function(data) {
-        if (data.s == 0) {
-            data.s = new Date();
+    socket.on('gethistory', function(data, callback) {
+            if (data.s == 0) {
+                data.s = new Date();
+            }
+            if (!data.a) {
+                data.a = '';
+            }
+            if (!data.t) {
+                data.t = '';
+            }
+            var d = {
+                channel: data.chid,
+                shift: data.s,
+                gold: data.g,
+                artist: data.a,
+                title: data.t,
+                top: data.top
+            }
+            db.getTracksByShift(d, function(data) {
+                if (callback) {
+                    callback(data);
+                }
+            });
         }
-        db.getTracksByShift(data.chid, data.s, data.g, function(data) {
-            socket.emit('history', data);
-        });
-    });
+    )
+    ;
 
     socket.on('tracksubmit', function(data, callback) {
         if (socket.user && !socket.user.virtual) {
@@ -671,7 +689,7 @@ function bind(socket) {
     socket.on('getcomments', function(data, callback) {
         if (data) {
             if (socket.user) {
-                if (data&&isFunction(callback)) {
+                if (data && isFunction(callback)) {
                     db.getComments(data, callback);
                 }
             }
@@ -686,7 +704,7 @@ function bind(socket) {
                 }
                 var chid = socket.user.prch || socket.user.opch;
                 if (chid && data && isFunction(callback)) {
-                    data.killerid=socket.user.id;
+                    data.killerid = socket.user.id;
                     db.killPost(data, callback);
 
                 }

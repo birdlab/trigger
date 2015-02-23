@@ -140,7 +140,7 @@ function onresize() {
     var tabsheight = $('#info .tabs').height();
     var chatheight = $(window).height() - $('#info .content.chat .input').height() - tabsheight;
 
-    $('#info .content.history .inner').height($(window).height() - tabsheight - 20);
+    $('#info .content.history .inner').height($(window).height() - (tabsheight + 55));
     if ($('#info .content.controlpanel').css('display') != 'none') {
         var bottomtabsheight = $('#info .content.controlpanel .p_tabs').height();
         $('#info .content.controlpanel .controlpage').height($(window).height() - tabsheight - bottomtabsheight);

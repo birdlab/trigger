@@ -251,8 +251,8 @@ function getTracksFromQery(q, callback) {
             var tracks = [];
             for (var t in result) {
                 tracks.push({
-                    a: result[t].artist,
-                    t: result[t].title,
+                    a: result[t].artist.replace('&amp;', '&'),
+                    t: result[t].title.replace('&amp;', '&'),
                     i: result[t].info,
                     tt: result[t].playdate,
                     s: result[t].name,
@@ -309,6 +309,8 @@ function getTracksFromQery(q, callback) {
 
                 }
             });
+        } else {
+            console.log(error);
         }
     });
 
@@ -327,15 +329,25 @@ exports.getuploads = function(id, shift, callback) {
     getTracksFromQery(q, callback);
 }
 
-exports.getTracksByShift = function(channel, shift, gold, callback) {
-    var getgold = '';
-    if (gold) {
+exports.getTracksByShift = function(data, callback) {
+    var getgold = '', getartist = '', gettitle = '';
+    if (data.gold) {
         getgold = ' AND tracks.gold = 1';
     }
-    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + channel + ' AND tracks.playdate < ' + db.connection.escape(shift) + getgold + ' order by tracks.playdate desc LIMIT 20';
+    data.artist = sanitizer.sanitize(data.artist);
+    data.title = sanitizer.sanitize(data.title);
+    if (data.artist.length) {
+
+        getartist = ' AND tracks.artist LIKE "%' + data.artist + '%"';
+    }
+    if (data.title.length) {
+        gettitle = ' AND tracks.title LIKE "%' + data.title + '%"';
+    }
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
+    console.log(q);
     getTracksFromQery(q, callback);
 }
-exports.getTracksByRating = function(channel, gold, callback) {
+exports.getTracksByRating = function(channel, callback) {
     var getgold = '';
     if (gold) {
         getgold = ' AND tracks.gold = 1';
@@ -349,8 +361,8 @@ exports.getTrackByID = function(id, callback) {
     db.connection.query(q, function(error, result, fields) {
         if (result.length) {
             var track = {
-                a: result[0].artist,
-                t: result[0].title,
+                a: result[0].artist.replace('&amp;', '&'),
+                t: result[0].title.replace('&amp;', '&'),
                 id: result[0].id,
                 tl: result[0].playdate,
                 tt: result[0].time
@@ -989,10 +1001,32 @@ exports.getPosts = function(data, callback) {
     if (callback) {
         var datestring = '';
         if (data.date) {
-            datestring = 'AND p.lastupdate > '+db.connection.escape(data.date);
+            datestring = 'AND p.lastupdate > ' + db.connection.escape(data.date);
         }
-        var q = 'SELECT DISTINCT p.*, COUNT(c.postid) AS counter, users.name FROM post AS p LEFT JOIN users ON p.senderid=users.id, comment AS c  WHERE c.postid=p.id AND p.killer IS NULL GROUP BY p.id ORDER BY p.lastupdate DESC LIMIT 20'
-        dumbquery(q, callback);
+        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL ORDER BY post.lastupdate DESC LIMIT 20'
+        dumbquery(q, function(data) {
+            if (!data.error) {
+                var ids = [];
+                for (var i in data) {
+                    ids.push(data[i].id);
+                }
+                var q = 'SELECT comment.postid, COUNT(comment.id) as count FROM comment WHERE comment.postid in (' + ids + ') group by comment.postid ORDER BY comment.date DESC';
+                dumbquery(q, function(d) {
+                    if (!d.error) {
+                        for (var a in d) {
+                            for (var f in data) {
+                                if (data[f].id == d[a].postid) {
+                                    data[f].count = d[a].count;
+                                    break;
+                                }
+                            }
+                        }
+                        callback(data);
+                    }
+
+                });
+            }
+        });
     }
 }
 exports.killPost = function(data, callback) {

@@ -313,20 +313,6 @@ $(document).ready(function() {
         $('.log').animate({scrollTop: $('.log')[0].scrollHeight}, 1200);
     });
 
-
-    $('#info .content.history .inner').scroll(function() {
-        if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {
-            historyprocess = true;
-            client.getHistory(lht, $('#showgold').is(':checked'), function(data) {
-                for (var t in data) {
-                    addhistory(data[t]);
-                }
-                historyprocess = false;
-            });
-        }
-
-    });
-
     $('#chattink').click(function() {
         tink = $(this).is(':checked');
         settink();
@@ -662,7 +648,7 @@ function setCurrent(track) {
             vote = 0;
         } else {
             client.addvote({'id': track.id, 'v': client.user.w});
-            if (mutetrack){
+            if (mutetrack) {
                 player.mute(false);
             }
             vote = 1;
@@ -673,13 +659,13 @@ function setCurrent(track) {
     $(down).click(function(e) {
         if (vote < 0) {
             client.addvote({'id': track.id, 'v': 0});
-            if (mutetrack){
+            if (mutetrack) {
                 player.mute(false);
             }
             vote = 0;
         } else {
             client.addvote({'id': track.id, 'v': -client.user.w});
-            if (mutetrack){
+            if (mutetrack) {
                 player.mute(true);
             }
             vote = -1;

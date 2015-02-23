@@ -440,7 +440,6 @@ input.id {
     padding-bottom: 10px;
 }
 
-
 .comment {
     margin-left: 30px;
 }
@@ -517,4 +516,44 @@ input.id {
     -webkit-transform: translateZ(0);
 }
 
+#hpanel {
+    font-size: 13px;
+    padding: 12px;
+}
 
+#hpanel label {
+    padding-right: 5px;
+    padding-top: 10px;
+}
+
+#console .uploaditem span {
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
+#console .uploaditem input, #console .uploaditem textarea, #hpanel .finput {
+    outline: 0 none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 5px;
+}
+
+#console .uploaditem textarea {
+    max-width: 100%;
+    min-width: 100%;
+}
+.tag .deltag {
+    width: 9px;
+    height: 9px;
+    background-image: url(/img/del.png);
+    display: inline-block;
+    margin: 3px 0 0 3px;
+    cursor: pointer;
+}
+
+.tags {
+    padding-bottom: 4px;
+    min-height: 1px;
+    max-width: 220px;
+}

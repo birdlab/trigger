@@ -11,13 +11,12 @@ function addblogpost(post) {
     var kill = '';
     var edit = '';
     var expand = '';
-    console.log(post);
     if (client.user.prch || client.user.opch) {
         kill = ' <br><a href="#" onclick="killpost(' + post.id + '); return false;">[x]</a>';
     }
     if (client.user) {
-        if (post.counter) {
-            expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;"> комментарии (' + post.counter + ')</a>';
+        if (post.count) {
+            expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;"> комментарии (' + post.count + ')</a>';
         } else {
             expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;">комментарии</a>';
         }

@@ -343,23 +343,6 @@ body {
     padding-right: 30px;
 }
 
-#console .uploaditem span {
-    overflow: hidden;
-    word-wrap: break-word;
-    text-overflow: ellipsis;
-}
-
-#console .uploaditem input, #console .uploaditem textarea {
-    outline: 0 none;
-    -webkit-appearance: none;
-    border: 0;
-    padding: 5px;
-}
-
-#console .uploaditem textarea {
-    max-width: 100%;
-    min-width: 100%;
-}
 
 .tag {
     font-size: 9px;
@@ -376,20 +359,6 @@ body {
     vertical-align: top;
 }
 
-.tag .deltag {
-    width: 9px;
-    height: 9px;
-    background-image: url(/img/del.png);
-    display: inline-block;
-    margin: 3px 0 0 3px;
-    cursor: pointer;
-}
-
-.tags {
-    padding-bottom: 4px;
-    min-height: 1px;
-    max-width: 220px;
-}
 
 /* Треки в плейлисте
 ---------------------------------------------*/
@@ -890,14 +859,9 @@ span.irony, #markups .irony {
 }
 
 #hpanel {
-    font-size: 13px;
     background-color: #333;
 }
 
-#hpanel label {
-    padding-left: 5px;
-    padding-top: 10px;
-}
 
 .content .loader {
     z-index: -1;

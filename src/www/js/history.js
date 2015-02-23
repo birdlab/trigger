@@ -2,7 +2,59 @@
  * Created by Bird on 24.11.14.
  */
 
+var inputlimit = false, historyneedupdate = false, historytimeout = false;
+
+$(document).ready(function() {
+    $('#info .content.history .inner').scroll(function() {
+        if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {
+            historyprocess = true;
+            var data = {
+                shift: lht,
+                artist: $('#hpanel .finput.artist').val(),
+                title: $('#hpanel .finput.title').val(),
+                gold: $('#showgold').is(':checked'),
+                top: $('#showtop').is(':checked')
+            }
+            client.getHistory(data, function(data) {
+                for (var t in data) {
+                    addhistory(data[t]);
+                }
+                historyprocess = false;
+            });
+        }
+    });
+    $('#hpanel .finput').keyup(function(data) {
+        updatehistory();
+    });
+
+});
+
+function updatehistory() {
+    if (historytimeout) {
+        clearTimeout(historytimeout);
+    }
+    historytimeout = setTimeout(function() {
+        var data = {
+            shift: 0,
+            artist: $('#hpanel .finput.artist').val(),
+            title: $('#hpanel .finput.title').val(),
+            gold: $('#showgold').is(':checked'),
+            top: $('#showtop').is(':checked')
+        }
+        $('#info .content.history .list').html('');
+        client.getHistory(data, function(data) {
+            for (var t in data) {
+                var track = data[t];
+                addhistory(track);
+            }
+            historyprocess = false;
+        });
+    }, 500);
+}
+
+
 function showHistory(g, shift) {
+    $('.content').hide();
     $('.content.history').show();
     $('#info .tabs .tab').removeClass('active').children('a').removeClass('hover');
     $('#info .tabs .tab.history').addClass('active').children('a').addClass('hover');
@@ -10,11 +62,18 @@ function showHistory(g, shift) {
     var sh = 0;
     if (shift) {
         sh = shift;
+        $('#hpanel .finput.artist').val('');
+        $('#hpanel .finput.title').val('');
+    }
+    var data = {
+        shift: sh,
+        artist: $('#hpanel .finput.artist').val(),
+        title: $('#hpanel .finput.title').val(),
+        gold: $('#showgold').is(':checked'),
+        top: $('#showtop').is(':checked')
     }
     $('#info .content.history .list').html('');
-    $('#info .content .loader').show(300);
-    client.getHistory(sh, g, function(data) {
-        $('#info .content .loader').hide(300);
+    client.getHistory(data, function(data) {
         for (var t in data) {
             var track = data[t];
             addhistory(track);
@@ -24,13 +83,12 @@ function showHistory(g, shift) {
 }
 
 function addhistory(track) {
+    console.log(track);
     var item = $('<li class="item"></li>').appendTo('#info .content.history .list');
     var base = $('<div class="base"></div>').appendTo(item);
     var date = moment(track.tt).calendar();
-    track.rr=track.p.length-track.n.length;
-    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r +'<span class="real">/'+track.rr+ '</span></div></td></tr></table>');
-
-
+    track.rr = track.p.length - track.n.length;
+    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
     var art = $(base).find('.artwork');
     if (track.g) {
         $(art).css('border', '2px solid #ffcd00');
