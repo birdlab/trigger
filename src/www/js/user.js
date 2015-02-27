@@ -190,7 +190,7 @@ function getuser(id) {
                     $(this).addClass('active').children('a').addClass('hover');
 
                     if ($(this).hasClass('options')) {
-                            $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">Тинькать когда мне приходит сообщение</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div>  <div class="option"><label><input type="checkbox" name="mutetrack" id="mutetrack">Заглушать трек когда я ставлю минус</label></div>   <div class="option"><label><input type="checkbox" name="female" id="female">Ура! Я женщина!</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
+                        $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">Тинькать когда мне приходит сообщение</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div>  <div class="option"><label><input type="checkbox" name="mutetrack" id="mutetrack">Заглушать трек когда я ставлю минус</label></div>   <div class="option"><label><input type="checkbox" name="female" id="female">Ура! Я женщина!</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
                         $('#tink').attr('checked', tink);
                         $('#female').attr('checked', !data.g);
                         $('#showimg').attr('checked', !noimg);
@@ -385,10 +385,10 @@ function passchanger() {
 function addprofile(track) {
     var item = $('<li class="item"></li>').appendTo('#info .content.profile .list');
     var base = $('<div class="base"></div>').appendTo(item);
-    var date = new Date(track.tt);
-    track.rr=track.p.length-track.n.length;
+    var date = moment(track.tt).calendar();
+    track.rr = track.p.length - track.n.length;
 
-    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r +'<span class="real">/'+track.rr+ '</span></div></td></tr></table>');
+    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
     var art = $(base).find('.artwork');
     if (track.g) {
         $(art).css('border', '2px solid #ffcd00');
