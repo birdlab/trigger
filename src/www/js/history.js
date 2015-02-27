@@ -5,6 +5,13 @@
 var inputlimit = false, historyneedupdate = false, historytimeout = false;
 
 $(document).ready(function() {
+
+    $('#showgold').bind('click', function() {
+        if (!historyprocess) {
+            showHistory($(this).is(':checked'));
+        }
+    });
+
     $('#info .content.history .inner').scroll(function() {
         if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {
             historyprocess = true;

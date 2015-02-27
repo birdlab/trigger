@@ -292,14 +292,6 @@ $(document).ready(function() {
     });
 
 
-    //галка золота в истории
-    $('#showgold').bind('click', function() {
-        if (!historyprocess) {
-            showHistory($(this).is(':checked'));
-        }
-    });
-
-
     $('#info .tabs .chat').hide();
     $('#info .tabs .profile').hide();
     $('#info .tabs .election').hide();
