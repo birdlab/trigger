@@ -50,15 +50,15 @@ login as trigger
 
 install useful libs
     
-sudo npm install socket.io
-sudo npm install mysql
-sudo npm install MD5
-sudo npm install sanitizer
-sudo npm install validator
+    sudo npm install socket.io
+    sudo npm install mysql
+    sudo npm install MD5
+    sudo npm install sanitizer
+    sudo npm install validator
 
 let's VM nginx response on virt-trigger.fm
 
-создаем файл virt-trigger.fm.conf со следующим содержимым:
+create /etc/nginx/conf.d/virt-trigger.fm.conf:
 
 ```nginx
 
@@ -131,10 +131,9 @@ server {
 
 ```
 
-###и кладем его в /etc/nginx/conf.d/
-
-в файле /etc/nginx/sites-available/default вписываем (или находим и раскомменчиваем) следующее:
-location ~ \.php$ {
+in /etc/nginx/sites-available/default:
+  
+	location ~ \.php$ {
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		# NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
 	
@@ -144,51 +143,41 @@ location ~ \.php$ {
 		include fastcgi_params;
 	}
 
-------------------------
-в файле /etc/php5/fpm/php.ini правим:
-cgi.fix_pathinfo=0
-post_max_size = 400M
-upload_max_filesize = 400M
 
-------------------------
-в файле /etc/nginx/nginx.conf
-
-types_hash_max_size 12048;
-client_max_body_size 1280m;
------------------------
+in /etc/php5/fpm/php.ini:
+    cgi.fix_pathinfo=0
+    post_max_size = 400M
+    upload_max_filesize = 400M
 
 
-создаем базу данных
+in /etc/nginx/nginx.conf:
 
-------------------------
+    types_hash_max_size 12048;
+    client_max_body_size 1280m;
 
-копируем в /home/trigger/ папки
-www
-node
-mpd
-------------------------
+create db
+
+copy to /home/trigger/:
+*www
+*node
+*mpd
+
 sudo chmod -R 777 /home/trigger/mpd		
 sudo chmod -R 777 /home/trigger/upload
-------------------------
 
 
 
-/home/trigger/node/trigger/db.local.js - явки-пароли к базе
-/home/trigger/www/js/paths.local.js
 
-------------------------
+/home/trigger/node/trigger/db.local.js - config for sql connection
+/home/trigger/www/js/paths.local.js - paths for client
 
-в файле /etc/sysctl.conf вписываем следующее:
-net.ipv4.tcp_keepalive_time = 5
-net.ipv4.tcp_fin_timeout = 5
-net.ipv4.tcp_synack_retries = 1
-net.ipv4.tcp_keepalive_intvl = 15
+/etc/sysctl.conf:
 
-потом 
-sudo sysctl -p
+    net.ipv4.tcp_keepalive_time = 5
+    net.ipv4.tcp_fin_timeout = 5
+    net.ipv4.tcp_synack_retries = 1
+    net.ipv4.tcp_keepalive_intvl = 15
+    sudo sysctl -p
 
-------------------------
-
-sudo reboot
-
-sudo node /home/trigger/node/trigger.js
+    sudo reboot
+    sudo node /home/trigger/node/trigger.js
