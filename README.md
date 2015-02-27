@@ -2,13 +2,11 @@
 
 ##Installation:
 
-###
-
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get install ssh php5-cli php5-common php5-mysql php5-gd php5-fpm php5-cgi php5-fpm php-pear php5-mcrypt php5-json php5-curl sudo apt-get install nginx sudo apt-get install mysql-server mysql-client php5-mysql
 
-##install icecast-kh
+install icecast-kh
 
     sudo apt-get install icecast2 libxslt1-dev libcurl4-openssl-dev libvorbis-dev
     wget https://github.com/karlheyes/icecast-kh/archive/icecast-2.3.3-kh11.tar.gz
@@ -19,42 +17,48 @@
     sudo make install
     
     
+    
     sudo cp /usr/local/etc/icecast.xml /etc/icecast2/icecast.xml
-сменить в нем папку логов на /var/log/icecast2, sources - на 10
-поменять DAEMON в /etc/init.d/icecast2 на /usr/local/bin/icecast
+    сменить в нем папку логов на /var/log/icecast2, sources - на 10
+    поменять DAEMON в /etc/init.d/icecast2 на /usr/local/bin/icecast
 
-#install MPD:
+install MPD:
 
-sudo apt-get install mpd
-sudo service mpd stop
-sudo update-rc.d mpd disable
-sudo apt-get install mpc
+    sudo apt-get install mpd
+    sudo service mpd stop
+    sudo update-rc.d mpd disable
+    sudo apt-get install mpc
+    
+install node.js
 
-sudo apt-get install curl
-curl -sL https://deb.nodesource.com/setup | sudo bash -
-sudo apt-get install nodejs
-sudo apt-get install build-essential
+    sudo apt-get install curl
+    curl -sL https://deb.nodesource.com/setup | sudo bash -
+    sudo apt-get install nodejs
+    sudo apt-get install build-essential
+    
+add user trigger
 
+    sudo adduser trigger
+    sudo adduser trigger sudo
 
-sudo adduser trigger
-sudo adduser trigger sudo
+login as trigger
 
-логинимся как trigger
+    mkdir /home/trigger/www
+    mkdir /home/trigger/node
+    mkdir /home/trigger/upload
+    mkdir /home/trigger/logs
 
-mkdir /home/trigger/www
-mkdir /home/trigger/node
-mkdir /home/trigger/upload
-mkdir /home/trigger/logs
-
+install useful libs
+    
 sudo npm install socket.io
 sudo npm install mysql
 sudo npm install MD5
 sudo npm install sanitizer
 sudo npm install validator
 
-####далее считаем, что виртуальный триггер будет доступен по адресу virt-trigger.fm
+let's VM nginx response on virt-trigger.fm
 
-###создаем файл virt-trigger.fm.conf со следующим содержимым:
+создаем файл virt-trigger.fm.conf со следующим содержимым:
 
 ```nginx
 
