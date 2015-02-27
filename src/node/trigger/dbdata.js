@@ -563,9 +563,12 @@ exports.addTrack = function(track, callback) {
     );
 
 }
-exports.setPlayDate = function(id, time) {
-    var q = 'UPDATE tracks SET playdate = DATE_SUB(NOW(), INTERVAL ' + time + ' SECOND) WHERE id =' + id;
+exports.setPlayDate = function(track) {
+    var q = 'UPDATE tracks SET playdate = DATE_SUB(NOW(), INTERVAL ' + track.time + ' SECOND, rating= ' + track.rating + ' , realrating=' + track.positive.length - track.negative.length + ') WHERE id =' + track.id;
     db.connection.query(q, function(error, result, fields) {
+        if (error) {
+            console.log(error);
+        }
     });
 }
 exports.setGold = function(id, time) {

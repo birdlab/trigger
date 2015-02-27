@@ -740,7 +740,7 @@ Channel.prototype.processTrack = function(track) {
     if (track.live) {
         db.setLiveTime(track.id, track.time);
     }
-    db.setPlayDate(track.id, track.time);
+    db.setPlayDate(track);
     if (ch.active > 9) {
         console.log(track.artist + ' - ' + track.title + ' can be gold');
         console.log(track.positive.length / ch.active);
