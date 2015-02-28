@@ -77,6 +77,10 @@ body {
     cursor: pointer;
 }
 
+.p_tabs .tab {
+    background: #383838;
+}
+
 .profile .tab {
     border-right: 0px;
 }
@@ -91,7 +95,7 @@ body {
 }
 
 .content.profile {
-    background-color: #444;
+    background-color: #383838;
 }
 
 .controlpage.channels .channel {

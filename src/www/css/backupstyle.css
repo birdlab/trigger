@@ -64,7 +64,7 @@ body {
 }
 
 .tab {
-    background: #fff;
+    background: #ffffff;
     float: none;
     margin-left: 1px;
     text-align: center;
@@ -72,6 +72,9 @@ body {
     padding: 17px 0px 17px 0px;
     border-right: 1px solid #eee;
     cursor: pointer;
+}
+.p_tabs .tab {
+    background: #f6f6f6;
 }
 
 .profile .tab {
@@ -88,7 +91,7 @@ body {
 }
 
 .content.profile {
-    background-color: #ffffff;
+    background-color: #f6f6f6;
 }
 
 .controlpage.channels .channel {
