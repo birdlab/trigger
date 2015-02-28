@@ -557,3 +557,19 @@ input.id {
     min-height: 1px;
     max-width: 220px;
 }
+.profile .item .channel, .history .item .counter {
+    font-size: 23px;
+    color: #bbb;
+    font-weight: 100;
+
+}
+.profile .item .channel {
+
+    width: 60px;
+}
+
+
+
+.history .item .counter {
+    width: 20px;
+}

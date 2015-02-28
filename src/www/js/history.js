@@ -2,7 +2,7 @@
  * Created by Bird on 24.11.14.
  */
 
-var inputlimit = false, historyneedupdate = false, historytimeout = false;
+var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter=0;
 
 $(document).ready(function() {
 
@@ -83,6 +83,8 @@ function showHistory(g, top, shift) {
         $('#showgold').prop('checked', false);
         $('#showgtop').prop('checked', false);
 
+    } else {
+        topcounter=0;
     }
     var data = {
         shift: sh,
@@ -102,11 +104,16 @@ function showHistory(g, top, shift) {
 }
 
 function addhistory(track) {
+    topcounter++;
+    var topcount='';
+    if ($('#showtop').is(':checked')){
+        topcount='<td class="counter">' + topcounter + '</td>';
+    }
     var item = $('<li class="item"></li>').appendTo('#info .content.history .list');
     var base = $('<div class="base"></div>').appendTo(item);
     var date = moment(track.tt).calendar();
     track.rr = track.p.length - track.n.length;
-    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
+    base.append('<table><tr>'+topcount+'<td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
     var art = $(base).find('.artwork');
     if (track.g) {
         $(art).css('border', '2px solid #ffcd00');
