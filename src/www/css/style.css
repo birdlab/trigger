@@ -855,6 +855,10 @@ span.irony, #markups .irony {
 #hpanel {
     background-color: #333;
 }
+#hpanel .finput {
+    background-color: #282828;
+    color:#cdcdcd;
+}
 
 
 .content .loader {
