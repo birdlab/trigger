@@ -337,13 +337,17 @@ exports.getTracksByShift = function(data, callback) {
     data.artist = sanitizer.sanitize(data.artist);
     data.title = sanitizer.sanitize(data.title);
     if (data.artist.length) {
-
         getartist = ' AND tracks.artist LIKE "%' + data.artist + '%"';
     }
     if (data.title.length) {
         gettitle = ' AND tracks.title LIKE "%' + data.title + '%"';
     }
-    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
+    var q = '';
+    if (!data.top) {
+        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
+    } else {
+        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + ' ORDER BY tracks.rating DESC, tracks.playdate DESC LIMIT ' + data.shift + ',20'
+    }
     console.log(q);
     getTracksFromQery(q, callback);
 }

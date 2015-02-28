@@ -245,8 +245,10 @@ function bind(socket) {
     });
 
     socket.on('gethistory', function(data, callback) {
-            if (data.s == 0) {
-                data.s = new Date();
+            if (!data.top) {
+                if (data.s == 0) {
+                    data.s = new Date();
+                }
             }
             if (!data.a) {
                 data.a = '';

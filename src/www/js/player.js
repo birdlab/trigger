@@ -15,7 +15,7 @@ Player = function(divname) {
             swfobject.embedSWF("/js/radio.swf", "radio", "0", "0", "11.0.0");
         }
     }
-    this.path='';
+    this.path = '';
     console.log(this.mode);
     return this;
 
@@ -30,30 +30,22 @@ Player.prototype = {
         return can;
     },
     play: function(path) {
-        this.path = path + this.prefix;
-        if (this.mode == 'flash') {
-            var p = this;
-            if (getflashinstance(this.flname)) {
-                if (!this.playing || this.path != path) {
-                    getflashinstance(this.flname).play(path);
-                    p.volume(p.vol);
-                    this.playing = true;
-                }
-            } else {
-                setTimeout(function() {
-                    p.play(p.path);
-                    p.volume(p.vol);
-                }, 400);
-            }
+        if (path) {
+            this.path = path;
         } else {
-            this.sound.src = path;
-            this.sound.loop = 'loop';
-            this.sound.play();
-            this.playing = true;
-            $('.streamcontrol .play').hide();
-            $('.streamcontrol .stop').show();
+            if (this.prefix=='mp3'){
+                this.path=client.channel.low;
+            } else {
+                this.path=client.channel.hi;
+            }
         }
-        this.path = path;
+        this.sound.src = this.path;
+        this.sound.loop = 'loop';
+        this.sound.play();
+        this.playing = true;
+        $('.streamcontrol .play').hide();
+        $('.streamcontrol .stop').show();
+
     },
 
 
@@ -105,9 +97,9 @@ Player.prototype = {
     },
     fade: function(to) {
         var player = this;
-        this.volume(this.vol + (to-this.vol) / 30);
+        this.volume(this.vol + (to - this.vol) / 30);
         if (Math.abs(this.vol - to) > 0.01) {
-            player.to=to;
+            player.to = to;
             setTimeout(function() {
                 console.log(player.to);
                 console.log(player.vol);

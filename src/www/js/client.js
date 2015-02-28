@@ -368,16 +368,18 @@ Client.prototype.init = function(host) {
                     cl.channel.pls[t] = data.t;
                     var track = cl.channel.pls[t];
                     track.vote = 0;
-                    for (var v in track.n) {
-                        if (track.n[v].vid == cl.user.id) {
-                            track.vote = track.n[v].v;
-                            break;
+                    if (cl.user) {
+                        for (var v in track.n) {
+                            if (track.n[v].vid == cl.user.id) {
+                                track.vote = track.n[v].v;
+                                break;
+                            }
                         }
-                    }
-                    for (var v in track.p) {
-                        if (track.p[v].vid == cl.user.id) {
-                            track.vote = track.p[v].v;
-                            break;
+                        for (var v in track.p) {
+                            if (track.p[v].vid == cl.user.id) {
+                                track.vote = track.p[v].v;
+                                break;
+                            }
                         }
                     }
                     cl.channel.pls.sort(sortFunction);

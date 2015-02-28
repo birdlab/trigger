@@ -40,7 +40,7 @@ $(document).ready(function() {
         player.volume(vol);
     }
     $('.streamcontrol .play').click(function() {
-        player.play(client.channel.hi);
+        player.play();
         $('.streamcontrol .play').hide();
         $('.streamcontrol .stop').show();
         $.Storage.set("play", 'true');
@@ -462,6 +462,11 @@ function onChannel(data) {
     stream_mode = $.Storage.get("stream_mode");
     if (!stream_mode) {
         stream_mode = 'ogg';
+        if (!player.canplay('audio/ogg')) {
+            stream_mode = 'mp3';
+        }
+        $.Storage.set("stream_mode", stream_mode);
+
     }
     console.log('stream_mode', stream_mode);
     //$('#console .info .chname').html('<a href="javascript:showChannels();void(0);">' + data.name + '<a>');
@@ -510,6 +515,12 @@ function onChannel(data) {
             if (dt < data.pls.length) {
                 addtrack(data.pls[dt]);
             } else {
+                if (list.height() < $('#playlist .inner').height()) {
+                    $('#playlist .list .advice').remove();
+                    list.append('<li class="advice">Самое время нести!</li>');
+                } else {
+                    $('#playlist .list .advice').remove();
+                }
                 fin = true;
                 break;
             }
@@ -520,12 +531,7 @@ function onChannel(data) {
         }
     }
     addtr();
-    if (list.height() < $('#playlist .inner').height()) {
-        $('#playlist .list .advice').remove();
-        list.append('<li class="advice">Самое время нести!</li>');
-    } else {
-        $('#playlist .list .advice').remove();
-    }
+
     updatetimes();
     if (client.user) {
         $('#info .tabs .chat').trigger('click');
@@ -1069,7 +1075,7 @@ function opentrack(track) {
         }
     } else {
         if (track.tl) {
-            showHistory(false, new Date(Date.parse(track.tl) + 10800000 + 12000));
+            showHistory(false, false, new Date(Date.parse(track.tl) + 10800000 + 12000));
         }
     }
 

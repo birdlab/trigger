@@ -8,7 +8,12 @@ $(document).ready(function() {
 
     $('#showgold').bind('click', function() {
         if (!historyprocess) {
-            showHistory($(this).is(':checked'));
+            showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
+        }
+    });
+    $('#showtop').bind('click', function() {
+        if (!historyprocess) {
+            showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
         }
     });
 
@@ -60,7 +65,7 @@ function updatehistory() {
 }
 
 
-function showHistory(g, shift) {
+function showHistory(g, top, shift) {
     $('.content').hide();
     $('.content.history').show();
     $('#info .tabs .tab').removeClass('active').children('a').removeClass('hover');
@@ -71,6 +76,9 @@ function showHistory(g, shift) {
         sh = shift;
         $('#hpanel .finput.artist').val('');
         $('#hpanel .finput.title').val('');
+        $('#showgold').prop('checked', false);
+        $('#showgtop').prop('checked', false);
+
     }
     var data = {
         shift: sh,
