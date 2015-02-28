@@ -27,12 +27,8 @@ Player.prototype = {
 
     canplay: function(format) {
         var can = this.sound.canPlayType(format);
-        if (!can && format == audio / mpeg) {
-            can = true;
-        }
         return can;
     },
-
     play: function(path) {
         this.path = path + this.prefix;
         if (this.mode == 'flash') {
