@@ -564,7 +564,12 @@ exports.addTrack = function(track, callback) {
 
 }
 exports.setPlayDate = function(track) {
-    var q = 'UPDATE tracks SET playdate = DATE_SUB(NOW(), INTERVAL ' + track.time + ' SECOND, rating= ' + track.rating + ' , realrating=' + track.positive.length - track.negative.length + ') WHERE id =' + track.id;
+    console.log(track);
+    var rating = track.positive.length - track.negative.length;
+    console.log(rating);
+
+    var q = 'UPDATE tracks SET playdate = DATE_SUB(NOW(), INTERVAL ' + track.time + ' SECOND), rating = ' + track.rating + ' , realrating =' + rating + ' WHERE id =' + track.id;
+    console.log(q);
     db.connection.query(q, function(error, result, fields) {
         if (error) {
             console.log(error);
