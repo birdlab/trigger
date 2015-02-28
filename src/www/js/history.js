@@ -2,7 +2,7 @@
  * Created by Bird on 24.11.14.
  */
 
-var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter=0;
+var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter = 0;
 
 $(document).ready(function() {
 
@@ -27,8 +27,8 @@ $(document).ready(function() {
                 gold: $('#showgold').is(':checked'),
                 top: $('#showtop').is(':checked')
             }
-            if (data.top){
-                data.shift=$('#info .content.history .list .item').length;
+            if (data.top) {
+                data.shift = $('#info .content.history .list .item').length;
             }
             console.log(data);
             client.getHistory(data, function(data) {
@@ -84,7 +84,7 @@ function showHistory(g, top, shift) {
         $('#showgtop').prop('checked', false);
 
     } else {
-        topcounter=0;
+        topcounter = 0;
     }
     var data = {
         shift: sh,
@@ -105,15 +105,15 @@ function showHistory(g, top, shift) {
 
 function addhistory(track) {
     topcounter++;
-    var topcount='';
-    if ($('#showtop').is(':checked')){
-        topcount='<td class="counter">' + topcounter + '</td>';
+    var topcount = '';
+    if ($('#showtop').is(':checked')) {
+        topcount = '<td class="counter">' + topcounter + '</td>';
     }
     var item = $('<li class="item"></li>').appendTo('#info .content.history .list');
     var base = $('<div class="base"></div>').appendTo(item);
     var date = moment(track.tt).calendar();
     track.rr = track.p.length - track.n.length;
-    base.append('<table><tr>'+topcount+'<td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
+    base.append('<table><tr>' + topcount + '<td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
     var art = $(base).find('.artwork');
     if (track.g) {
         $(art).css('border', '2px solid #ffcd00');
@@ -155,7 +155,9 @@ function addhistory(track) {
         var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
         tagitem.attr('tagid', track.tg[t].id);
     }
-    $('<span><a href="http://vk.com/audio?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>vk</a></span>').appendTo(track_links);
+    var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
+    var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
+    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
     item.addClass('trackid' + track.id);

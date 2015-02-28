@@ -631,7 +631,9 @@ function setCurrent(track) {
     if (track.tg.length > 1) {
         fastag += '...';
     }
-    var newHeader = track.a + ' - ' + track.t + ' @ Trigger';
+    var titleURI = track.t.replace('amp;', '');
+    var artistURI = track.a.replace('amp;', '');
+    var newHeader = artistURI + ' - ' + titleURI + ' @ Trigger';
 
     document.title = newHeader;
     base.append('<table><tr><td class="cover"><div class="artwork"><img src="' + src + '"></div></td><td class="name"><span class="artist">' + track.a + '</span><span style="position: absolute; top: -50px;"> - </span><br><span class="title">' + track.t + '</span></td><td class="fastag"><div class="intag">' + fastag +
@@ -761,8 +763,10 @@ function setCurrent(track) {
             client.killtrack(track.id);
         });
     }
+    var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
+    var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
     cur.append('<div class="timer"><div class="cursor"></div></div>');
-    $('<span><a href="http://vk.com/audio?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>vk</a></span>').appendTo(track_links);
+    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
 
@@ -920,7 +924,9 @@ function addtrack(track) {
             client.killtrack(track.id);
         });
     }
-    $('<span><a href="http://vk.com/audio?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>vk</a></span>').appendTo(track_links);
+    var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
+    var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
+    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
     full.hide();

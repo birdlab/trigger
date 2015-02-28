@@ -423,7 +423,9 @@ function addprofile(track) {
         var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
         tagitem.attr('tagid', track.tg[t].id);
     }
-    $('<span><a href="http://vk.com/audio?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>vk</a></span>').appendTo(tags);
+    var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
+    var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
+    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(tags);
     $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(tags);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(tags);
     item.addClass('trackid' + track.id);
