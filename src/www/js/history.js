@@ -27,6 +27,10 @@ $(document).ready(function() {
                 gold: $('#showgold').is(':checked'),
                 top: $('#showtop').is(':checked')
             }
+            if (data.top){
+                data.shift=$('#info .content.history .list .item').length;
+            }
+            console.log(data);
             client.getHistory(data, function(data) {
                 for (var t in data) {
                     addhistory(data[t]);
@@ -98,7 +102,6 @@ function showHistory(g, top, shift) {
 }
 
 function addhistory(track) {
-    console.log(track);
     var item = $('<li class="item"></li>').appendTo('#info .content.history .list');
     var base = $('<div class="base"></div>').appendTo(item);
     var date = moment(track.tt).calendar();
