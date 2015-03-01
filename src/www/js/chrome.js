@@ -278,7 +278,10 @@ $(document).ready(function() {
                 showControlPanel();
             }
             if ($(this).hasClass('history')) {
-                $('#showgold').attr('checked', false);
+                $('#hpanel .finput.artist').val('');
+                $('#hpanel .finput.title').val('');
+                $('#showgold').prop('checked', false);
+                $('#showtop').prop('checked', false);
                 showHistory();
             }
             if ($(this).hasClass('profile')) {
