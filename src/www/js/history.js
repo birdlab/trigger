@@ -2,7 +2,7 @@
  * Created by Bird on 24.11.14.
  */
 
-var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter = 0;
+var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter = 0, topvotes = false;
 
 $(document).ready(function() {
 
@@ -16,6 +16,19 @@ $(document).ready(function() {
             showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
         }
     });
+    $('#topswitch').bind('click', function() {
+        if (!historyprocess) {
+            $('#showtop').prop('checked', true);
+            topvotes = !topvotes;
+            if (topvotes) {
+                $('#topswitch').html('по голосам');
+            } else {
+                $('#topswitch').html('по рейтингу');
+            }
+            showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
+        }
+    });
+
 
     $('#info .content.history .inner').scroll(function() {
         if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {
@@ -25,7 +38,8 @@ $(document).ready(function() {
                 artist: $('#hpanel .finput.artist').val(),
                 title: $('#hpanel .finput.title').val(),
                 gold: $('#showgold').is(':checked'),
-                top: $('#showtop').is(':checked')
+                top: $('#showtop').is(':checked'),
+                votes: topvotes
             }
             if (data.top) {
                 data.shift = $('#info .content.history .list .item').length;
@@ -55,7 +69,8 @@ function updatehistory() {
             artist: $('#hpanel .finput.artist').val(),
             title: $('#hpanel .finput.title').val(),
             gold: $('#showgold').is(':checked'),
-            top: $('#showtop').is(':checked')
+            top: $('#showtop').is(':checked'),
+            votes: topvotes
         }
         $('#info .content.history .list').html('');
         client.getHistory(data, function(data) {
@@ -78,11 +93,6 @@ function showHistory(g, top, shift) {
     var sh = 0;
     if (shift) {
         sh = shift;
-        $('#hpanel .finput.artist').val('');
-        $('#hpanel .finput.title').val('');
-        $('#showgold').prop('checked', false);
-        $('#showgtop').prop('checked', false);
-
     } else {
         topcounter = 0;
     }
@@ -91,7 +101,8 @@ function showHistory(g, top, shift) {
         artist: $('#hpanel .finput.artist').val(),
         title: $('#hpanel .finput.title').val(),
         gold: $('#showgold').is(':checked'),
-        top: $('#showtop').is(':checked')
+        top: $('#showtop').is(':checked'),
+        votes: topvotes
     }
     $('#info .content.history .list').html('');
     client.getHistory(data, function(data) {

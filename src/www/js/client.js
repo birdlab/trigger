@@ -501,7 +501,8 @@ Client.prototype.getHistory = function(data, callback) {
         a: data.artist,
         t: data.title,
         top: data.top,
-        g: data.gold
+        g: data.gold,
+        v: data.votes
     }, callback);
 }
 Client.prototype.getTags = function(str, callback) {

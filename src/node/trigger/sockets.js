@@ -262,8 +262,11 @@ function bind(socket) {
                 gold: data.g,
                 artist: data.a,
                 title: data.t,
-                top: data.top
+                top: data.top,
+                votes: data.v
+
             }
+            console.log(d);
             db.getTracksByShift(d, function(data) {
                 if (callback) {
                     callback(data);

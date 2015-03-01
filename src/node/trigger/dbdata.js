@@ -346,7 +346,11 @@ exports.getTracksByShift = function(data, callback) {
     if (!data.top) {
         q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
     } else {
-        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + ' ORDER BY tracks.rating DESC, tracks.playdate DESC LIMIT ' + data.shift + ',20'
+        var order = ' ORDER BY tracks.rating DESC, tracks.realrating DESC, tracks.playdate DESC ';
+        if (data.votes) {
+            order = ' ORDER BY tracks.realrating DESC, tracks.rating DESC, tracks.playdate DESC '
+        }
+        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + order + 'LIMIT ' + data.shift + ',20'
     }
     console.log(q);
     getTracksFromQery(q, callback);
