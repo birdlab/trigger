@@ -1,0 +1,3 @@
+[submodule "src/www/alt"]
+	path = src/www/alt
+	url = https://github.com/DonSinDRom/trigger
