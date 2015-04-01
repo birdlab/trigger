@@ -402,15 +402,18 @@ function bind(socket) {
                     }
                     return false;
                 }
-                if (!user) {
-                    db.getuser(data.id, function(dbdata) {
-                        if (dbdata.user) {
-                            user = dbdata.user;
-                            processvote();
-                        }
-                    });
-                } else {
-                    processvote();
+                data.v = parseInt(data.v);
+                if (!isNaN(data.v)) {
+                    if (!user) {
+                        db.getuser(data.id, function(dbdata) {
+                            if (dbdata.user) {
+                                user = dbdata.user;
+                                processvote();
+                            }
+                        });
+                    } else {
+                        processvote();
+                    }
                 }
             }
         }
