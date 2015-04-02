@@ -544,8 +544,7 @@ Channel.prototype.addTrack = function(data, callback) {
                                 track.positive = [];
                                 track.negative = [];
                                 var weight = user.fastinfo().w;
-                                console.log('user weight - ' + weight);
-                                if (track.vote) {
+                                if (track.vote!= 'undefined') {
                                     console.log('track.vote - ' + track.vote);
                                     track.vote = parseInt(track.vote);
                                     console.log('after parse - ' + track.vote);
@@ -1090,6 +1089,12 @@ function packTrackData(track) {
             n: [],
             r: track.rating
         }
+
+/*        var anon=true;
+        if (anon){
+            td.s='Аноним';
+            td.sid=0;
+        }*/
 
         var positive = track.positive;
         var negative = track.negative;

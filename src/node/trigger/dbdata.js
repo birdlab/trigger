@@ -3,7 +3,6 @@ var user = require('./user.js');
 var exec = require("child_process").exec;
 var md5 = require('MD5');
 var sanitizer = require('sanitizer');
-//var mysql = require('mysql');
 
 var voteq = [];
 var uvoteq = [];
