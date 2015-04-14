@@ -162,14 +162,14 @@ function fillchannelsdata(d) {
             console.log('in channel');
             var cd = d.channels[c];
             var chdd = $('<li class="channel"></li>').appendTo($('#info .controlpage.channels .list'));
-            //var channeldom = '<div class="base"><a href="javascript: client.goChannel(' + cd.id + ', onChannel);void(0);" class="name">' + cd.name + '</a><a href="' + streampath + cd.hi;
-            // channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
-            //channeldom += '" target="_blank">96kbps</a><div class="listners"><span>Слушают:</span>' + cd.lst + '</div><br /></div>';
-            var channeldom = '<div class="base"></div>';
+            var channeldom = '<div class="base"><a href="javascript: client.goChannel(' + cd.id + ', onChannel);void(0);" class="name">' + cd.name + '</a><a href="' + streampath + cd.hi;
+            channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
+            channeldom += '" target="_blank">96kbps</a><div class="listners"><span>Слушают:</span>' + cd.lst + '</div><br /></div>';
+            // var channeldom = '<div class="base"></div>';
 
             var chd = $(channeldom).appendTo(chdd);
             console.log(chd);
-            // $('<div class="hint"><<<клик</div>').appendTo(chd);
+            $('<div class="hint"><<<клик</div>').appendTo(chd);
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
             var storageinfo = $.Storage.get("channel" + cd.id);
             if (storageinfo != cd.description) {
@@ -212,10 +212,10 @@ function fillchannelsdata(d) {
                     }
                 }
             }
-            //   if (cd.current) {
-            // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(cd.current.a) + ' - ' + encodeURIComponent(cd.current.t) + '" target="_blank">>vk</a></span></div>').appendTo(chd);
-            // var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div></div>').appendTo(chd);
-            //   }
+            if (cd.current) {
+                var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div><span><a href="http://vk.com/audio?q=' + encodeURIComponent(cd.current.a) + ' - ' + encodeURIComponent(cd.current.t) + '" target="_blank">>vk</a></span></div>').appendTo(chd);
+                //  var current = $('<div class="current"><div class="cap">Сейчас:</div><div class="artist">' + cd.current.a + '</div><div class="title">' + cd.current.t + '</div></div>').appendTo(chd);
+            }
 
             var users = $('<div class="users"><div class="usershead">Прямо сейчас эфир делают:</div></div>').appendTo(chd);
             for (var u in cd.users) {
@@ -298,13 +298,13 @@ function fillchannelsdata(d) {
 
 
             //   }
-            /*            chd.click(function() {
-             var chf = $(this.parentNode).children('.full');
-             if (!$(chf).hasClass('active')) {
-             $('#info .content.channels .full').hide(400).removeClass('active');
-             $(chf).show(400).addClass('active');
-             }
-             });}*/
+            chd.click(function() {
+                var chf = $(this.parentNode).children('.full');
+                if (!$(chf).hasClass('active')) {
+                    $('#info .content.channels .full').hide(400).removeClass('active');
+                    $(chf).show(400).addClass('active');
+                }
+            });
         }
         // $('#info .content.channels .full').hide();
 

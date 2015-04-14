@@ -62,7 +62,6 @@ $(document).ready(function() {
             $(window).unbind('mousemove', setvolume);
         });
     });
-    // $(".nano").nanoScroller();
 
     var sheet = $.Storage.get("style");
     console.log(sheet);
@@ -472,7 +471,7 @@ function onChannel(data) {
 
     }
     console.log('stream_mode', stream_mode);
-    //$('#console .info .chname').html('<a href="javascript:showChannels();void(0);">' + data.name + '<a>');
+    $('#console .info .chname').html('<a href="javascript:showControlPanel();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
     $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="192kbps" target="_blank">mp3</a>');
