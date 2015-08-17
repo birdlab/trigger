@@ -7,7 +7,7 @@ origins.push('Только 64kbps, username! Только хардкор!');
 origins.push('Чятик ждёт твой новый трек, username.');
 origins.push('username покинул нас.');
 origins.push('Нельзя просто взять и уйти из Триггера, username.');
-origins.push('Успей сходить за алкоголем до одиннадцати, username!');
+origins.push('Успей сходить за алкоголем до 22:00, username!');
 origins.push('Твой трек слишком длинный, username!');
 origins.push('Ложиться спать уже бесполезно, username.');
 origins.push('Не пытайтесь покинуть Trigger, username!');
