@@ -22,8 +22,6 @@ Chat.prototype.init = function(data) {
 Chat.prototype.addMessage = function(message, user, callback) {
     var ct = new Date();
     message.t = ct;
-
-
     //  var isimage = message.m.match(/(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg|bmp))/gim || false);
 
     var isprivate = message.m.match(/^(\>{2}[a-zA-Z0-9_.]+)+/g || false);

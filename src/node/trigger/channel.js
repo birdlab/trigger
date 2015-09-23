@@ -87,7 +87,6 @@ Channel.prototype.setop = function(data, callback) {
     var ch = this;
     if (data.pr) {
         main.getuser(data.id, function(user) {
-            console.log('set new PR', user.name);
             if (user) {
                 var olduser = main.getuser(ch.prid);
                 if (olduser) {
@@ -832,7 +831,6 @@ Channel.prototype.stopElection = function() {
     var ch = this;
     ch.election = false;
     if (ch.electionData.candidates[0].user) {
-        ch.setop({id: ch.electionData.candidates[0].user.id, pr: true});
         for (var e in ch.editors) {
             var data = {
                 chid: ch.id,
@@ -849,7 +847,7 @@ Channel.prototype.stopElection = function() {
         }
         ch.banned = [];
         ch.editors = [];
-
+        ch.setop({id: ch.electionData.candidates[0].user.id, chid:ch.id, pr: true});
     }
 }
 
