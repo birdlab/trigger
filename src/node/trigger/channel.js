@@ -543,13 +543,18 @@ Channel.prototype.addTrack = function(data, callback) {
                                 track.positive = [];
                                 track.negative = [];
                                 var weight = user.fastinfo().w;
-                                if (track.vote!= 'undefined') {
+                                if (track.vote != 'undefined') {
                                     console.log('track.vote - ' + track.vote);
                                     track.vote = parseInt(track.vote);
                                     console.log('after parse - ' + track.vote);
                                     console.log('track.vote > weight - ' + track.vote > weight);
                                     if (!(track.vote > weight)) {
-                                        weight = track.vote;
+                                        if (ch.active < 10) {
+                                            weight = 0;
+                                        } else {
+                                            weight = track.vote;
+                                        }
+
                                     } else {
                                         weight = 0;
                                     }
