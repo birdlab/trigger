@@ -7,6 +7,32 @@ var redactorsettings = {
 }
 
 
+var blogprocess = false;
+
+var firstpostdate = null;
+var lastpostdate = null;
+
+
+$(document).ready(function() {
+
+    $('#info .controlpage.blogs').scroll(function() {
+        if (firstpostdate && lastpostdate) {
+            if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !blogprocess) {
+                blogprocess = true;
+                client.getBlog(function(d) {
+                    blogprocess = false;
+                    console.log(d);
+                    lastpostdate = d[d.length - 1].date;
+                    for (var a in d) {
+                        addblogpost(d[a]);
+                    }
+                }, {date: lastpostdate});
+            }
+        }
+    });
+});
+
+
 function addblogpost(post) {
     var kill = '';
     var edit = '';
@@ -96,10 +122,16 @@ function killpost(id) {
     })
 }
 
+
 function fillblog(d) {
+    blogprocess=false;
+    console.log(d);
     $('#info .controlpage').hide();
     $('#info .controlpage.blogs .list').html('');
     $('#info .controlpage.blogs').show();
+
+    console.log($('#info .controlpage.blogs .list'));
+
     var blogtop = $('#blogtop');
     $('#newpost').click(function() {
         blogtop.html('<form action="" id="postform" method="post"><textarea id="contenteditor" name="content"></textarea><div class="button">Пст</div></p></form>');
@@ -109,11 +141,15 @@ function fillblog(d) {
             console.log($('#contenteditor').redactor('code.get')[0].value);
             client.addPost({content: $('#contenteditor').redactor('code.get')[0].value}, function(d) {
                 blogtop.html('<div id="newpost" class="button">Новый пост</div>');
+                blogprocess=true;
                 client.getBlog(fillblog);
             });
         });
 
     });
+    firstpostdate = d[0].date;
+    lastpostdate = d[d.length - 1].date;
+    console.log(lastpostdate);
     for (var a in d) {
         addblogpost(d[a]);
     }

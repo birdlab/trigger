@@ -1012,13 +1012,15 @@ exports.addComment = function(data, callback) {
     });
 }
 
-exports.getPosts = function(data, callback) {
+exports.getPosts = function(callback, d) {
+    console.log(callback);
+    console.log(d);
     if (callback) {
         var datestring = '';
-        if (data.date) {
-            datestring = 'AND p.lastupdate > ' + db.connection.escape(data.date);
+        if (d && d.date) {
+            datestring = 'AND post.lastupdate < ' + db.connection.escape(d.date);
         }
-        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL ORDER BY post.lastupdate DESC LIMIT 20'
+        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL '+datestring+' ORDER BY post.lastupdate DESC LIMIT 20'
         dumbquery(q, function(data) {
             if (!data.error) {
                 var ids = [];

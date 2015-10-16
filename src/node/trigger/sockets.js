@@ -690,7 +690,7 @@ function bind(socket) {
     socket.on('getposts', function(data, callback) {
         if (socket.user) {
             if (isFunction(callback)) {
-                db.getPosts(data, callback);
+                db.getPosts(callback, data);
             }
         }
     });

@@ -441,9 +441,12 @@ Client.prototype.getChannels = function(callback) {
     cl.callbacks.channelsdata = callback;
     this.socket.emit('getchannels');
 }
-Client.prototype.getBlog = function(callback) {
-    this.socket.emit('getposts', {}, callback);
+Client.prototype.getBlog = function(callback, data) {
+    console.log('getting posts');
+    console.log(callback);
+    this.socket.emit('getposts', data, callback);
 }
+
 Client.prototype.addPost = function(data, callback) {
     this.socket.emit('addpost', data, callback);
 }

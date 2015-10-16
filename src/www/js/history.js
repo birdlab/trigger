@@ -5,7 +5,6 @@
 var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter = 0, topvotes = false;
 
 $(document).ready(function() {
-
     $('#showgold').bind('click', function() {
         if (!historyprocess) {
             showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
@@ -28,7 +27,6 @@ $(document).ready(function() {
             showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
         }
     });
-
 
     $('#info .content.history .inner').scroll(function() {
         if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {

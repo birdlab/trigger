@@ -10,6 +10,8 @@ $(document).ready(function() {
             $(this).addClass('active').children('a').addClass('hover');
             if ($(this).hasClass('blog')) {
                 controldesk_mode = 'blog';
+
+
                 client.getBlog(fillblog);
 
             }
@@ -20,6 +22,7 @@ $(document).ready(function() {
 
         }
     });
+
 
 });
 
