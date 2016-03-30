@@ -123,12 +123,12 @@ function setvolume(e) {
     if (pos < 0) {
         pos = 0;
     }
-    if (pos > 125) {
-        pos = 125;
+    if (pos > 100) {
+        pos = 100;
     }
-    $('#volume .slider .bar').width(pos);
-    player.volume(pos / 125);
-    $.Storage.set("volume", (pos / 125) * 1000 + ' ');
+    $('#volume .slider .bar').width(pos+'%');
+    player.volume(pos / 100);
+    $.Storage.set("volume", (pos / 100) * 1000 + ' ');
 
 }
 function handle_storage(e) {

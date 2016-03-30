@@ -1,3 +1,14 @@
+#playlist {
+    position: fixed;
+    top: 0px;
+    width: 35%;
+    bottom: 0px;
+    margin-left: 15%;
+    font-size: 12px;
+}
+
+
+
 
 .clearfix:after {
     clear: both;
@@ -440,6 +451,19 @@ input.id {
     padding-bottom: 10px;
 }
 
+.inf {
+    float: right;
+    font-size: 10px;
+}
+
+.message .post p {
+    font-size: 13px !important;
+}
+
+.content.chat .message .inf a {
+    font-size: 10px;
+}
+
 .comment {
     margin-left: 30px;
 }
@@ -537,12 +561,18 @@ input.id {
     -webkit-appearance: none;
     border: 0;
     padding: 5px;
+
+}
+
+#console .uploaditem input {
+    width: 100%;
 }
 
 #console .uploaditem textarea {
     max-width: 100%;
     min-width: 100%;
 }
+
 .tag .deltag {
     width: 9px;
     height: 9px;
@@ -557,18 +587,18 @@ input.id {
     min-height: 1px;
     max-width: 220px;
 }
+
 .profile .item .channel, .history .item .counter {
     font-size: 23px;
     color: #bbb;
     font-weight: 100;
 
 }
+
 .profile .item .channel {
 
     width: 60px;
 }
-
-
 
 .history .item .counter {
     width: 20px;
@@ -648,8 +678,6 @@ td.sms img .hide {
     font-size: 23px;
     color: #bbb;
 }
-
-
 
 #info .content.profile .list .sendform .send, #sendall {
     background: #ffcd00;

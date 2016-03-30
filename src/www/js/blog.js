@@ -21,7 +21,6 @@ $(document).ready(function() {
                 blogprocess = true;
                 client.getBlog(function(d) {
                     blogprocess = false;
-                    console.log(d);
                     lastpostdate = d[d.length - 1].date;
                     for (var a in d) {
                         addblogpost(d[a]);
@@ -34,6 +33,7 @@ $(document).ready(function() {
 
 
 function addblogpost(post) {
+
     var kill = '';
     var edit = '';
     var expand = '';
@@ -47,7 +47,7 @@ function addblogpost(post) {
             expand = ' <a href="#" onclick="openpost(' + post.id + '); return false;">комментарии</a>';
         }
     }
-    $('<div class="post" id="post' + post.id + '"><div class="cin"><div class="content">' + post.content + '</div><div class="info">написал <a href="javascript:getuser(' + post.senderid + ');void(0);">' + post.name + '</a> ' + moment(post.date).calendar() + ' #' + post.id + expand + kill + '</div></div><div class="comments"></div></div>').appendTo('#info .controlpage.blogs .list');
+    $('<div class="post" id="post' + post.id + '"><div class="cin"><div class="content">' + post.content + '</div><div class="info"> <a href="javascript:post2chat(' + post.id + ');void(0);">#' + post.id + '</a> написал <a href="javascript:getuser(' + post.senderid + ');void(0);">' + post.name + '</a> ' + moment(post.date).calendar() + expand + kill + '</div></div><div class="comments"></div></div>').appendTo('#info .controlpage.blogs .list');
 }
 
 function addCommentEditor(postid, commentid) {
@@ -86,9 +86,12 @@ function placeComment(comment) {
 }
 
 function openpost(postid) {
+    console.log(location.hash);
+    if (location.hash != '#!/blog/' + postid) {
+        location.hash = '#!/blog/' + postid;
+    }
     $('#info .content .post .comments').html('');
     client.getComments({id: postid}, function(d) {
-        console.log(d);
         if (d.length) {
             for (var c in d) {
                 placeComment(d[c]);
@@ -106,11 +109,10 @@ function openpost(postid) {
             $('<div class="advice">Возможно ты будешь первым</div>').appendTo('#post' + postid + ' .comments');
             addCommentEditor(postid);
         }
-
-
     });
 
 }
+
 
 function killpost(id) {
     client.killPost(id, function(d) {
@@ -124,13 +126,13 @@ function killpost(id) {
 
 
 function fillblog(d) {
-    blogprocess=false;
-    console.log(d);
+
+
+    blogprocess = false;
     $('#info .controlpage').hide();
     $('#info .controlpage.blogs .list').html('');
     $('#info .controlpage.blogs').show();
 
-    console.log($('#info .controlpage.blogs .list'));
 
     var blogtop = $('#blogtop');
     $('#newpost').click(function() {
@@ -141,17 +143,32 @@ function fillblog(d) {
             console.log($('#contenteditor').redactor('code.get')[0].value);
             client.addPost({content: $('#contenteditor').redactor('code.get')[0].value}, function(d) {
                 blogtop.html('<div id="newpost" class="button">Новый пост</div>');
-                blogprocess=true;
+                blogprocess = true;
                 client.getBlog(fillblog);
             });
         });
 
     });
+
     firstpostdate = d[0].date;
     lastpostdate = d[d.length - 1].date;
-    console.log(lastpostdate);
+
     for (var a in d) {
         addblogpost(d[a]);
     }
+    if (d.length == 1) {
+        openpost(d[0].id);
+    }
+    if (location.hash.length) {
+        var dec = location.hash.split('/')
+        if (dec[1] == 'blog' && dec.length > 2) {
+            client.getPost(function(data) {
+                addblogpost(data[0]);
+                openpost(data[0].id);
+            }, dec[2]);
+        }
+    }
+
+
     onresize();
 }

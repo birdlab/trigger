@@ -4,22 +4,19 @@ var edition = false;
 
 $(document).ready(function() {
     $('#info .p_tabs .tab').bind('click', function() {
-        console.log(this);
-        if (!$(this).hasClass('active')) {
-            $('#info .p_tabs .tab').removeClass('active').children('a').removeClass('hover');
-            $(this).addClass('active').children('a').addClass('hover');
-            if ($(this).hasClass('blog')) {
-                controldesk_mode = 'blog';
+        $('#info .p_tabs .tab').removeClass('active').children('a').removeClass('hover');
+        $(this).addClass('active').children('a').addClass('hover');
 
-
-                client.getBlog(fillblog);
-
-            }
-            if ($(this).hasClass('democracy')) {
-                controldesk_mode = 'democracy';
-                client.getChannels(fillchannelsdata);
-            }
-
+        if ($(this).hasClass('blog')) {
+            controldesk_mode = 'blog';
+            client.getBlog(fillblog);
+        }
+        if ($(this).hasClass('democracy')) {
+            controldesk_mode = 'democracy';
+            client.getChannels(fillchannelsdata);
+        }
+        if (location.hash != '#!/' + controldesk_mode + '/') {
+            location.hash = '#!/' + controldesk_mode + '/';
         }
     });
 
@@ -28,7 +25,6 @@ $(document).ready(function() {
 
 function fillchannelsdata(d) {
 
-    controldesk_mode = 'democracy';
     var sorting = function(a, b) {
         if (a.lst) {
             var dif = b.lst - a.lst;
@@ -42,7 +38,6 @@ function fillchannelsdata(d) {
         }
     }
 
-
     var showElection = function(election, cd) {
         election.html('');
         var message = ''
@@ -53,9 +48,8 @@ function fillchannelsdata(d) {
             message = '<div class="greating">Ты как раз вовремя, ' + client.user.n + '! <br>Исполни свой гражданский долг - введи в поле ниже id своего избранника.<br></div>';
         }
         $(message).appendTo(election);
-        var voteinput = $('<input class="prid" type="text" placeholder="id кандидата">').appendTo(election);
+        var voteinput = $('<input class="prid" type="text" placeholder="имя или id кандидата">').appendTo(election);
         var summary = $('<div class="electionlist">Сейчас расстановка сил такая:</div>').appendTo(election);
-        console.log(cd);
         var elstr = '';
         for (var i in cd.candidates) {
             var can = cd.candidates[i];
@@ -69,7 +63,10 @@ function fillchannelsdata(d) {
                 if (prvote.length) {
                     client.sendPRVote({chid: cd.id, prid: prvote}, function(data) {
                         if (data.error) {
+                            console.log(data.error);
                         } else {
+                            console.log('vote data recived');
+                            console.log(data);
                             data.id = cd.id;
                             showElection(election, data);
                         }
@@ -162,21 +159,17 @@ function fillchannelsdata(d) {
             d.channels.sort(sorting);
         }
         for (var c in d.channels) {
-            console.log('in channel');
             var cd = d.channels[c];
             var chdd = $('<li class="channel"></li>').appendTo($('#info .controlpage.channels .list'));
             var channeldom = '<div class="base"><a href="javascript: client.goChannel(' + cd.id + ', onChannel);void(0);" class="name">' + cd.name + '</a><a href="' + streampath + cd.hi;
-            channeldom += '" target="_blank">192kbps</a> <a href="' + streampath + cd.low;
+            channeldom += '" target="_blank">320kbps</a> <a href="' + streampath + cd.low;
             channeldom += '" target="_blank">96kbps</a><div class="listners"><span>Слушают:</span>' + cd.lst + '</div><br /></div>';
-            // var channeldom = '<div class="base"></div>';
 
             var chd = $(channeldom).appendTo(chdd);
-            console.log(chd);
             $('<div class="hint"><<<клик</div>').appendTo(chd);
             var description = $('<div class="description">' + cd.description + '</div>').appendTo(chd);
             var storageinfo = $.Storage.get("channel" + cd.id);
             if (storageinfo != cd.description) {
-                console.log('info changed');
                 $('#info .tab.channels a').addClass('new');
             } else {
                 $('#info .tab.channels a').removeClass('new');
@@ -337,20 +330,23 @@ function showControlPanel(gdata) {
         $('#info .controlpanel .p_tabs').hide();
     }
 
-    if ($('#info .content.controlpanel').css('display') == 'none' || gdata) {
 
-        $('#info .tabs .channels').trigger('click');
-        $('#info .content.controlpanel').show();
-        $('#info .controlpanel .p_tabs .tab.' + controldesk_mode).addClass('active').children('a').addClass('hover');
-        if (gdata) {
-            fillchannelsdata(gdata);
+    //$('#info .tabs .tab').removeClass('active').children('a').removeClass('hover');
+    //$('#info .tabs .tab.channels').addClass('active').children('a').addClass('hover');
+    $('#info .tabs .channels').click();
+    $('#info .content.controlpanel').show();
+    $('#info .p_tabs .tab').removeClass('active').children('a').removeClass('hover');
+    $('#info .p_tabs .' + controldesk_mode).addClass('active').children('a').addClass('hover');
+
+    if (gdata) {
+        fillchannelsdata(gdata);
+    } else {
+        if (controldesk_mode == 'democracy') {
+            client.getChannels(fillchannelsdata);
         } else {
-            if (controldesk_mode == 'democracy') {
-                client.getChannels(fillchannelsdata);
-            } else {
-                client.getBlog(fillblog);
-            }
-
+            client.getBlog(fillblog);
         }
+
     }
+
 }

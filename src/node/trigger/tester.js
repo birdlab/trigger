@@ -5,6 +5,20 @@ var testchanel = null;
 var query = [];
 var process = false;
 
+var errors = 0;
+
+function processerror(q, error) {
+    process = false;
+    errors++;
+    if (errors > 30) {
+        process.exit();
+    }
+    q.callback({'error': error});
+    if (query.length > 0) {
+        testplay(query.shift());
+    }
+}
+
 function testplay(q) {
     process = true;
     var shortpath = q.path.split('/');
@@ -19,7 +33,12 @@ function testplay(q) {
                                 if (!error) {
                                     var ans = stdout.split('\n');
                                     if (ans[1].substring(0, 9) != '[playing]') {
-                                        q.callback(false);
+                                        process = false;
+                                        errors++;
+                                        if (query.length > 0) {
+                                            testplay(query.shift());
+                                        }
+                                        q.callback({'error': 'tester still play'});
                                     } else {
                                         var ts = ans[0].split(':');
                                         var time = parseInt(ts[0]) * 60 + parseInt(ts[1]);
@@ -29,52 +48,29 @@ function testplay(q) {
                                                 if (query.length > 0) {
                                                     testplay(query.shift());
                                                 }
+                                                errors = 0;
                                                 q.callback(time);
                                             } else {
-                                            //    console.log('tester - > ',error);
-                                                process = false;
-                                                if (query.length > 0) {
-                                                    testplay(query.shift());
-                                                }
+                                                processerror(q, error)
                                             }
                                         });
                                     }
                                 } else {
-                                    process = false;
-                               //     console.log('tester - > ',error);
-                                    q.callback(false);
-                                    if (query.length > 0) {
-                                        testplay(query.shift());
-                                    }
+                                    processerror(q, error);
                                 }
                             });
                         } else {
-                       //     console.log('tester - > ',error);
-                            process = false;
-                            q.callback(false);
-                            if (query.length > 0) {
-                                testplay(query.shift());
-                            }
+                            processerror(q, error);
                         }
                     });
                 } else {
-               //     console.log('tester - > ',error);
-                    process = false;
-                    q.callback(false);
-                    if (query.length > 0) {
-                        testplay(query.shift());
-                    }
+                    processerror(q, error);
                 }
             });
         } else {
-          //  console.log('tester - > ',error);
-            if (check()) {
+            setTimeout(function() {
                 testplay(q);
-            } else {
-                setTimeout(function() {
-                    testplay(q);
-                }, 1000);
-            }
+            }, 1000);
         }
     });
 }
@@ -86,14 +82,14 @@ function check() {
             testchanel = null;
         });
         testchanel = true;
-        return(false);
+        return (false);
     } else {
-        return(true)
+        return (true)
     }
 }
 exports.test = function(path, callback) {
     if (path) {
-     //  console.log('tester get name - ', path);
+        //  console.log('tester get name - ', path);
         var t = {
             'path': path,
             'callback': callback

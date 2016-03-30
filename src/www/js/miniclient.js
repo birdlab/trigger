@@ -69,6 +69,7 @@ var lastfm = null;
 
 Client.prototype.init = function(host) {
    // this.socket = io.connect(host, {resource: 'socket.io'});
+    console.log(host);
     this.socket=io();
     var socket = this.socket;
     var cl = this;
@@ -198,9 +199,7 @@ Client.prototype.init = function(host) {
         });
 
         cl.callbacks.channeldata(cl.channel);
-        if (cl.channel.pls.length > 0) {
-            gg();
-        }
+
     });
 
     socket.on('message', function(data) {

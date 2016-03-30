@@ -98,7 +98,7 @@ exports.updatelimits = function(userid, callback) {
 
 function getinvites(id, callback) {
     db.connection.query('SELECT invites.*, users.name FROM invites LEFT JOIN users ON invites.userid=users.id WHERE parentid = ' + id, function(e, result, fields) {
-        var invites = { u: [], i: []};
+        var invites = {u: [], i: []};
         if (!e) {
 
             for (var i in result) {
@@ -134,6 +134,7 @@ function getinvites(id, callback) {
 exports.getInvites = function(id, callback) {
     getinvites(id, callback);
 }
+
 function getUser(id, callback) {
     db.connection.query('SELECT * FROM users WHERE id = ' + id, function(e, result, fields) {
         if (!e) {
@@ -243,8 +244,10 @@ exports.getMessages = function(id, shift, callback) {
 
 }
 
-function getTracksFromQery(q, callback) {
-    db.connection.query(q, function(error, result, fields) {
+var historyStack = [];
+
+function getTracksFromQery(qq, callback, dt) {
+    db.connection.query(qq, function(error, result, fields) {
         if (!error) {
             var ids = '';
             var tracks = [];
@@ -302,6 +305,13 @@ function getTracksFromQery(q, callback) {
                                     }
                                 }
                             }
+                            if (dt) {
+                                if (historyStack.length > 60) {
+                                    historyStack.pop();
+                                }
+                                console.log('push new history');
+                                historyStack.push({'dt': dt, d: tracks});
+                            }
                             callback(tracks);
                         }
                     });
@@ -335,6 +345,7 @@ exports.getTracksByShift = function(data, callback) {
     }
     data.artist = sanitizer.sanitize(data.artist);
     data.title = sanitizer.sanitize(data.title);
+    var dt = {artist: data.artist, title: data.title};
     if (data.artist.length) {
         getartist = ' AND tracks.artist LIKE "%' + data.artist + '%"';
     }
@@ -352,7 +363,18 @@ exports.getTracksByShift = function(data, callback) {
         q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + order + 'LIMIT ' + data.shift + ',20'
     }
     console.log(q);
-    getTracksFromQery(q, callback);
+    var finded = false;
+    for (var i in historyStack) {
+        if (dt == i.dt) {
+            finded = true;
+            console.log('query exist in stack');
+            callback(i.d);
+            break;
+        }
+    }
+    if (!finded) {
+        getTracksFromQery(q, callback, dt);
+    }
 }
 exports.getTracksByRating = function(channel, callback) {
     var getgold = '';
@@ -826,7 +848,10 @@ exports.recoverpass = function(mail, callback) {
                     if (r) {
                         exec('php /home/trigger/node/sendpass.php ' + result[0].email + ' ' + result[0].name + ' ' + pass, function(error, stdout, stderr) {
                             if (!error) {
-                                callback({ok: true, m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'});
+                                callback({
+                                    ok: true,
+                                    m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
+                                });
                             } else {
                                 callback({ok: false, e: 'sending mail fail'});
                             }
@@ -1012,6 +1037,20 @@ exports.addComment = function(data, callback) {
     });
 }
 
+exports.getUserByName = function(id, callback) {
+    db.connection.query('SELECT * FROM users WHERE name = ' + db.connection.escape(id), function(e, result, fields) {
+        if (!e) {
+            if (result[0]) {
+                var userid = result[0].id;
+            } else {
+                var userid = -10;
+            }
+            callback({'id': userid});
+        } else {
+            callback({'error': 'database fail'});
+        }
+    });
+}
 exports.getPosts = function(callback, d) {
     console.log(callback);
     console.log(d);
@@ -1020,7 +1059,7 @@ exports.getPosts = function(callback, d) {
         if (d && d.date) {
             datestring = 'AND post.lastupdate < ' + db.connection.escape(d.date);
         }
-        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL '+datestring+' ORDER BY post.lastupdate DESC LIMIT 20'
+        var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.killer IS NULL ' + datestring + ' ORDER BY post.lastupdate DESC LIMIT 20'
         dumbquery(q, function(data) {
             if (!data.error) {
                 var ids = [];
@@ -1044,6 +1083,41 @@ exports.getPosts = function(callback, d) {
                 });
             }
         });
+    }
+}
+
+exports.getPost = function(callback, d) {
+    console.log('callback - ' + callback);
+    console.log('data - ' + d);
+    if (callback) {
+        var datestring = '';
+        if (d && d.id) {
+            var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.id=' + d.id + ' AND post.killer IS NULL LIMIT 20'
+            console.log(q);
+            dumbquery(q, function(data) {
+                if (!data.error) {
+                    var ids = [];
+                    for (var i in data) {
+                        ids.push(data[i].id);
+                    }
+                    var q = 'SELECT comment.postid, COUNT(comment.id) as count FROM comment WHERE comment.postid in (' + ids + ') group by comment.postid ORDER BY comment.date DESC';
+                    dumbquery(q, function(d) {
+                        if (!d.error) {
+                            for (var a in d) {
+                                for (var f in data) {
+                                    if (data[f].id == d[a].postid) {
+                                        data[f].count = d[a].count;
+                                        break;
+                                    }
+                                }
+                            }
+                            callback(data);
+                        }
+
+                    });
+                }
+            });
+        }
     }
 }
 exports.killPost = function(data, callback) {

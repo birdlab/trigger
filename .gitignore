@@ -86,3 +86,5 @@ src/.bash_logout
 src/php/smtp_config.php
 
 .vscode/settings.json
+
+*.conf

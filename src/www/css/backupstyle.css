@@ -7,14 +7,6 @@ body {
     color: #333;
 }
 
-#playlist {
-    position: fixed;
-    top: 0px;
-    width: 35%;
-    bottom: 0px;
-    margin-left: 15%;
-    font-size: 12px;
-}
 
 #info {
     background: #eee;
@@ -312,7 +304,7 @@ body {
     width: 9px;
     height: 9px;
     background-image: url(/img/del.png);
-    margin: 3px 0 0 3px;
+    margin: 0px 0px 10px 0px;
     cursor: pointer;
 }
 

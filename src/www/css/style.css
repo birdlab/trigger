@@ -8,13 +8,7 @@ body {
 }
 
 #playlist {
-    position: fixed;
-    top: 0px;
-    width: 35%;
-    bottom: 0px;
     background-color: #2d2d2d;
-    margin-left: 15%;
-    font-size: 12px;
 }
 
 #info {
@@ -86,7 +80,8 @@ body {
 }
 
 .tab:hover {
-    border-bottom: 3px solid #fff; !important
+    border-bottom: 3px solid #fff;
+!important
 }
 
 #info .tabs .tab.active {
@@ -315,7 +310,7 @@ body {
     width: 9px;
     height: 9px;
     background-image: url(/img/del.png);
-    margin: 3px 0 0 3px;
+    margin: 0px 0px 10px 0px;
     cursor: pointer;
 }
 
@@ -347,7 +342,6 @@ body {
     padding-right: 30px;
 }
 
-
 .tag {
     font-size: 9px;
     color: #fff;
@@ -362,7 +356,6 @@ body {
     margin-bottom: 4px;
     vertical-align: top;
 }
-
 
 /* Треки в плейлисте
 ---------------------------------------------*/
@@ -742,15 +735,14 @@ span.irony, #markups .irony {
     color: #909090;
 }
 
-
 #hpanel {
     background-color: #333;
 }
+
 #hpanel .finput {
     background-color: #282828;
-    color:#cdcdcd;
+    color: #cdcdcd;
 }
-
 
 .content .loader {
     z-index: -1;
@@ -877,7 +869,8 @@ span.irony, #markups .irony {
     background: #444;
     border-bottom: 1px solid #4d4d4d;
 }
-.post .cin{
+
+.post .cin {
     background: #333;
 }
 

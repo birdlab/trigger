@@ -20,7 +20,7 @@ function addupload(file) {
     $('<span>Теги:</span>').appendTo(fup);
     var tagscontainer = $('<div class="tags"></div>').appendTo(fup);
     $('<input list="autotags" class="finput taginput" type="text" placeholder="начинай вводить..."><datalist id="autotags"></datalist><span>Enter - добавить</span>').appendTo(fup);
-    var isStream = $('<div><div class="button stream"><a href="javascript:void(0);">Live</a></div></div>').appendTo(fup);
+    //var isStream = $('<div><div class="button stream"><a href="javascript:void(0);">Live</a></div></div>').appendTo(fup);
     var progress = $('<div class="progress"></div>').appendTo(fup);
     loadUrl(file.urn || file.name, new FileAPIReader(file), file, function(tags) {
 
@@ -235,8 +235,8 @@ function addupload(file) {
         var submiter = tracksubmit;
         console.log('Start upload');
         jqXHR = uploader.fileupload('send', {
-            files: [file]
-        })
+                files: [file]
+            })
             .error(function(jqXHR, textStatus, errorThrown) {
                 errors.html(textStatus);
                 trackupload.show();
@@ -252,13 +252,13 @@ function addupload(file) {
             });
         $(progress).show(200);
     }
-    isStream.click(function() {
-        if (!islive) {
-            trackupload.hide();
-            islive = true;
-            isStream.html('<br><br>Это очень страшная кнопка! Похоже ты действительно хочешь выйти в эфир. В поле чуть ниже укажи адрес потока, который собираешься транслировать. Если ты не знаешь о чем идет речь, срочно откажись от этой затеи! Мы не шутим!<br><input class="finput stream" type="text" placeholder="URL потока">');
-        }
-    });
+    /*  isStream.click(function() {
+     if (!islive) {
+     trackupload.hide();
+     islive = true;
+     isStream.html('<br><br>Это очень страшная кнопка! Похоже ты действительно хочешь выйти в эфир. В поле чуть ниже укажи адрес потока, который собираешься транслировать. Если ты не знаешь о чем идет речь, срочно откажись от этой затеи! Мы не шутим!<br><input class="finput stream" type="text" placeholder="URL потока">');
+     }
+     });*/
     trackupload.click(trackupload.upload);
     tracksubmit.click(tracksubmit.submit);
     voteadjust.prependTo($('#console .upfiles'));

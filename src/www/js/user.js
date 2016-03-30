@@ -10,7 +10,7 @@ function getuser(id) {
             $('#info .content').hide();
             $('#info .content.profile').show();
         }
-
+        location.hash='#!/user/'+id;
         client.getUser({'id': id}, function(data) {
             var inpositive = false;
             var innegative = false;

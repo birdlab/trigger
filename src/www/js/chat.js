@@ -14,7 +14,8 @@ customCodes[2][1] = '<a href="$1" target="_blank">$1</a>';
 
 customCodes[3] = [];
 customCodes[3][0] = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-customCodes[3][1] = '<a href="http://$1" target="_blank">$1</a>';
+customCodes[3][1] = '<a href="http://$1">$1</a>';
+
 
 customCodes[4] = [];
 customCodes[4][0] = /([\w\-\d]+\@[\w\-\d]+\.[\w\-\d]+)/gim;
@@ -165,6 +166,15 @@ function refreshuser(data) {
 
 
 }
+function post2chat(id) {
+    var text = $('#messageinput').val()
+    if (text.replace('/post' + id, '') == text) {
+        $('#messageinput').val(text + '/post' + id + ' ');
+    }
+    var to = $('#messageinput').val().length;
+    $('#messageinput').selectRange(to, to);
+    return false;
+}
 
 function addTr(id) {
     var text = $('#messageinput').val()
@@ -247,13 +257,14 @@ function addMessage(md) {
         if (!useraction) {
             var message = $('<div class="message ' + md.uname + '"><table><tr><td class="names ' + pm + '"><span class="info">i</span><span onclick="return addNick(\'' + md.uname + '\')" >' + md.uname + ': </span></td><td class="sms">' + md.m + '</td><td class="mif"><div class="messageinfo"></div></td></tr></table></div>');
             meta[0] = /\/track(\w*)/gim;
+            meta[1] = /\/post(\w*)/gim;
             var analys = function() {
                 var res = meta[i].exec(md.m);
                 if (res) {
                     var str = '';
                     if (i == 0) {
                         client.track(parseInt(res[1]), function(tr) {
-                            str = '<a href="#">' + tr.a + ' - ' + tr.t + '</a>';
+                            str = '<a href="javascript:void(0);">' + tr.a + ' - ' + tr.t + '</a>';
                             var toupdate = $(message).find('.sms').html();
                             toupdate = toupdate.replace(res[0], str);
                             $(message).find('.sms').html(toupdate);
@@ -263,6 +274,18 @@ function addMessage(md) {
                                 opentrack(tr);
                             })
                         });
+                    }
+                    if (i == 1) {
+                        client.getPost(function(data) {
+                            if (data && data[0]){
+                                var post=data[0];
+                                var body='<div class="post">' + post.content + '</div><div class="inf"> <a href="#!/blog/' + post.id + '">#' + post.id + '</a> написал <a href="javascript:getuser(' + post.senderid + ');void(0);">' + post.name + '</a> ' + moment(post.date).calendar() + '</div>';
+                                var toupdate = $(message).find('.sms').html();
+                                toupdate = toupdate.replace(res[0], body);
+                                $(message).find('.sms').html(toupdate);
+                            }
+
+                        }, parseInt(res[1]));
                     }
                 }
             }
@@ -281,7 +304,7 @@ function addMessage(md) {
             trtm = setTimeout(function() {
                 console.log(md.tid);
                 client.track(md.tid, function(data) {
-                    $(info).html('<a href="#">' + data.a + ' - ' + data.t + '</a>');
+                    $(info).html('<a href="javascript:void(0);">' + data.a + ' - ' + data.t + '</a>');
                     $(info).find('a').click(function() {
                         opentrack(data);
                     })

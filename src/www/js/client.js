@@ -239,10 +239,12 @@ Client.prototype.init = function(host) {
                 }
             }
         }
-        getcover(data.current.a, data.current.t, function(src) {
-            data.current.src = src;
-            $(cl).trigger('cover', {id: data.current.id, 'src': src});
-        });
+        if (data.current) {
+            getcover(data.current.a, data.current.t, function(src) {
+                data.current.src = src;
+                $(cl).trigger('cover', {id: data.current.id, 'src': src});
+            });
+        }
 
         cl.callbacks.channeldata(cl.channel);
         if (cl.channel.pls.length > 0) {
@@ -432,8 +434,27 @@ Client.prototype.getPlaylist = function(channel, callback) {
 }
 Client.prototype.goChannel = function(channel, callback) {
     var cl = this;
-    cl.callbacks.channeldata = callback;
-    this.socket.emit('gochannel', {id: channel});
+    for (var ch in welcomedata.channels) {
+        console.log(welcomedata.channels[ch]);
+        if (welcomedata.channels[ch].id == channel) {
+            console.log(welcomedata.channels[ch].name);
+            destination = "http://" + welcomedata.channels[ch].name + ".trigger.fm"
+            if (window.location.href == destination || window.location.origin == destination) {
+                cl.callbacks.channeldata = callback;
+                this.socket.emit('gochannel', {id: channel});
+            } else {
+                if ($('.uploaditem').length) {
+                    window.open("http://" + welcomedata.channels[ch].name + ".trigger.fm", '_blank');
+                } else {
+                    window.open("http://" + welcomedata.channels[ch].name + ".trigger.fm");
+                }
+
+
+                //    window.location.href = "http://" + welcomedata.channels[ch].name + ".trigger.fm";
+            }
+        }
+    }
+
 
 }
 Client.prototype.getChannels = function(callback) {
@@ -442,9 +463,11 @@ Client.prototype.getChannels = function(callback) {
     this.socket.emit('getchannels');
 }
 Client.prototype.getBlog = function(callback, data) {
-    console.log('getting posts');
-    console.log(callback);
     this.socket.emit('getposts', data, callback);
+}
+
+Client.prototype.getPost = function(callback, data) {
+    this.socket.emit('getpost', {id: data}, callback);
 }
 
 Client.prototype.addPost = function(data, callback) {
@@ -497,7 +520,6 @@ Client.prototype.getUser = function(data, callback) {
     this.socket.emit('getuser', data, callback);
 }
 Client.prototype.getHistory = function(data, callback) {
-    console.log(data);
     this.socket.emit('gethistory', {
         chid: this.channel.chid,
         s: data.shift,

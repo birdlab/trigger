@@ -47,6 +47,13 @@ io.sockets.on('connection', function(socket) {
     socket.emit('getver');
 });
 
+function closehistorywait(s) {
+    if (s) {
+        s.historygetting = false;
+        console.log('historygetting = ' + s.historygetting);
+    }
+}
+
 function bind(socket) {
     sockets.push(socket);
     var address = socket.handshake.address;
@@ -245,33 +252,45 @@ function bind(socket) {
     });
 
     socket.on('gethistory', function(data, callback) {
-            if (!data.top) {
-                if (data.s == 0) {
-                    data.s = new Date();
-                }
-            }
-            if (!data.a) {
-                data.a = '';
-            }
-            if (!data.t) {
-                data.t = '';
-            }
-            var d = {
-                channel: data.chid,
-                shift: data.s,
-                gold: data.g,
-                artist: data.a,
-                title: data.t,
-                top: data.top,
-                votes: data.v
+            console.log('get history for ' + socket.ip);
+            if (!socket.historygetting) {
+                socket.historygetting = true;
+                console.log('historygetting = ' + socket.historygetting);
+                setTimeout(closehistorywait, 500, socket);
 
-            }
-            console.log(d);
-            db.getTracksByShift(d, function(data) {
-                if (callback) {
-                    callback(data);
+                if (!data.top) {
+                    if (data.s == 0) {
+                        data.s = new Date();
+                    }
                 }
-            });
+                if (!data.a) {
+                    data.a = '';
+                }
+                if (!data.t) {
+                    data.t = '';
+                }
+                var d = {
+                    channel: data.chid,
+                    shift: data.s,
+                    gold: data.g,
+                    artist: data.a,
+                    title: data.t,
+                    top: data.top,
+                    votes: data.v
+
+                }
+                console.log(d);
+                db.getTracksByShift(d, function(data) {
+                    if (callback) {
+                        callback(data);
+                    }
+                });
+            } else {
+                var e = "to much history query. Stay cool ok?"
+                if (callback) {
+                    callback(e);
+                }
+            }
         }
     )
     ;
@@ -437,7 +456,18 @@ function bind(socket) {
                     var channel = main.channel(data.chid);
                     if (channel) {
                         if (isFunction(callback)) {
-                            channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
+                            console.log('try ellection ');
+                            console.log(data);
+                            db.getUserByName(data.prid, function(d) {
+                                if (d.id && d.id > -10) {
+                                    console.log('by name');
+                                    console.log(d);
+                                    channel.addPRVote({voterid: socket.user.id, prid: d.id}, callback);
+                                } else {
+                                    console.log(data.prid + ' is a number');
+                                    channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
+                                }
+                            });
                         }
                     }
                 }
@@ -691,6 +721,13 @@ function bind(socket) {
         if (socket.user) {
             if (isFunction(callback)) {
                 db.getPosts(callback, data);
+            }
+        }
+    });
+    socket.on('getpost', function(data, callback) {
+        if (socket.user && data.id) {
+            if (isFunction(callback)) {
+                db.getPost(callback, data);
             }
         }
     });

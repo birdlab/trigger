@@ -64,7 +64,6 @@ $(document).ready(function() {
     });
 
     var sheet = $.Storage.get("style");
-    console.log(sheet);
     if (sheet) {
         switch_style(sheet);
     } else {
@@ -117,17 +116,18 @@ $(document).ready(function() {
     $(client).bind('welcome', function(event, data) {
         if (data) {
             showControlPanel(data);
+            welcomedata = data;
             var user = $.Storage.get("username"), pass = $.Storage.get("password");
+
             if (user) {
                 if (pass) {
                     client.login(user, pass, processLogin);
                 } else {
-                    client.goChannel(1, onChannel);
+                    parser();
                 }
             } else {
-                client.goChannel(1, onChannel);
+                parser();
             }
-
         } else {
 
         }
@@ -269,14 +269,25 @@ $(document).ready(function() {
             $(this).addClass('active').children('a').addClass('hover');
             $('#info .content').hide();
             if ($(this).hasClass('chat')) {
+                if (location.hash != '#!/chat/') {
+                    location.hash = '#!/chat/';
+                }
                 $('.content.chat').show();
                 fillChat();
                 onresize();
             }
             if ($(this).hasClass('channels')) {
-                showControlPanel();
+                if (client.user) {
+                    if (location.hash.split('/').length < 2) {
+                        location.hash = '#!/' + controldesk_mode + '/';
+                    }
+                    showControlPanel();
+                } else {
+                    showControlPanel();
+                }
             }
             if ($(this).hasClass('history')) {
+                location.hash = '#!/history/';
                 $('#hpanel .finput.artist').val('');
                 $('#hpanel .finput.title').val('');
                 $('#showgold').prop('checked', false);
@@ -285,7 +296,6 @@ $(document).ready(function() {
             }
             if ($(this).hasClass('profile')) {
                 $('.content.profile').show();
-
                 if (client.user) {
                     getuser(client.user.id);
                 }
@@ -323,6 +333,44 @@ $(document).ready(function() {
     $('.submit_box').hide();
     $('#recovery').html('<a href="javascript:recoverymode(true); void(0);">Я забыл пароль</a>');
 });
+
+
+$(window).bind('hashchange', function() {
+    console.log('go by hash ' + location.hash);
+    if (location.hash.length) {
+        var dec = location.hash.split('/')
+        if (dec[1] == 'user') {
+            getuser(dec[2]);
+        }
+        if (dec[1] == 'blog') {
+            controldesk_mode = 'blog';
+            $('#info .tabs .channels').click();
+            showControlPanel();
+        }
+    } else {
+        if (client.user) {
+            location.hash = '#!/chat/';
+        } else {
+            location.hash = '#!/democracy/';
+        }
+    }
+    switch (location.hash) {
+        case '#!/chat/':
+            $('#info .tabs .chat').click();
+            break;
+
+        case '#!/history/':
+            $('#info .tabs .history').click();
+            break;
+
+        case '#!/democracy/':
+            controldesk_mode = 'democracy';
+            $('#info .tabs .channels').click();
+            showControlPanel();
+            break;
+    }
+});
+
 
 function getElectionData() {
     client.getElection(function(data) {
@@ -458,7 +506,9 @@ function newTagline() {
 }
 
 function onChannel(data) {
-    setCurrent(data.current);
+    if (data.current) {
+        setCurrent(data.current);
+    }
     setcurtime(true);
     $.Storage.set("channel", client.channel.chid + ' ');
     stream_mode = $.Storage.get("stream_mode");
@@ -474,7 +524,7 @@ function onChannel(data) {
     $('#console .info .chname').html('<a href="javascript:showControlPanel();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
     $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
-    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="192kbps" target="_blank">mp3</a>');
+    $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="320kbps" target="_blank">mp3</a>');
     if (stream_mode == 'ogg') {
         $('#console .streamcontrol .links .mp3').addClass('blured');
     } else {
@@ -535,7 +585,7 @@ function onChannel(data) {
     addtr();
 
     updatetimes();
-    if (client.user) {
+    if (client.user && location.hash == '#!/chat/') {
         $('#info .tabs .chat').trigger('click');
     }
     if (data.changed) {
@@ -552,7 +602,28 @@ function onChannel(data) {
         }
     }
     newTagline();
+    $(window).trigger('hashchange');
 
+}
+
+function parser() {
+    path = window.location.host.split('.');
+    console.log("!!" + path);
+    if (path[1] == 'trigger') {
+        channel = path[0];
+        console.log(welcomedata);
+        channelid = 1;
+        if (welcomedata.channels) {
+            for (ch in welcomedata.channels) {
+
+                if (channel == welcomedata.channels[ch].name) {
+                    console.log(welcomedata.channels[ch].name);
+                    channelid = welcomedata.channels[ch].id;
+                    client.goChannel(channelid, onChannel);
+                }
+            }
+        }
+    }
 }
 
 
@@ -575,10 +646,15 @@ function processLogin(data) {
         }
     }
     var ch = $.Storage.get("channel");
-    if (ch) {
-        client.goChannel(parseInt(ch), onChannel);
+    path = window.location.host.split('.');
+    if (path[1] == 'trigger') {
+        parser()
     } else {
-        client.goChannel(1, onChannel);
+        if (ch) {
+            client.goChannel(parseInt(ch), onChannel);
+        } else {
+            client.goChannel(1, onChannel);
+        }
     }
 }
 
@@ -620,6 +696,7 @@ function goLogin() {
 
 
 function setCurrent(track) {
+
     var cur = $('#playlist .current').html('');
     var base = $('<div class="base"></div>').appendTo(cur);
     var src = track.src;
@@ -838,7 +915,6 @@ function addtrack(track) {
     var trackartist = base.find('.artist');
     var tracktitle = base.find('.title');
     if (client.user) {
-
         if (track.sid == client.user.id) {
             item.addClass('my');
         }
@@ -1169,10 +1245,12 @@ function sortTracks() {
 }
 
 function setcurtime(fast) {
-    if (!fast) {
-        $('#playlist .current .timer .cursor').animate({width: client.channel.ct / client.channel.current.tt * $('#playlist .current .timer').width()}, 500);
-    } else {
-        $('#playlist .current .timer .cursor').css({'width': client.channel.ct / client.channel.current.tt * $('#playlist .current .timer').width()});
+    if (client.channel.current) {
+        if (!fast) {
+            $('#playlist .current .timer .cursor').animate({width: client.channel.ct / client.channel.current.tt * $('#playlist .current .timer').width()}, 500);
+        } else {
+            $('#playlist .current .timer .cursor').css({'width': client.channel.ct / client.channel.current.tt * $('#playlist .current .timer').width()});
+        }
     }
 }
 
@@ -1187,18 +1265,20 @@ function isElementInViewport(el) {
 
         return (
             rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
-            );
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+        );
     } else {
         return false;
     }
 }
 
 function updatetimes() {
-    var offset = client.channel.current.tt - client.channel.ct;
-
+    var offset = 0;
+    if (client.channel.current) {
+        offset = client.channel.current.tt - client.channel.ct;
+    }
     for (var t in client.channel.pls) {
         var item = $('#' + client.channel.pls[t].id + ' .base');
         if (isElementInViewport(item)) {

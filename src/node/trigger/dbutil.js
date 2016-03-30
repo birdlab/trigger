@@ -60,18 +60,19 @@ function cleanTags() {
                         if (tgs.length) {
                             checkTags();
                         }
-
                     } else {
                         var q = 'DELETE FROM tracktags WHERE id = ' + v.id;
                         db.connection.query(q, function(e, r, f) {
                             if (!e) {
                                 console.log('tag ' + v.id + ' deleted');
                             }
+
                             if (tgs.length) {
 
-                                checkTags();
+                               checkTags();
                             }
                         });
+                       // console.log('no tracks for ', v);
                     }
                 }
             }
@@ -99,7 +100,6 @@ function setRatings() {
         var q = 'SELECT trackvote.value FROM trackvote WHERE trackid =' + v.id;
         db.connection.query(q, function(error, result, fields) {
                 if (!error) {
-                    console.log(result);
                     if (result.length) {
                         var rating = 0;
                         var real = 0;
@@ -151,7 +151,7 @@ function setRatings() {
     });
 }
 
-setRatings();
+cleanTags();
 
 
 
