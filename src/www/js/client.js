@@ -392,13 +392,13 @@ Client.prototype.init = function(host) {
         }
         $(cl).trigger('trackupdate', data);
     });
-}
+};
 
 Client.prototype.login = function(name, pass, callback) {
     var cl = this;
     cl.callbacks.loginstatus = callback;
     this.socket.emit('login', {u: name, p: pass});
-}
+};
 Client.prototype.track = function(id, callback) {
     var cl = this;
     var complete = false;
@@ -426,12 +426,12 @@ Client.prototype.track = function(id, callback) {
         });
     }
 
-}
+};
 Client.prototype.getPlaylist = function(channel, callback) {
     cl = this;
     cl.callbacks.playlist = callback;
     this.socket.emit('getplaylist', {id: channel});
-}
+};
 Client.prototype.goChannel = function(channel, callback) {
     var cl = this;
     for (var ch in welcomedata.channels) {
@@ -446,17 +446,13 @@ Client.prototype.goChannel = function(channel, callback) {
                 if ($('.uploaditem').length) {
                     window.open("http://" + welcomedata.channels[ch].name + ".trigger.fm", '_blank');
                 } else {
-                    window.open("http://" + welcomedata.channels[ch].name + ".trigger.fm");
+                    window.location.href = "http://" + welcomedata.channels[ch].name + ".trigger.fm";
                 }
-
-
-                //    window.location.href = "http://" + welcomedata.channels[ch].name + ".trigger.fm";
             }
         }
     }
 
-
-}
+};
 Client.prototype.getChannels = function(callback) {
     var cl = this;
     cl.callbacks.channelsdata = callback;
@@ -571,14 +567,14 @@ Client.prototype.changepass = function(oldpass, newpass, callback) {
     cl = this;
     cl.callbacks.changepass = callback;
     this.socket.emit('changepass', {o: oldpass, n: newpass});
-}
+};
 Client.prototype.updateUserData = function(data) {
     this.socket.emit('upduserdata', data);
 
-}
+};
 Client.prototype.updateTrack = function(data) {
     this.socket.emit('updtrack', data);
-}
+};
 Client.prototype.getchannel = function(id) {
     for (var i in this.channels) {
         if (this.channels[i].id == id) {
@@ -586,18 +582,18 @@ Client.prototype.getchannel = function(id) {
         }
     }
     return false;
-}
+};
 
 Client.prototype.banuser = function(uid, reason, callback) {
     console.log(reason);
     this.socket.emit('banuser', {id: uid, r: reason}, callback);
-}
+};
 Client.prototype.unbanuser = function(uid, callback) {
     this.socket.emit('unbanuser', {id: uid}, callback);
-}
+};
 Client.prototype.setop = function(d, callback) {
     this.socket.emit('setop', d, callback);
-}
+};
 Client.prototype.removeop = function(data, callback) {
     this.socket.emit('removeop', data, callback);
 }

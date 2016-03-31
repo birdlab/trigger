@@ -181,7 +181,7 @@ function getuser(id) {
             }
 
 
-            var tabs = $("<table class ='p_tabs'><tr><td class='tab uploads'><a href='javascript:void(0);'>Загрузки</a></td><td class='tab positive'><a href='javascript:void(0);'>Плюсы</a></td><td class='tab negative'><a href='javascript:void(0);'>Минусы</a></td><td class='tab options'><a href='javascript:void(0);'>Подводные камни</a></td></tr></table>").appendTo(scroller);
+            var tabs = $("<table class ='p_tabs'><tr><td class='tab uploads'><a href='javascript:void(0);'>"+locale.m_uploads+"</a></td><td class='tab positive'><a href='javascript:void(0);'>"+locale.m_pros+"</a></td><td class='tab negative'><a href='javascript:void(0);'>"+locale.m_cons+"</a></td><td class='tab options'><a href='javascript:void(0);'>"+locale.m_options+"</a></td></tr></table>").appendTo(scroller);
             var list = $("<ul class='list'></ul>").appendTo(scroller);
 
             $('#info .content.profile .p_tabs .tab').bind('click', function() {

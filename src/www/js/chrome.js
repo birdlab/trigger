@@ -5,7 +5,7 @@
 })(jQuery);
 
 var timezone = 10800000, stream_mode = '', client = null, remember_name = true, mutetrack = false, tink = true, noimg = false, historyprocess = false, lht = 0, lang = 'ru', recovery = false, mutelist = [], ctrl = false;
-function switch_style(css_title) {
+var switch_style = function(css_title) {
 // You may use this script on your site free of charge provided
 // you do not remove this notice or the URL below. Script from
 // http://www.thesitewizard.com/javascripts/change-style-sheets.shtml
@@ -17,9 +17,9 @@ function switch_style(css_title) {
                 link_tag[i].disabled = false;
             }
         }
-        var buttonstring = '<a href=\'#\' onclick="switch_style(\'day\');return false;">Сделать день</a>';
+        var buttonstring = '<a href=\'#\' onclick="switch_style(\'day\');return false;">' + locale.mk_day + '</a>';
         if (css_title == 'day') {
-            buttonstring = '<a href=\'#\' onclick="switch_style(\'nigth\');return false;">Сделать ночь</a>';
+            buttonstring = '<a href=\'#\' onclick="switch_style(\'nigth\');return false;">' + locale.mk_night + '</a>';
         }
         $('#styleswitch').html(buttonstring);
         $.Storage.set("style", css_title);
@@ -28,7 +28,6 @@ function switch_style(css_title) {
 
 
 $(document).ready(function() {
-    moment.lang('ru');
     jQuery.easing.def = "easeOutExpo";
     $('.loginform').hide();
     player = new Player();
@@ -63,13 +62,20 @@ $(document).ready(function() {
         });
     });
 
+
+    lang = $.Storage.get("lang");
+    if (lang) {
+        switch_lang(lang);
+    } else {
+        switch_lang('ru');
+    }
+
     var sheet = $.Storage.get("style");
     if (sheet) {
         switch_style(sheet);
     } else {
         switch_style('day');
     }
-
     var t = $.Storage.get("tink");
     if (t) {
         if (t == 'false') {
@@ -183,9 +189,9 @@ $(document).ready(function() {
         fillUserlist();
     });
     $(client).bind('listners', function(event, data) {
-        $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>Слушают:</span>' + data.l);
+        $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>' + locale.l_listen + '</span>' + data.l);
         if (data.chid == client.channel.chid) {
-            $('#console .info .chdata').html('<span>Слушают: </span>' + data.l + '<span> из них активно: </span>' + data.a);
+            $('#console .info .chdata').html('<span>' + locale.l_listen + '</span>' + data.l + '<span class="l_active">' + locale.l_active + ' </span>' + data.a);
         }
         if ($('.controlpage.channels').hasClass('active')) {
             fillchannelsdata(client.channels);
@@ -483,7 +489,7 @@ function newTagline() {
                     $('#console .userinfo').prepend('<div id="limits">Сейчас нет лимитов!</div>');
                 }
             }
-            $('#console .userinfo').prepend('<div id="limits">Ты можешь залить ' + limit + '</div>');
+            $('#console .userinfo').prepend('<div id="limits">' + locale.canupload + limit + '</div>');
         } else {
             $('#console .userinfo').prepend('<div id="limits">Здесь нет лимитов ;)</div>');
         }
@@ -492,11 +498,11 @@ function newTagline() {
                 if (!verbal) {
                     $(this).append('<span>За последние 12 часов не было ни одного трека от тебя</span>');
                 } else {
-                    $(this).append('<span>Cледующее обновление через ' + verbalTime(Date.parse(client.user.nt) - Date.parse(new Date())) + '</span>');
+                    $(this).append('<span class>Cледующее обновление через</span> ' + verbalTime(Date.parse(client.user.nt) - Date.parse(new Date())) + '</span>');
                 }
             },
             function() {
-                $(this).html('Ты можешь залить ' + limit);
+                $(this).html(locale.canupload + limit);
             });
     }
     if (taglinetimer) {
@@ -522,8 +528,8 @@ function onChannel(data) {
     }
     console.log('stream_mode', stream_mode);
     $('#console .info .chname').html('<a href="javascript:showControlPanel();void(0);">' + data.name + '<a>');
-    $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst);
-    $('#console .info .chdata').html('<span>Слушают: </span>' + data.lst + '<span> из них активно: </span>' + data.a);
+    $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst);
+    $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst + '<span>' + locale.l_active + ' </span>' + data.a);
     $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="320kbps" target="_blank">mp3</a>');
     if (stream_mode == 'ogg') {
         $('#console .streamcontrol .links .mp3').addClass('blured');
@@ -569,7 +575,7 @@ function onChannel(data) {
             } else {
                 if (list.height() < $('#playlist .inner').height()) {
                     $('#playlist .list .advice').remove();
-                    list.append('<li class="advice">Самое время нести!</li>');
+                    list.append('<li class="advice">' + locale.ttupload + '</li>');
                 } else {
                     $('#playlist .list .advice').remove();
                 }
@@ -615,7 +621,6 @@ function parser() {
         channelid = 1;
         if (welcomedata.channels) {
             for (ch in welcomedata.channels) {
-
                 if (channel == welcomedata.channels[ch].name) {
                     console.log(welcomedata.channels[ch].name);
                     channelid = welcomedata.channels[ch].id;

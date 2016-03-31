@@ -34,6 +34,7 @@
     <script src="js/tagline.js"></script>
     <script src="js/paths.local.js"></script>
     <script src="js/dateformat.js"></script>
+    <script src="js/localize.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
 
@@ -105,8 +106,9 @@
             <a href="http://trigger.fm/donate.html"><h1>DONATE!</h1></a>
 
             <br>
-            <a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;"
-               onmouseover="Reformal.widgetPreload();">Уголок потребителя</a>
+            <div id='langswitch'></div>
+            <div class="reformal_link"><a href="http://trigger.reformal.ru" onclick="Reformal.widgetOpen();return false;"
+               onmouseover="Reformal.widgetPreload();">Уголок потребителя</a></div>
             <script type="text/javascript">
                 var reformalOptions = {
                     project_id: 87627,
@@ -121,9 +123,9 @@
                     document.getElementsByTagName('head')[0].appendChild(script);
                 })();
             </script>
-            <noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png"/></a><a
+            <noscript><a class="reformal_link" href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png"/></a><a
                     href="http://trigger.reformal.ru">Уголок потребителя</a></noscript>
-            <br>
+
 
             <div id='styleswitch'></div>
             <a href="https://docs.google.com/document/d/1ZOPqvWnSIq70cRLr6KWUh0dyLYe79W62mL0X7Kek54s" target="_blank">RTFM</a><br>

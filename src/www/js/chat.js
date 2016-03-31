@@ -129,7 +129,7 @@ function submitMessage() {
 
 
 function fillUserlist() {
-    $('#info .users .topline').html('<span>Здесь:' + client.chat.u.length + '</span>');
+    $('#info .users .topline').html('<span>'+locale.ch_here + client.chat.u.length + '</span>');
     $('#info .users .scroller').html('');
     mutelist = [];
     for (var us in client.chat.u) {
