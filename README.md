@@ -1,4 +1,8 @@
+[![Trigger Logo](http://birdlab.ru/img/triggerlogo_black.svg)](http://trigger.fm/)
+
+
 #Trigger
+
 
 ##Installation:
 
