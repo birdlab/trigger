@@ -1,8 +1,7 @@
 [![Trigger Logo](http://birdlab.ru/img/triggerlogo_black.svg)](http://trigger.fm/)
 
 
-trigger.fm это проект интерактивного социального радио. 
-Эфир полностью формируется пользователями сервиса с помошью саморегуляции на основе рейтингов и кармы.
+#Trigger
 
 
 ##Installation:
