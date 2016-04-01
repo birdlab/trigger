@@ -355,7 +355,7 @@ function bind(socket) {
     });
 
     socket.on('uvote', function(data) {
-        if (socket.user) {
+        if (false) {
             if (!socket.user.rating > -1) {
                 data.user = socket.user;
                 var user = main.user(data.id);

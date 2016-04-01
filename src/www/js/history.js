@@ -174,7 +174,7 @@ function addhistory(track) {
         var tags = $('<div class="tags"></div>').appendTo(full);
         var track_links = $('<div class="track_links"></div>').appendTo(full);
         var info = $('<div class="info">' + inf + '</div>').appendTo(full);
-        full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+       // full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
         for (var t in track.tg) {
             var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
             tagitem.attr('tagid', track.tg[t].id);

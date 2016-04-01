@@ -1108,9 +1108,9 @@ function packTrackData(track) {
         var td = {
             a: track.artist,
             t: track.title,
-            s: track.name,
+            //     s: track.name,
             id: track.id,
-            sid: track.submiter,
+            //     sid: track.submiter,
             tt: track.time,
             ut: track.date,
             i: track.info,
@@ -1126,23 +1126,26 @@ function packTrackData(track) {
          td.sid=0;
          }*/
 
+
         var positive = track.positive;
         var negative = track.negative;
 
         for (var i in positive) {
             td.p.push({
                 v: positive[i].value,
-                vid: positive[i].voterid,
-                n: positive[i].name
+                //  vid: positive[i].voterid,
+                // n: positive[i].name
             });
         }
         for (var i in negative) {
             td.n.push({
                 v: negative[i].value,
-                vid: negative[i].voterid,
-                n: negative[i].name
+                //  vid: negative[i].voterid,
+                //  n: negative[i].name
             });
         }
+
+
         return td;
     } else {
         return null;

@@ -32,7 +32,7 @@ User.prototype.init = function(data) {
         if (s != 'votes') {
             this[s] = data[s];
         } else {
-            var votes = data[s], sum = 0;
+/*            var votes = data[s], sum = 0;
             for (var v in votes) {
                 sum += votes[v].value;
                 if (votes[v].value > 0) {
@@ -40,10 +40,10 @@ User.prototype.init = function(data) {
                 } else {
                     user.negative.push(votes[v]);
                 }
-            }
-            user.rating = sum;
-            user.weight = Math.floor(user.rating / 10) + 1;
-            //user.weight = 1;
+            }*/
+            user.rating = 0;
+            //user.weight = Math.floor(user.rating / 10) + 1;
+            user.weight = 1;
         }
     }
     if (main.fastdata.users){
@@ -116,7 +116,7 @@ User.prototype.fullinfo = function(self, callback) {
         'n': [],
         'p': []
     };
-    var positive = user.positive;
+    /*var positive = user.positive;
     var negative = user.negative;
 
     for (var i in positive) {
@@ -132,7 +132,7 @@ User.prototype.fullinfo = function(self, callback) {
             vid: negative[i].voterid,
             n: negative[i].name
         });
-    }
+    }*/
     if (self) {
         data.t = this.time;
         data.v = this.votes;

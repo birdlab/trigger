@@ -173,7 +173,7 @@ $(document).ready(function() {
             move = true;
         }
 
-        var message = $('<div class="message"><p class="who"><a href="javascript:addNick(\'' + data.track.s + '\');void(0);">' + data.track.s + '</a>' + ' прнс </p><p class="track"> <a class="tracklink" href="#">' + data.track.a + ' - ' + data.track.t + '</a><br />' + data.track.i + '</p><div class="end"/></div>').appendTo($('#chatmessages'));
+        var message = $('<div class="message"><p class="who">некто прнс </p><p class="track"> <a class="tracklink" href="#">' + data.track.a + ' - ' + data.track.t + '</a><br />' + data.track.i + '</p><div class="end"/></div>').appendTo($('#chatmessages'));
         message.find('.tracklink').click(function() {
             opentrack(data.track);
         });
@@ -823,7 +823,7 @@ function setCurrent(track) {
     var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
 
     //Автор трека
-    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+    col_right.append('<div class="sender">прнс некто</div>');
     if (inf == '') {
         $(".sender").css('padding-top', '0');
     }
@@ -863,10 +863,10 @@ function setCurrent(track) {
         var positivelist = $(voters).find(".pvotes").html('');
         var negativelist = $(voters).find(".nvotes").html('');
         for (var i in track.n) {
-            $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+          //  $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
         }
         for (var i in track.p) {
-            $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+          //  $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
         }
 
 
@@ -983,7 +983,7 @@ function addtrack(track) {
         //  var trackuploadtime = track.ut.format("HH:MM");
     }
 
-    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a> <span class="howold"></span></div>');
+    col_right.append('<div class="sender">прнс некто <span class="howold"></span></div>');
     if (inf == '') {
         $(".sender").css('padding-top', '0');
     }
@@ -1084,10 +1084,10 @@ function addtrack(track) {
                 }
             }
             for (var i in track.n) {
-                $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+             //   $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
             }
             for (var i in track.p) {
-                $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+             //   $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
             }
 
             $(up).click(function() {
@@ -1196,10 +1196,10 @@ function updateTrack(track) {
     var positivelist = item.find(".pvotes").html('');
     var negativelist = item.find(".nvotes").html('');
     for (var i in track.n) {
-        $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+      //  $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
     }
     for (var i in track.p) {
-        $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+     //   $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
     }
     item.find('.rating div').css('color', '#bbb');
     if (client.user) {
