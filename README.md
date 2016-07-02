@@ -8,7 +8,9 @@
 
     sudo apt-get update
     sudo apt-get upgrade
-    sudo apt-get install ssh php5-cli php5-common php5-mysql php5-gd php5-fpm php5-cgi php5-fpm php-pear php5-mcrypt php5-json php5-curl sudo apt-get install nginx sudo apt-get install mysql-server mysql-client php5-mysql
+    sudo apt-get install ssh php5-cli php5-common php5-mysql php5-gd php5-fpm php5-cgi php5-fpm php-pear php5-mcrypt php5-json php5-curl 
+    sudo apt-get install nginx 
+    sudo apt-get install mysql-server mysql-client
 
 install icecast-kh
 
