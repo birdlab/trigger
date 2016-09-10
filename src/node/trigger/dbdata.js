@@ -446,6 +446,8 @@ exports.getChannels = function(callback) {
                     });
                 }
             });
+        } else {
+            console.log(callback({'error': error}));
         }
     });
 }

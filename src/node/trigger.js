@@ -37,7 +37,7 @@ exports.getuser = function(id, callback) {
             if (callback) {
                 callback(users[u]);
             } else {
-                return(users[u]);
+                return (users[u]);
             }
         }
     }
@@ -62,7 +62,7 @@ exports.channel = function(id) {
 }
 function start() {
     db.getChannels(function(data) {
-        if (data) {
+        if (data && !data.error) {
             exec('killall mpd', function(error, stdout, stderr) {
                 for (var i in data) {
                     if (i != 2 && i != 3) {
@@ -72,9 +72,13 @@ function start() {
                 }
                 findfiles();
             });
+        } else {
+            console.log(data.error);
         }
     });
 }
+
+console.log('try to start');
 
 
 start();

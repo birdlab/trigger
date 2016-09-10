@@ -31,7 +31,9 @@ var translate = {
         m_uploads: 'Загрузки',
         m_pros: 'Плюсы',
         m_cons: 'Минусы',
-        m_options: 'Подводные камни'
+        m_options: 'Подводные камни',
+        p_woman:"Ура! Я женщина!",
+        p_tink:'Тинькать когда мне приходит сообщение'
     },
 
     'en': {
@@ -54,14 +56,17 @@ var translate = {
 
         m_chat: 'Chat',
         m_history: 'History',
-        m_controls: 'Control Desk',
+        m_controls: 'NASA',
         m_profile: 'Profile',
         m_blog: 'Blog',
         m_democracy: 'Democracy',
         m_uploads: 'Uploads',
         m_pros: 'Likes',
         m_cons: 'Dislikes',
-        m_options: 'Options'
+        m_options: 'Options',
+
+        p_woman:"Fuckyeah! I'm a woman!",
+        p_tink:'Tink when message is recieved'
     }
 }
 

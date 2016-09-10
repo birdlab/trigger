@@ -173,7 +173,7 @@ $(document).ready(function() {
             move = true;
         }
 
-        var message = $('<div class="message"><p class="who">некто прнс </p><p class="track"> <a class="tracklink" href="#">' + data.track.a + ' - ' + data.track.t + '</a><br />' + data.track.i + '</p><div class="end"/></div>').appendTo($('#chatmessages'));
+        var message = $('<div class="message"><p class="who"><a href="javascript:addNick(\'' + data.track.s + '\');void(0);">' + data.track.s + '</a>' + ' прнс </p><p class="track"> <a class="tracklink" href="#">' + data.track.a + ' - ' + data.track.t + '</a><br />' + data.track.i + '</p><div class="end"/></div>').appendTo($('#chatmessages'));
         message.find('.tracklink').click(function() {
             opentrack(data.track);
         });
@@ -189,9 +189,10 @@ $(document).ready(function() {
         fillUserlist();
     });
     $(client).bind('listners', function(event, data) {
-        $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>' + locale.l_listen + '</span>' + data.l);
+        $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>' + locale.l_listen + ' </span> ' + data.l);
         if (data.chid == client.channel.chid) {
-            $('#console .info .chdata').html('<span>' + locale.l_listen + '</span>' + data.l + '<span class="l_active">' + locale.l_active + ' </span>' + data.a);
+          //  $('#console .info .chdata').html('<span>' + locale.l_listen + '</span>' + data.l + '<span class="l_active">' + locale.l_active + ' </span>' + data.a);
+            $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span> ' + data.l);
         }
         if ($('.controlpage.channels').hasClass('active')) {
             fillchannelsdata(client.channels);
@@ -528,8 +529,8 @@ function onChannel(data) {
     }
     console.log('stream_mode', stream_mode);
     $('#console .info .chname').html('<a href="javascript:showControlPanel();void(0);">' + data.name + '<a>');
-    $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst);
-    $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst + '<span>' + locale.l_active + ' </span>' + data.a);
+    $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span> ' + data.lst);
+  //  $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst + '<span>' + locale.l_active + ' </span>' + data.a);
     $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="320kbps" target="_blank">mp3</a>');
     if (stream_mode == 'ogg') {
         $('#console .streamcontrol .links .mp3').addClass('blured');
@@ -823,7 +824,7 @@ function setCurrent(track) {
     var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
 
     //Автор трека
-    col_right.append('<div class="sender">прнс некто</div>');
+    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
     if (inf == '') {
         $(".sender").css('padding-top', '0');
     }
@@ -863,10 +864,10 @@ function setCurrent(track) {
         var positivelist = $(voters).find(".pvotes").html('');
         var negativelist = $(voters).find(".nvotes").html('');
         for (var i in track.n) {
-          //  $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+            $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
         }
         for (var i in track.p) {
-          //  $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+            $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
         }
 
 
@@ -983,7 +984,7 @@ function addtrack(track) {
         //  var trackuploadtime = track.ut.format("HH:MM");
     }
 
-    col_right.append('<div class="sender">прнс некто <span class="howold"></span></div>');
+    col_right.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a> <span class="howold"></span></div>');
     if (inf == '') {
         $(".sender").css('padding-top', '0');
     }
@@ -1084,10 +1085,10 @@ function addtrack(track) {
                 }
             }
             for (var i in track.n) {
-             //   $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+                $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
             }
             for (var i in track.p) {
-             //   $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+                $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
             }
 
             $(up).click(function() {
@@ -1196,10 +1197,10 @@ function updateTrack(track) {
     var positivelist = item.find(".pvotes").html('');
     var negativelist = item.find(".nvotes").html('');
     for (var i in track.n) {
-      //  $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+        $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
     }
     for (var i in track.p) {
-     //   $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+        $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
     }
     item.find('.rating div').css('color', '#bbb');
     if (client.user) {

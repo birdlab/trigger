@@ -80,7 +80,6 @@ Channel.prototype.init = function(id) {
             console.log('no election');
         }
     });
-    console.log(this.banned);
 }
 
 Channel.prototype.setop = function(data, callback) {
@@ -181,7 +180,6 @@ Channel.prototype.removeop = function(data, callback) {
 
 Channel.prototype.setprops = function(channeldata, callback) {
     var ch = this;
-    console.log('channeldata ', channeldata);
     var data = {chid: ch.id};
     if (channeldata.rate) {
         data.rate = channeldata.rate;
@@ -523,11 +521,8 @@ Channel.prototype.addTrack = function(data, callback) {
 
             if (ans) {
                 if (ans.error) {
-                    if (callback) {
-                        callback({'error': ans.error});
-                    }
-                    killfile(track.path);
                 } else {
+
 
                     track.time = ans;
                     if (track.id) {
@@ -564,8 +559,6 @@ Channel.prototype.addTrack = function(data, callback) {
                                     if (track.vote != 'undefined') {
                                         console.log('track.vote - ' + track.vote);
                                         track.vote = parseInt(track.vote);
-                                        console.log('after parse - ' + track.vote);
-                                        console.log('track.vote > weight - ' + track.vote > weight);
                                         if (!(track.vote > weight)) {
                                             if (ch.active < 10) {
                                                 weight = 0;
@@ -1108,9 +1101,9 @@ function packTrackData(track) {
         var td = {
             a: track.artist,
             t: track.title,
-            //     s: track.name,
+            s: track.name,
             id: track.id,
-            //     sid: track.submiter,
+            sid: track.submiter,
             tt: track.time,
             ut: track.date,
             i: track.info,
@@ -1126,26 +1119,23 @@ function packTrackData(track) {
          td.sid=0;
          }*/
 
-
         var positive = track.positive;
         var negative = track.negative;
 
         for (var i in positive) {
             td.p.push({
                 v: positive[i].value,
-                //  vid: positive[i].voterid,
-                // n: positive[i].name
+                vid: positive[i].voterid,
+                n: positive[i].name
             });
         }
         for (var i in negative) {
             td.n.push({
                 v: negative[i].value,
-                //  vid: negative[i].voterid,
-                //  n: negative[i].name
+                vid: negative[i].voterid,
+                n: negative[i].name
             });
         }
-
-
         return td;
     } else {
         return null;

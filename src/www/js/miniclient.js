@@ -68,8 +68,7 @@ function Client(host) {
 var lastfm = null;
 
 Client.prototype.init = function(host) {
-   // this.socket = io.connect(host, {resource: 'socket.io'});
-    console.log(host);
+    //this.socket = io.connect(host, {resource: 'socket.io'});
     this.socket=io();
     var socket = this.socket;
     var cl = this;

@@ -19,6 +19,11 @@ $(document).ready(function() {
         player.volume(vol);
     }
     $('.streamcontrol .play').click(function() {
+        if (client.channel.hi){
+            console.log('ok');
+        } else {
+            client.channel.hi="http://trigger.fm/stream/super"
+        }
         player.play(client.channel.hi);
         $('.streamcontrol .play').hide();
         $('.streamcontrol .stop').show();
@@ -42,68 +47,68 @@ $(document).ready(function() {
             $(window).unbind('mousemove', setvolume);
         });
     });
-
-    client = new Client();
-    $(client).bind('welcome', function(event, data) {
-        if (data) {
-            var loc = location.host.split('.');
-            if (loc[0] != 'trigger') {
-                for (var ch in data.channels){
-                    if(data.channels[ch].name==loc[0]){
-                        console.log(location.origin);
-                        $('#logo').append('<a href="'+location.origin+'" target="_blank"><sup>'+data.channels[ch].name+'</sup></a>');
-                        client.goChannel(data.channels[ch].id, function(data) {
-                            console.log('connected');
-                            console.log(data)
-                            setCurrent(data.current);
-                            var startplay = $.Storage.get("play");
-                            if (startplay == 'true') {
-                                player.play(client.channel.hi);
-                                $.Storage.set("play", 'false');
-                                console.log('starting stream');
-                                $('.streamcontrol .play').click();
-                            }
-                        });
+    if (Client) {
+        client = new Client();
+        $(client).bind('welcome', function(event, data) {
+            if (data) {
+                var loc = location.host.split('.');
+                if (loc[0] != 'trigger') {
+                    for (var ch in data.channels) {
+                        if (data.channels[ch].name == loc[0]) {
+                            console.log(location.origin);
+                            $('#logo').append('<a href="' + location.origin + '" target="_blank"><sup>' + data.channels[ch].name + '</sup></a>');
+                            client.goChannel(data.channels[ch].id, function(data) {
+                                console.log('connected');
+                                console.log(data)
+                                setCurrent(data.current);
+                                var startplay = $.Storage.get("play");
+                                if (startplay == 'true') {
+                                    player.play(client.channel.hi);
+                                    $.Storage.set("play", 'false');
+                                    console.log('starting stream');
+                                    $('.streamcontrol .play').click();
+                                }
+                            });
+                        }
                     }
+
+                } else {
+                    client.goChannel(1, function(data) {
+                        console.log('connected');
+                        console.log(data)
+                        setCurrent(data.current);
+                        var startplay = $.Storage.get("play");
+                        if (startplay == 'true') {
+                            player.play(client.channel.hi);
+                            $.Storage.set("play", 'false');
+                            console.log('starting stream');
+                            $('.streamcontrol .play').click();
+                        }
+                    });
                 }
-
-            } else {
-                client.goChannel(1, function(data) {
-                    console.log('connected');
-                    console.log(data)
-                    setCurrent(data.current);
-                    var startplay = $.Storage.get("play");
-                    if (startplay == 'true') {
-                        player.play(client.channel.hi);
-                        $.Storage.set("play", 'false');
-                        console.log('starting stream');
-                        $('.streamcontrol .play').click();
-                    }
-                });
             }
-        }
 
-    });
+        });
 
-    $(client).bind('listners', function(event, data) {
-        if (data.chid == client.channel.chid) {
-            console.log('Слушают:', data.l, data.a);
-        }
-    });
+        $(client).bind('listners', function(event, data) {
+            if (data.chid == client.channel.chid) {
+                console.log('Слушают:', data.l, data.a);
+            }
+        });
 
-    $(client).bind('newcurrent', function(event, data) {
-        if (data.chid == client.channel.chid) {
-            setCurrent(data.track);
-        }
-    });
-    $(client).bind('cover', function(event, data) {
-        console.log(data);
-    });
-
-
-    client.init(location.host);
+        $(client).bind('newcurrent', function(event, data) {
+            if (data.chid == client.channel.chid) {
+                setCurrent(data.track);
+            }
+        });
+        $(client).bind('cover', function(event, data) {
+            console.log(data);
+        });
 
 
+        client.init(location.host);
+
+    }
     $(window).resize(function() {
         $('.sizer').css({'height': window.innerHeight});
     });

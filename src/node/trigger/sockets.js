@@ -47,10 +47,10 @@ io.sockets.on('connection', function(socket) {
     socket.emit('getver');
 });
 
-function closehistorywait(s) {
-    if (s) {
-        s.historygetting = false;
-        console.log('historygetting = ' + s.historygetting);
+function closehistorywait(s){
+    if (s){
+        s.historygetting=false;
+        console.log('historygetting = '+s.historygetting);
     }
 }
 
@@ -252,11 +252,11 @@ function bind(socket) {
     });
 
     socket.on('gethistory', function(data, callback) {
-            console.log('get history for ' + socket.ip);
+            console.log('get history for '+ socket.ip);
             if (!socket.historygetting) {
-                socket.historygetting = true;
-                console.log('historygetting = ' + socket.historygetting);
-                setTimeout(closehistorywait, 500, socket);
+                socket.historygetting=true;
+                console.log('historygetting = '+socket.historygetting);
+                setTimeout(closehistorywait, 500,socket);
 
                 if (!data.top) {
                     if (data.s == 0) {
@@ -286,8 +286,8 @@ function bind(socket) {
                     }
                 });
             } else {
-                var e = "to much history query. Stay cool ok?"
-                if (callback) {
+                var e="to much history query. Stay cool ok?"
+                if (callback){
                     callback(e);
                 }
             }
@@ -355,7 +355,7 @@ function bind(socket) {
     });
 
     socket.on('uvote', function(data) {
-        if (false) {
+        if (socket.user) {
             if (!socket.user.rating > -1) {
                 data.user = socket.user;
                 var user = main.user(data.id);
@@ -456,18 +456,7 @@ function bind(socket) {
                     var channel = main.channel(data.chid);
                     if (channel) {
                         if (isFunction(callback)) {
-                            console.log('try ellection ');
-                            console.log(data);
-                            db.getUserByName(data.prid, function(d) {
-                                if (d.id && d.id > -10) {
-                                    console.log('by name');
-                                    console.log(d);
-                                    channel.addPRVote({voterid: socket.user.id, prid: d.id}, callback);
-                                } else {
-                                    console.log(data.prid + ' is a number');
-                                    channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
-                                }
-                            });
+                            channel.addPRVote({voterid: socket.user.id, prid: data.prid}, callback);
                         }
                     }
                 }
@@ -727,7 +716,7 @@ function bind(socket) {
     socket.on('getpost', function(data, callback) {
         if (socket.user && data.id) {
             if (isFunction(callback)) {
-                db.getPost(callback, data);
+                db.getPosts(callback, data);
             }
         }
     });

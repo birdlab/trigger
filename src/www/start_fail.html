@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta name="title" content="Trigger.fm"/>
+    <meta name="description" content="Интерактивное онлайн-радио"/>
+    <link rel="image_src" href="http://trigger.fm/img/triggersocial.jpg"/>
+
+    <meta property="og:title" content="Trigger.fm"/>
+    <meta property="og:type" content="Интерактивное онлайн-радио"/>
+    <meta property="og:image" content="http://trigger.fm/img/triggersocial.jpg"/>
+    <meta property="og:description" content="Радио с эффектом неожиданности"/>
+    <link rel="stylesheet" type="text/css" href="css/start.css"/>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/swfobject.js"></script>
+    <script src="js/paths.js"></script>
+    <script src="js/miniclient.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/lastfm.api.js"></script>
+    <script src="js/lastfm.api.md5.js"></script>
+    <script src="js/minplayercontrol.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+
+
+</head>
+
+<a>
+    <div id='radio'></div>
+
+
+    <div class="sizer">
+        <div class="container">
+            <div class="content">
+                <a href="#"><img src="/img/triggerlogo.svg"></a>
+                <div class='streamcontrol'>
+                    <div class='play'><img src='/img/off.svg'></div>
+                    <div class='stop'><img src='/img/on.svg'></div>
+                    <div class='links'></div>
+                    <div id='volume'>
+                        <div class='slider'>
+                            <div class='bar'></div>
+                        </div>
+                    </div>
+                </div>
+                <div>Новый сервер настраивается и скоро заработает. <br>А пока, послушайте успокаивающую музыку.</div>
+            <div style="padding: 40px;"><a href="https://telegram.me/trigger"><img width="100" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1024px-Telegram_logo.svg.png"></a></div>
+            </div>
+        </div>
+    </div>
+
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,300,700,400&amp;subset=latin,cyrillic-ext"
+          rel="stylesheet" type="text/css">
+    <script>
+        $(window).resize(function() {
+            $('.sizer').css({'height': window.innerHeight});
+        });
+
+        $(window).resize();
+    </script>
+    </body>
+</html>

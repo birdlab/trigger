@@ -10,7 +10,7 @@ function getuser(id) {
             $('#info .content').hide();
             $('#info .content.profile').show();
         }
-        location.hash = '#!/user/' + id;
+        location.hash='#!/user/'+id;
         client.getUser({'id': id}, function(data) {
             var inpositive = false;
             var innegative = false;
@@ -45,33 +45,33 @@ function getuser(id) {
                 }
             }
             updatekarma(data);
-            /* if (data.id != client.user.id) {
-             butnegative.click(function() {
-             var vote = -1;
-             if (innegative) {
-             vote = 0;
-             }
-             var data = {
-             'v': vote,
-             'id': id
-             }
-             client.adduservote(data, updatekarma);
-             });
-             butpositive.click(function() {
-             var vote = 1;
-             if (inpositive) {
-             vote = 0;
-             }
-             var data = {
-             'v': vote,
-             'id': id
-             }
-             client.adduservote(data, updatekarma);
-             });
-             } else { */
-            butpositive.css('visibility', 'hidden');
-            butnegative.css('visibility', 'hidden');
-            //   }
+            if (data.id != client.user.id) {
+                butnegative.click(function() {
+                    var vote = -1;
+                    if (innegative) {
+                        vote = 0;
+                    }
+                    var data = {
+                        'v': vote,
+                        'id': id
+                    }
+                    client.adduservote(data, updatekarma);
+                });
+                butpositive.click(function() {
+                    var vote = 1;
+                    if (inpositive) {
+                        vote = 0;
+                    }
+                    var data = {
+                        'v': vote,
+                        'id': id
+                    }
+                    client.adduservote(data, updatekarma);
+                });
+            } else {
+                butpositive.css('visibility', 'hidden');
+                butnegative.css('visibility', 'hidden');
+            }
             var scroller = $("<div class='inner'></div>").appendTo(profile);
 
             if (data.pic) {
@@ -181,7 +181,7 @@ function getuser(id) {
             }
 
 
-            var tabs = $("<table class ='p_tabs'><tr><td class='tab uploads'><a href='javascript:void(0);'>" + locale.m_uploads + "</a></td><td class='tab positive'><a href='javascript:void(0);'>" + locale.m_pros + "</a></td><td class='tab negative'><a href='javascript:void(0);'>" + locale.m_cons + "</a></td><td class='tab options'><a href='javascript:void(0);'>" + locale.m_options + "</a></td></tr></table>").appendTo(scroller);
+            var tabs = $("<table class ='p_tabs'><tr><td class='tab uploads'><a href='javascript:void(0);'>"+locale.m_uploads+"</a></td><td class='tab positive'><a href='javascript:void(0);'>"+locale.m_pros+"</a></td><td class='tab negative'><a href='javascript:void(0);'>"+locale.m_cons+"</a></td><td class='tab options'><a href='javascript:void(0);'>"+locale.m_options+"</a></td></tr></table>").appendTo(scroller);
             var list = $("<ul class='list'></ul>").appendTo(scroller);
 
             $('#info .content.profile .p_tabs .tab').bind('click', function() {
@@ -190,7 +190,7 @@ function getuser(id) {
                     $(this).addClass('active').children('a').addClass('hover');
 
                     if ($(this).hasClass('options')) {
-                        $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">Тинькать когда мне приходит сообщение</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div>  <div class="option"><label><input type="checkbox" name="mutetrack" id="mutetrack">Заглушать трек когда я ставлю минус</label></div>   <div class="option"><label><input type="checkbox" name="female" id="female">Ура! Я женщина!</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
+                        $('#info .content.profile .list').html('<div class="option"><label><input type="checkbox" name="tink" id="tink">'+locale.p_tink+'</label></div><div class="option"><label><input type="checkbox" name="showimg" id="showimg">Показывать картинки</label></div>  <div class="option"><label><input type="checkbox" name="mutetrack" id="mutetrack">Заглушать трек когда я ставлю минус</label></div>   <div class="option"><label><input type="checkbox" name="female" id="female">'+locale.p_woman+'</label></div> <div class="option" id="passchange"><input class="oldpass" type="text" placeholder="Старый пароль"><br><input class="new1" type="password" placeholder="Новый пароль"><br><input class="new2" type="password" placeholder="Еще раз"><br><div class="send"><a href="javascript:passchanger();void(0);">Сменить пароль</a></div><div class="errors"></div> <div id="optionexit"><a href="javascript:logout();void(0);"><img src="/img/exit.png" alt="Эвакуация"></a></div> </div></div>');
                         $('#tink').attr('checked', tink);
                         $('#female').attr('checked', !data.g);
                         $('#showimg').attr('checked', !noimg);
@@ -400,20 +400,20 @@ function addprofile(track) {
     full.attr('id', track.id);
     var voting = $('<div class="votebar"></div>').appendTo(full);
 
-    /*var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
-     var positivelist = $(voters).find(".pvotes");
-     var negativelist = $(voters).find(".nvotes");
-     for (var i in track.n) {
-     $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
-     }
-     for (var i in track.p) {
-     $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
-     }
+    var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
+    var positivelist = $(voters).find(".pvotes");
+    var negativelist = $(voters).find(".nvotes");
+    for (var i in track.n) {
+        $('<li><a href="javascript:getuser(' + track.n[i].vid + ');void(0);">' + track.n[i].n + '</a></li>').appendTo(negativelist);
+    }
+    for (var i in track.p) {
+        $('<li><a href="javascript:getuser(' + track.p[i].vid + ');void(0);">' + track.p[i].n + '</a></li>').appendTo(positivelist);
+    }
 
-     voters.hide();
-     item.click(function() {
-     voters.toggle();
-     })*/
+    voters.hide();
+    item.click(function() {
+        voters.toggle();
+    })
 
 
     var tags = $('<div class="tags"></div>').appendTo(full);

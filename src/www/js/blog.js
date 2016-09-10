@@ -88,9 +88,11 @@ function placeComment(comment) {
 function openpost(postid) {
     console.log(location.hash);
     if (location.hash != '#!/blog/' + postid) {
-        location.hash = '#!/blog/' + postid;
+        // location.hash = '#!/blog/' + postid;
     }
     $('#info .content .post .comments').html('');
+
+
     client.getComments({id: postid}, function(d) {
         if (d.length) {
             for (var c in d) {

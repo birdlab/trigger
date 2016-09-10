@@ -7,7 +7,7 @@
 define('M1',$_SERVER['argv'][1]);
 define('M2',$_SERVER['argv'][2]);
 
-define('SERVER', 'localhost:8000');//your icecast server address, without the ending "/"
+define('SERVER', '127.0.0.1:8000');//your icecast server address, without the ending "/"
 
 $stream = getStreamInfo();
 echo($stream);
@@ -31,7 +31,7 @@ function getStreamInfo(){
 	$ips='';
 	if(preg_match_all('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/isU', $str, $match1)){
 		foreach ($match1[0] as $key=>$value) {
-			$ips=$ips.$value.',';
+			$ips=$ips.$value.$key.',';
 		}
 	}
 
@@ -40,7 +40,7 @@ function getStreamInfo(){
 	
 	if(preg_match_all('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/isU', $str2, $match2)){	
 		foreach ($match2[0] as $key=>$value) {
-			$ips=$ips.$value.',';
+			$ips=$ips.$value.$key.',';
 		}
 	}
 	return $ips;
