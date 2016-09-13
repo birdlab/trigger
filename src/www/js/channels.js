@@ -305,18 +305,23 @@ function fillchannelsdata(d) {
         // $('#info .content.channels .full').hide();
 
         if (!client.user) {
+            var invite_sended = false;
             var ib = $('<li class="inviteblock"></li>').appendTo($('#info .controlpage.channels .list'));
             var inv = $("<div class='greating'>Сегодня на триггере атракцион неслыханной щедрости. В экспериментальном режиме мы решили раздавать инвайты!<BR> Впиши в поле ниже свой адрес электронной почты и на нее придет инвайт, который позволит тебе стать полноценным тригганом!</div><br><input class='invitemail' type='text' placeholder='e-mail'><button>Ok</button><br><div class='error'></div>").appendTo(ib);
             $('.inviteblock button').click(function() {
-                console.log($('.inviteblock input').val());
-                client.sendextinvite({mail: $('.inviteblock input').val()}, function(data) {
-                    console.log(data);
-                    if (data.error) {
-                        $('.inviteblock .error').html('Что-то пошло не так: ' + data.error);
-                    } else {
-                        $(ib).html("<div class='greating'>Похоже у нас все получилось. Проверь свою почту, вероятно там есть что-то новенькое ;)</div>")
-                    }
-                });
+                if (!invite_sended) {
+                    console.log($('.inviteblock input').val())
+                    invite_sended = true;
+                    client.sendextinvite({mail: $('.inviteblock input').val()}, function(data) {
+                        console.log(data);
+                        if (data.error) {
+                            $('.inviteblock .error').html('Что-то пошло не так: ' + data.error);
+                        } else {
+
+                            $(ib).html("<div class='greating'>Похоже у нас все получилось. Проверь свою почту, вероятно там есть что-то новенькое ;)</div>")
+                        }
+                    });
+                }
             })
         }
     }

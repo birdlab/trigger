@@ -31,7 +31,7 @@ function getStreamInfo(){
 	$ips='';
 	if(preg_match_all('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/isU', $str, $match1)){
 		foreach ($match1[0] as $key=>$value) {
-			$ips=$ips.$value.$key.',';
+			$ips=$ips.$value.',';
 		}
 	}
 
@@ -40,7 +40,7 @@ function getStreamInfo(){
 	
 	if(preg_match_all('/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/isU', $str2, $match2)){	
 		foreach ($match2[0] as $key=>$value) {
-			$ips=$ips.$value.$key.',';
+			$ips=$ips.$value.',';
 		}
 	}
 	return $ips;

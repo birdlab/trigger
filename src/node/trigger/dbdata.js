@@ -4,6 +4,11 @@ var exec = require("child_process").exec;
 var md5 = require('MD5');
 var sanitizer = require('sanitizer');
 
+var mailgun = require('mailgun').Mailgun;
+var mg = new mailgun('key-2b447e23ffd7065991bfe780bcf1c1cf');
+
+console.log(mg);
+
 var voteq = [];
 var uvoteq = [];
 
@@ -765,46 +770,51 @@ exports.addTrackTag = function(track, tag, callback) {
 
 
 exports.sendinvite = function(code, mail, socket) {
-    exec('php /home/trigger/node/sendmail.php ' + mail + ' ' + code, function(error, stdout, stderr) {
-        if (!error) {
-            db.connection.query('UPDATE invites SET  email="' + mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function(error, result, fields) {
-                if (error) {
-                    socket.emit('invitestatus', {ok: false, m: mail});
-                }
-                if (result) {
-                    socket.emit('invitestatus', {ok: true, m: mail});
-                }
-            });
-        } else {
-            socket.emit('invitestatus', {ok: false, m: mail});
-        }
-    });
+    mg.sendText('tars@birdlab.com', [data.mail, 'allbirdrus@gmail.com'],
+        'Клуб анонимных меломанов trigger.fm приглашает тебя!',
+        'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!',
+        function(err) {
+            if (err) {
+                socket.emit('invitestatus', {ok: false, m: mail});
+            } else {
+                db.connection.query('UPDATE invites SET  email="' + mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function(error, result, fields) {
+                    if (error) {
+                        socket.emit('invitestatus', {ok: false, m: mail});
+                    }
+                    if (result) {
+                        socket.emit('invitestatus', {ok: true, m: mail});
+                    }
+                });
+
+            }
+        });
 }
 
 exports.sendextinvite = function(data, callback) {
     if (callback) {
         if (data.mail) {
             data.mail = sanitizer.sanitize(data.mail);
-            db.connection.query('SELECT * FROM users WHERE email = \'' + data.mail + '\'', function(err, result, fields) {
+            db.connection.query('SELECT * FROM invites WHERE email = \'' + data.mail + '\'', function(err, result, fields) {
                 if (result.length) {
                     callback({error: 'exists'});
                 } else {
                     var code = md5("sds" + Math.random() * 100000000000 + new Date().getTime() + "a");
-                    db.connection.query('insert into invites (parentid, code, give_time, userid) VALUES ( 0, "' + code + '", NOW(), 0)', function(er, result, fields) {
+                    db.connection.query('insert into invites (parentid, email, code, give_time,send_time, userid) VALUES ( 0,\'' + data.mail + '\', "' + code + '", NOW(), NOW(), 0)', function(er, result, fields) {
                         if (!er) {
-                            exec('php /home/trigger/node/sendmail.php ' + data.mail + ' ' + code, function(error, stdout, stderr) {
-                                if (!error) {
-                                    db.connection.query('UPDATE invites SET  email="' + data.mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function(error, result, fields) {
-                                        if (!error) {
-                                            callback({status: 'ok'});
-                                        } else {
-                                            callback({error: 'db error'});
-                                        }
-                                    });
-                                } else {
-                                    callback({error: 'mail error'});
-                                }
-                            });
+                            mg.sendText('tars@birdlab.com', [data.mail, 'allbirdrus@gmail.com'],
+                                'Клуб анонимных меломанов trigger.fm приглашает тебя!',
+                                'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!',
+                                function(err) {
+                                    if (err) {
+                                        callback({error: err});
+                                    } else {
+                                        callback({status: 'ok'});
+
+                                    }
+                                });
+
+                        } else {
+                            callback({error: er});
                         }
 
                     });
@@ -814,27 +824,6 @@ exports.sendextinvite = function(data, callback) {
     }
 }
 
-exports.recoverpass = function(mail, callback) {
-    mail = sanitizer.sanitize(mail);
-    db.connection.query('SELECT * FROM users WHERE email = \'' + mail + '\'', function(err, result, fields) {
-        if (!err) {
-            if (result[0]) {
-                var pass = md5("pass" + Math.random() * 100000000000 + new Date().getTime() + "a").substring(3, 9);
-                var code = md5(pass);
-                db.connection.query('UPDATE users SET  password="' + code + '" WHERE  email = "' + mail + '" LIMIT 1', function(error, r, fields) {
-                    if (error) {
-                        socket.emit('invitestatus', {ok: false, m: mail});
-                    }
-                    if (result) {
-                        socket.emit('invitestatus', {ok: true, m: mail});
-                    }
-                });
-            } else {
-                socket.emit('invitestatus', {ok: false, m: mail});
-            }
-        }
-    });
-}
 
 exports.recoverpass = function(mail, callback) {
     mail = sanitizer.sanitize(mail);
@@ -848,23 +837,29 @@ exports.recoverpass = function(mail, callback) {
                         callback({ok: false, e: 'db fail'});
                     }
                     if (r) {
-                        exec('php /home/trigger/node/sendpass.php ' + result[0].email + ' ' + result[0].name + ' ' + pass, function(error, stdout, stderr) {
-                            if (!error) {
-                                callback({
-                                    ok: true,
-                                    m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
-                                });
-                            } else {
-                                callback({ok: false, e: 'sending mail fail'});
-                            }
-                        });
+                        mg.sendText('tars@birdlab.com', [result[0].email, 'allbirdrus@gmail.com'],
+                            'trigger.fm принес тебе твой новый пароль',
+                            'Привет,' + result[0].name + '! Кто-то, возможно ты, решил сбросить твой пароль на trigger.fm. Твой новый пароль: ' + pass,
+                            function(err) {
+                                if (err) {
+                                    callback({ok: false, e: 'sending mail fail'});
+                                } else {
+                                    console.log('Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)')
+                                    callback({
+                                        ok: true,
+                                        m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
+                                    });
+                                }
+                            });
 
                     }
                 });
             } else {
+                console.log('no user');
                 callback({ok: false, e: 'no user'});
             }
         } else {
+            console.log('db fail');
             callback({ok: false, e: 'db fail'});
         }
     });

@@ -350,6 +350,7 @@ Channel.prototype.status = function() {
             var ips = stdout.replace(String.fromCharCode(65279), '').split(',');
             ips.pop();
             ips = uniq(ips);
+            //console.log(ips);
             if (ch.chip.length != ips.length) {
                 ch.chip = ips;
                 ch.active = 0;

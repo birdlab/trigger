@@ -65,7 +65,7 @@ function start() {
         if (data && !data.error) {
             exec('killall mpd', function(error, stdout, stderr) {
                 for (var i in data) {
-                    if (i != 2 && i != 3) {
+                    if (i < 1) {
                         var channel = ch.newChannel(data[i]);
                         channels.push(channel);
                     }
