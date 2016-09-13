@@ -231,7 +231,8 @@ function addMessage(md) {
 
                     if (noimg) {
                         var a = i + 2;
-                        md.m = md.m.replace(customCodes[i][0], customCodes[a][1]);
+                      //  md.m = md.m.replace(customCodes[i][0], customCodes[a][1]);
+                        md.m = md.m.replace(customCodes[i][0], customCodes[2][1]);
                     } else {
                         md.m = md.m.replace(customCodes[i][0], customCodes[i][1]);
                     }
