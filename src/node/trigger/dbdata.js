@@ -635,9 +635,10 @@ function getRotationTracks(tids, callback) {
     var ps = '"' + tids.join('","') + '"';
     var searchCase = [];
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+4)');
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+4)');
-    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' ');
     var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState];
 
