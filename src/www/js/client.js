@@ -6,8 +6,9 @@ function sortFunction(a, b) {
         return -1;
     }
     if (a.r == b.r) {
-        console.log(b.date - a.date);
-        return b.date - a.date;
+        var atime=new Date(a.at);
+        var btime=new Date(b.at);
+        return atime - btime;
     }
     return 0;
 
@@ -223,7 +224,7 @@ Client.prototype.init = function(host) {
         for (var t in cl.channel.pls) {
             var track = cl.channel.pls[t];
             if (track) {
- 
+
                 track.vote = 0;
                 if (cl.user) {
                     for (var v in track.n) {
