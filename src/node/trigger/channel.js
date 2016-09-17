@@ -39,7 +39,10 @@ function Channel(i) {
     this.election = false;
     this.electionData = {};
     this.weightrate = 10;
-    this.goldthreshold = 0;
+    this.goldthreshold = i.gold_threshold;
+    this.goldmax = i.gold_max;
+    this.goldchecktime = new Date();
+
     var ch = this;
     setTimeout(function() {
         ch.checkFile();
@@ -59,7 +62,6 @@ function Channel(i) {
 Channel.prototype.init = function(id) {
     var command = '';
     var ch = this;
-    id = ch.id;
 
     if (ch.id == 1) {
         command = 'mpd --no-daemon /home/trigger/mpd/mpd.conf';
@@ -69,7 +71,7 @@ Channel.prototype.init = function(id) {
     if (!ch.chat) {
         ch.chat = chat.newChat(ch.id);
     }
-    console.log('starting', id);
+    console.log('starting', ch.id);
     exec(command, function(error, stdout, stderr) {
         console.log(ch, ' > ', error);
         setTimeout(ch.init(ch.id), 5000);
@@ -435,7 +437,7 @@ Channel.prototype.guard = function() {
         }
 
         db.getRotation(ids, function(data) {
-            console.log(data.length+ "tracks finded");
+            console.log(data.length + "tracks finded");
             if (data.length) {
                 console.log(data);
                 track = data[Math.round(Math.random() * (data.length - 1))];
@@ -816,13 +818,8 @@ Channel.prototype.processTrack = function(track) {
         db.setLiveTime(track.id, track.time);
     }
     db.setPlayDate(track);
-    console.log('processing played file ' + track.path);
-    console.log(track.positive.length);
     if (!track.gold) {
-        if (track.positive.length > ch.goldthreshold) {
-            console.log(track.positive.length);
-
-
+        if ((track.positive.length > ch.goldthreshold) && (track.negative.length == 0)) {
             var path = '/home/trigger/upload/' + track.path
             var goldpath = '/home/trigger/upload/gold/' + track.path
             console.log('"' + path + '"');
@@ -841,12 +838,16 @@ Channel.prototype.processTrack = function(track) {
             if (submiter) {
                 submiter.updateLimits();
             }
+
         } else {
             killfile(track.path);
         }
     }
-
-
+    var lastcheckhour = ch.goldchecktime.getHours();
+    var currenthour = new Date().getHours();
+    if (currenthour != lastcheckhour) {
+        ch.updateGoldThreshold();
+    }
     if (!ch.election) {
         exec('date -R', function(error, stdout, stderr) {
             if (stdout.search('Wed') > -1) {
@@ -860,6 +861,29 @@ Channel.prototype.processTrack = function(track) {
             }
         });
     }
+    ch.updateGoldThreshold();
+
+}
+
+Channel.prototype.updateGoldThreshold = function() {
+    var ch = this;
+    ch.goldchecktime = new Date();
+    db.getDailyGold(ch.id, function(count) {
+        if (count.error) {
+            console.log(count.error);
+        } else {
+            console.log('GOLD COUNT >>>');
+            console.log(count[0]['count(tracks.id)']);
+            if (count[0]['count(tracks.id)'] > ch.goldmax) {
+                ch.goldthreshold += 1;
+            }
+            if ((count < ch.goldmax - 5) && (ch.goldthreshold > 0)) {
+                ch.goldthreshold -= 1;
+            }
+            console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
+            db.setCurrentThreshold(ch.id, ch.goldthreshold);
+        }
+    })
 }
 
 Channel.prototype.sortElection = function() {
@@ -1153,7 +1177,6 @@ function sortFunction(a, b) {
     }
 
     if (a.rating == b.rating) {
-        console.log(a.addtime - b.addtime);
         return a.addtime - b.addtime;
     }
     return 0

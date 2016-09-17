@@ -722,14 +722,34 @@ exports.getRotation = function(tids, callback) {
     getRotationTracks(tids, callback);
 
 };
+exports.setCurrentThreshold = function(chid, threshold) {
+
+    var q = 'UPDATE `channels` SET channels.gold_threshold = ' + db.connection.escape(threshold) + ' WHERE channels.id = ' + db.connection.escape(chid);
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            console.log('threshold updated');
+        } else {
+            callback({error: '!!!!!!!!!!!!!update daily gold failed'});
+        }
+    });
+}
+exports.getDailyGold = function(chid, callback) {
+    var q = 'SELECT count(tracks.id) FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1 and tracks.date BETWEEN NOW() - INTERVAL 24 HOUR AND NOW()';
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            callback(r);
+        } else {
+            callback({error: '!!!!!!!!!!!!!getting daily gold failed'});
+        }
+    });
+}
 
 exports.deleteOldTrack = function(chid, callback) {
     var q = 'SELECT tracks.id, tracks.path FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1  ORDER BY tracks.date ASC, tracks.rating ASC LIMIT 1';
-    console.log(q);
     db.connection.query(q, function(error, r, fields) {
         if (!error) {
             callback(r[0]);
-            fs.unlink('home/trigger/upload'+r[0].path, function(err) {
+            fs.unlink('home/trigger/upload' + r[0].path, function(err) {
                 if (err) {
                     console.log(err);
                     callback({error: err});
