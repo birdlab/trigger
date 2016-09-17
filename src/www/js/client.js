@@ -71,7 +71,6 @@ function Client(host) {
 var lastfm = null;
 
 Client.prototype.init = function(host) {
-    console.log('init');
     // this.socket = io.connect(host, {resource: 'socket.io'});
     this.socket = io();
     var socket = this.socket;
@@ -269,7 +268,6 @@ Client.prototype.init = function(host) {
         cl.callbacks.channelsdata(data);
     });
     socket.on('userdata', function(data) {
-        console.log(data);
         cl.callbacks.userdata(data);
     });
     socket.on('uvd', function(data) {
@@ -438,7 +436,6 @@ Client.prototype.getPlaylist = function(channel, callback) {
 Client.prototype.goChannel = function(channel, callback) {
     var cl = this;
     for (var ch in welcomedata.channels) {
-        console.log(welcomedata.channels[ch]);
         if (welcomedata.channels[ch].id == channel) {
             console.log(welcomedata.channels[ch].name);
             destination = "http://" + welcomedata.channels[ch].name + ".trigger.fm"
@@ -499,7 +496,6 @@ Client.prototype.tracksubmit = function(data, callback) {
     var form = data.form;
     this.socket.emit('tracksubmit', {'chid': this.channel.chid, 'track': data.track}, function(data) {
         data.form = form;
-        console.log('data.form: ', data.form);
         callback(data)
     });
 }
@@ -588,7 +584,6 @@ Client.prototype.getchannel = function(id) {
 };
 
 Client.prototype.banuser = function(uid, reason, callback) {
-    console.log(reason);
     this.socket.emit('banuser', {id: uid, r: reason}, callback);
 };
 Client.prototype.unbanuser = function(uid, callback) {

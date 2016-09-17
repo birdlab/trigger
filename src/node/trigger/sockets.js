@@ -50,7 +50,6 @@ io.sockets.on('connection', function(socket) {
 function closehistorywait(s){
     if (s){
         s.historygetting=false;
-        console.log('historygetting = '+s.historygetting);
     }
 }
 
@@ -252,10 +251,8 @@ function bind(socket) {
     });
 
     socket.on('gethistory', function(data, callback) {
-            console.log('get history for '+ socket.ip);
             if (!socket.historygetting) {
                 socket.historygetting=true;
-                console.log('historygetting = '+socket.historygetting);
                 setTimeout(closehistorywait, 500,socket);
 
                 if (!data.top) {

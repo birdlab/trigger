@@ -626,7 +626,6 @@ Channel.prototype.addTrack = function(data, callback) {
                                             weight = 0;
                                         }
                                     }
-                                    console.log('result vote ' + weight);
                                     if (weight) {
                                         ch.addVote({
                                             'track': track.id,

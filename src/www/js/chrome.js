@@ -343,7 +343,6 @@ $(document).ready(function() {
 
 
 $(window).bind('hashchange', function() {
-    console.log('go by hash ' + location.hash);
     if (location.hash.length) {
         var dec = location.hash.split('/')
         if (dec[1] == 'user') {
@@ -615,15 +614,12 @@ function onChannel(data) {
 
 function parser() {
     path = window.location.host.split('.');
-    console.log("!!" + path);
     if (path[1] == 'trigger') {
         channel = path[0];
-        console.log(welcomedata);
         channelid = 1;
         if (welcomedata.channels) {
             for (ch in welcomedata.channels) {
                 if (channel == welcomedata.channels[ch].name) {
-                    console.log(welcomedata.channels[ch].name);
                     channelid = welcomedata.channels[ch].id;
                     client.goChannel(channelid, onChannel);
                 }
@@ -1236,9 +1232,6 @@ function sf(a, b) {
     } else {
         var atime=new Date($(a).attr('at'));
         var btime=new Date($(b).attr('at'));
-        console.log(atime);
-        console.log(btime);
-        console.log(atime-btime);
         return atime-btime;
     }
 }
