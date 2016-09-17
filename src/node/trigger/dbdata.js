@@ -7,13 +7,14 @@ var sanitizer = require('sanitizer');
 var mailgun = require('mailgun').Mailgun;
 var mg = new mailgun('key-2b447e23ffd7065991bfe780bcf1c1cf');
 
-console.log(mg);
-
 var voteq = [];
 var uvoteq = [];
 
 var vprocess = false;
 var uvprocess = false;
+
+
+var searchCaseState = 0;
 
 
 function nmTokenPolicy(nmTokens) {
@@ -47,7 +48,7 @@ exports.updatelimits = function(userid, callback) {
 
     var q = "SELECT SUM(tracks.time) as sum," +
         "(select tracks.date from tracks where tracks.submiter = " + userid + " and tracks.channel=1 and tracks.unlim=0 and tracks.date BETWEEN NOW() - INTERVAL 12 HOUR AND NOW() limit 0,1) as lastime, " +
-        "(Select SUM(tracks.time) FROM `tracks` WHERE tracks.submiter = " + userid + " and tracks.channel=1 and tracks.gold=b'1' and tracks.date BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()) as goldsum " +
+        "(Select SUM(tracks.time) FROM `tracks` WHERE tracks.submiter = " + userid + " and tracks.channel=1 and tracks.gold=1 and tracks.date BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()) as goldsum " +
         "FROM `tracks` WHERE tracks.submiter =" + userid + " and tracks.channel=1 and tracks.unlim=0 and tracks.date BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()";
     db.connection.query(q, function(error, result, fields) {
         if (!error) {
@@ -269,7 +270,7 @@ function getTracksFromQery(qq, callback, dt) {
                     id: result[t].id,
                     chid: result[t].channel,
                     sid: result[t].submiter,
-                    g: result[t].gold[0] == 1,
+                    g: result[t].gold > 0,
                     r: 0
                 });
                 ids += result[t].id + ',';
@@ -314,7 +315,6 @@ function getTracksFromQery(qq, callback, dt) {
                                 if (historyStack.length > 60) {
                                     historyStack.pop();
                                 }
-                                console.log('push new history');
                                 historyStack.push({'dt': dt, d: tracks});
                             }
                             callback(tracks);
@@ -367,7 +367,6 @@ exports.getTracksByShift = function(data, callback) {
         }
         q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + order + 'LIMIT ' + data.shift + ',20'
     }
-    console.log(q);
     var finded = false;
     for (var i in historyStack) {
         if (dt == i.dt) {
@@ -542,6 +541,11 @@ exports.addVote = function(vote) {
     processVote();
 
 }
+exports.clearVotes = function(track) {
+    var q = 'DELETE FROM trackvote WHERE trackvote.trackid = \'' + track.id + '\'  LIMIT 1';
+    db.connection.query(q, function(error, result, fields) {
+    });
+}
 exports.addUserVote = function(vote) {
     uvoteq.push(vote);
     processUserVote();
@@ -553,8 +557,7 @@ exports.updateTrack = function(track) {
     var i = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
     db.connection.query('UPDATE tracks SET artist =' + a + ', title = ' + t + ' info = ' + i + ',  WHERE id = ' + track.id, function(err, result, fields) {
         if (err) {
-            console.log('fail');
-            console.log(err);
+
         } else {
             console.log('track update ok');
         }
@@ -565,7 +568,7 @@ exports.addTrack = function(track, callback) {
     track.artist = sanitizer.escape(track.artist);
     track.title = sanitizer.escape(track.title);
     track.info = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
-    db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, ?, ?, ?, ?, ?, NOW(), NULL,?,NULL,NULL)',
+    db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, 0, ?, ?, ?, ?, ?, NOW(), NULL,?,NULL,NULL)',
         [track.path,
             track.channel,
             track.artist,
@@ -600,21 +603,21 @@ exports.addTrack = function(track, callback) {
 
 }
 exports.setPlayDate = function(track) {
-    console.log(track);
     var rating = track.positive.length - track.negative.length;
-    console.log(rating);
 
     var q = 'UPDATE tracks SET playdate = DATE_SUB(NOW(), INTERVAL ' + track.time + ' SECOND), rating = ' + track.rating + ' , realrating =' + rating + ' WHERE id =' + track.id;
-    console.log(q);
     db.connection.query(q, function(error, result, fields) {
         if (error) {
             console.log(error);
         }
     });
 }
-exports.setGold = function(id, time) {
-    var q = "UPDATE tracks SET gold = b'1' WHERE id =" + id;
+exports.setGold = function(id, goldpath) {
+    var q = "UPDATE tracks SET \n gold = " + db.connection.escape(1) + ", \n ondisk = " + db.connection.escape(1) + ",  \n path=" + db.connection.escape(goldpath) + " \n WHERE id =" + db.connection.escape(id);
     db.connection.query(q, function(error, result, fields) {
+        if (error) {
+            console.log(error);
+        }
     });
 }
 exports.removeTrack = function(id, callback) {
@@ -625,6 +628,101 @@ exports.removeTrack = function(id, callback) {
         }
     });
 }
+
+
+function getRotationTracks(tids, callback) {
+    var ps = '"' + tids.join('","') + '"';
+    var searchCase = [];
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
+    searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
+    searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+4)');
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
+    searchCase.push(' ');
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState];
+
+    console.log(q);
+    db.connection.query(q, function(error, result, fields) {
+        if (!error) {
+
+            if (result.length > 1) {
+                var ids = '';
+                for (var t in result) {
+                    console.log(result[t].path);
+                    result[t].positive = [];
+                    result[t].negative = [];
+                    result[t].tags = [];
+                    result[t].rating = 0;
+                    result[t].gold = result[t].gold > 0;
+                    //   var ar = result[t].path.split('/')
+                    //  result[t].path = ar[ar.length - 1];
+                    result[t].path = result[t].path.slice(1);
+                    ids += result[t].id + ',';
+                }
+
+                ids = ids.slice(0, -1);
+                var tracks = result;
+                var q = 'SELECT trackvote.*, users.name FROM trackvote LEFT JOIN users ON trackvote.voterid=users.id WHERE trackid in (' + ids + ')';
+                db.connection.query(q, function(error, result, fields) {
+                    if (!error) {
+                        for (var v in result) {
+                            for (var t in tracks) {
+                                if (result[v].trackid == tracks[t].id) {
+                                    var vote = {
+                                        'voterid': result[v].voterid,
+                                        'name': result[v].name,
+                                        'value': result[v].value
+                                    };
+                                    if (result[v].value > 0) {
+                                        tracks[t].positive.push(vote);
+                                    } else {
+                                        tracks[t].negative.push(vote);
+                                    }
+                                    tracks[t].rating += result[v].value;
+                                    break;
+                                }
+                            }
+                        }
+                        var req = 'SELECT tracktags.trackid, tracktags.tagid, tags.name FROM tracktags LEFT JOIN tags ON tracktags.tagid=tags.id WHERE trackid in (' + ids + ')';
+                        db.connection.query(req, function(err, res, fields) {
+                            if (!err) {
+                                for (var v in res) {
+                                    for (var t in tracks) {
+                                        var tag = {
+                                            'id': res[v].id,
+                                            'n': res[v].name
+                                        };
+                                        if (res[v].trackid == tracks[t].id) {
+                                            tracks[t].tags.push(tag);
+                                        }
+                                    }
+                                }
+                                callback(tracks);
+                            }
+                        });
+                    }
+                });
+            } else {
+                if (searchCaseState < searchCase.length - 1) {
+                    searchCaseState++;
+                    getRotationTracks(tids, callback);
+                } else {
+                    callback([]);
+                }
+            }
+        } else {
+            console.log(error);
+            callback([]);
+        }
+    });
+}
+
+
+exports.getRotation = function(tids, callback) {
+    searchCaseState = 0;
+    getRotationTracks(tids, callback);
+
+}
+
 exports.getTracks = function(paths, callback) {
     var ps = '"' + paths.join('","') + '"';
     var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE path in (' + ps + ') and tracks.date BETWEEN NOW() - INTERVAL 12 HOUR AND NOW() order by tracks.date desc';
@@ -636,7 +734,7 @@ exports.getTracks = function(paths, callback) {
                 result[t].negative = [];
                 result[t].tags = [];
                 result[t].rating = 0;
-                result[t].gold = result[t].gold[0] == 1;
+                result[t].gold = result[t].gold > 0;
                 var ar = result[t].path.split('/')
                 result[t].path = ar[ar.length - 1];
                 ids += result[t].id + ',';

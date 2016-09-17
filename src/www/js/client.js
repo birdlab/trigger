@@ -6,9 +6,11 @@ function sortFunction(a, b) {
         return -1;
     }
     if (a.r == b.r) {
-        return parseInt(a.id) - parseInt(b.id);
+        console.log(b.date - a.date);
+        return b.date - a.date;
     }
-    return 0
+    return 0;
+
 
 }
 
@@ -104,7 +106,6 @@ Client.prototype.init = function(host) {
                 }
             }
         }
-
         cl.channel.pls.push(track);
         cl.channel.pls.sort(sortFunction);
         $(cl).trigger('addtrack', data);
@@ -222,6 +223,7 @@ Client.prototype.init = function(host) {
         for (var t in cl.channel.pls) {
             var track = cl.channel.pls[t];
             if (track) {
+ 
                 track.vote = 0;
                 if (cl.user) {
                     for (var v in track.n) {

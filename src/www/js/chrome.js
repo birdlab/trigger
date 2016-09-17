@@ -191,7 +191,7 @@ $(document).ready(function() {
     $(client).bind('listners', function(event, data) {
         $('#info .controlpage.channels #' + data.chid + ' .listners').html('<span>' + locale.l_listen + ' </span> ' + data.l);
         if (data.chid == client.channel.chid) {
-          //  $('#console .info .chdata').html('<span>' + locale.l_listen + '</span>' + data.l + '<span class="l_active">' + locale.l_active + ' </span>' + data.a);
+            //  $('#console .info .chdata').html('<span>' + locale.l_listen + '</span>' + data.l + '<span class="l_active">' + locale.l_active + ' </span>' + data.a);
             $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span> ' + data.l);
         }
         if ($('.controlpage.channels').hasClass('active')) {
@@ -530,7 +530,7 @@ function onChannel(data) {
     console.log('stream_mode', stream_mode);
     $('#console .info .chname').html('<a href="javascript:showControlPanel();void(0);">' + data.name + '<a>');
     $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span> ' + data.lst);
-  //  $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst + '<span>' + locale.l_active + ' </span>' + data.a);
+    //  $('#console .info .chdata').html('<span>' + locale.l_listen + ' </span>' + data.lst + '<span>' + locale.l_active + ' </span>' + data.a);
     $('#console .streamcontrol .links').html('<a href="' + client.channel.hi + '" class="ogg" title="~96kbps" target="_blank">ogg</a> | <a href="' + client.channel.low + '" class="mp3" title="320kbps" target="_blank">mp3</a>');
     if (stream_mode == 'ogg') {
         $('#console .streamcontrol .links .mp3').addClass('blured');
@@ -1016,6 +1016,7 @@ function addtrack(track) {
     full.hide();
     item.attr('id', track.id);
     item.attr('rating', track.r);
+    item.attr('at', track.at);
     item.addClass('trackid' + track.id);
     var vote = 0;
     if (client.user) {
@@ -1233,7 +1234,12 @@ function sf(a, b) {
     if (dif != 0) {
         return dif;
     } else {
-        return $(a).attr('id') - $(b).attr('id');
+        var atime=new Date($(a).attr('at'));
+        var btime=new Date($(b).attr('at'));
+        console.log(atime);
+        console.log(btime);
+        console.log(atime-btime);
+        return atime-btime;
     }
 }
 
@@ -1293,7 +1299,6 @@ function updatetimes() {
             } else {
                 $('#' + client.channel.pls[t].id + ' .time').html(secToTime(client.channel.pls[t].tt));
             }
-
         }
         offset += client.channel.pls[t].tt;
     }
