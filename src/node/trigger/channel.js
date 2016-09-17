@@ -595,7 +595,7 @@ Channel.prototype.addTrack = function(data, callback) {
                                 ch.playlist.push(track);
                                 track.channel = ch.id;
                                 track.unlim = 0;
-                                if ((ch.chat.users.length < 11 || ch.playlist.length < 10) && ch.id == 1) {
+                                if ((ch.chat.users.length < 10 || ch.playlist.length < 21) && ch.id == 1) {
                                     track.unlim = 1;
                                 }
                                 track.artist = san.sanitize(track.artist);

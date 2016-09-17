@@ -483,7 +483,7 @@ function newTagline() {
         var tl = new Date(client.user.t * 1000);
         var limit = tl.toUTCString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
         if (client.channel.chid == 1) {
-            if (client.channel.pls.length < 11) {
+            if (client.channel.pls.length < 21) {
                 $('#console .userinfo').prepend('<div id="limits">Сейчас нет лимитов!</div>');
             } else if (client.chat) {
                 if (client.chat.u.length < 11) {
