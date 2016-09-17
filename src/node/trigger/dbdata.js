@@ -3,6 +3,7 @@ var user = require('./user.js');
 var exec = require("child_process").exec;
 var md5 = require('MD5');
 var sanitizer = require('sanitizer');
+var fs = require("fs");
 
 var mailgun = require('mailgun').Mailgun;
 var mg = new mailgun('key-2b447e23ffd7065991bfe780bcf1c1cf');
@@ -643,7 +644,6 @@ function getRotationTracks(tids, callback) {
     console.log(q);
     db.connection.query(q, function(error, result, fields) {
         if (!error) {
-
             if (result.length > 1) {
                 var ids = '';
                 for (var t in result) {
@@ -721,6 +721,28 @@ exports.getRotation = function(tids, callback) {
     searchCaseState = 0;
     getRotationTracks(tids, callback);
 
+};
+
+exports.deleteOldTrack = function(chid, callback) {
+    var q = 'SELECT tracks.id, tracks.path FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1  ORDER BY tracks.date ASC, tracks.rating ASC LIMIT 1';
+    console.log(q);
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            callback(r[0]);
+            fs.unlink('home/trigger/upload'+r[0].path, function(err) {
+                if (err) {
+                    console.log(err);
+                    callback({error: err});
+                }
+                console.log('file deleted successfully');
+                db.connection.query('UPDATE tracks SET  ondisk=0 WHERE  id = "' + r[0].id + '" LIMIT 1', function(error, result, fields) {
+                    callback(r[0]);
+                });
+            });
+        } else {
+            callback({error: 'track for deleting not find'});
+        }
+    });
 }
 
 exports.getTracks = function(paths, callback) {
