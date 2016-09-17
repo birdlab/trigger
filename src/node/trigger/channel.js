@@ -861,7 +861,6 @@ Channel.prototype.processTrack = function(track) {
             }
         });
     }
-    ch.updateGoldThreshold();
 
 }
 
