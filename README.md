@@ -61,6 +61,7 @@ install useful libs
     sudo npm install MD5
     sudo npm install sanitizer
     sudo npm install validator
+    sudo npm install mailgun
 
 let's VM nginx response on virt-trigger.fm
 
