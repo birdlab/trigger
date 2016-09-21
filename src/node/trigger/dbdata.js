@@ -631,24 +631,22 @@ exports.removeTrack = function(id, callback) {
 }
 
 
-function getRotationTracks(tids, callback) {
+function getRotationTracks(chid, tids, callback) {
     var ps = '"' + tids.join('","') + '"';
     var searchCase = [];
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
-    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+4)');
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()-2) and HOUR(NOW()+2)');
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
-    searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+4)');
+    searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()-2) and HOUR(NOW()+2)');
     searchCase.push(' ');
-    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState];
-
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel= ' + chid + ' AND tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState];
     console.log(q);
     db.connection.query(q, function(error, result, fields) {
         if (!error) {
             if (result.length > 1) {
                 var ids = '';
                 for (var t in result) {
-                    console.log(result[t].path);
                     result[t].positive = [];
                     result[t].negative = [];
                     result[t].tags = [];
@@ -705,7 +703,7 @@ function getRotationTracks(tids, callback) {
             } else {
                 if (searchCaseState < searchCase.length - 1) {
                     searchCaseState++;
-                    getRotationTracks(tids, callback);
+                    getRotationTracks(chid, tids, callback);
                 } else {
                     callback([]);
                 }
@@ -718,13 +716,21 @@ function getRotationTracks(tids, callback) {
 }
 
 
-exports.getRotation = function(tids, callback) {
+exports.getRotation = function(chid, tids, callback) {
     searchCaseState = 0;
-    getRotationTracks(tids, callback);
+    var q = 'SELECT tracks.id FROM tracks WHERE tracks.channel=' + chid + ' AND tracks.playdate  BETWEEN NOW() - INTERVAL 2 HOUR AND NOW()';
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            for (var a in r) {
+                tids.push(r[a].id);
+            }
+        }
+        getRotationTracks(chid, tids, callback);
+    });
+
 
 };
 exports.setCurrentThreshold = function(chid, threshold) {
-
     var q = 'UPDATE `channels` SET channels.gold_threshold = ' + db.connection.escape(threshold) + ' WHERE channels.id = ' + db.connection.escape(chid);
     db.connection.query(q, function(error, r, fields) {
         if (!error) {
@@ -734,8 +740,8 @@ exports.setCurrentThreshold = function(chid, threshold) {
         }
     });
 }
-exports.getDailyGold = function(chid, callback) {
-    var q = 'SELECT count(tracks.id) FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1 and tracks.date BETWEEN NOW() - INTERVAL 24 HOUR AND NOW()';
+exports.getHourGold = function(chid, callback) {
+    var q = 'SELECT count(tracks.id) FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1 and tracks.date BETWEEN NOW() - INTERVAL 1 HOUR AND NOW()';
     db.connection.query(q, function(error, r, fields) {
         if (!error) {
             callback(r);
@@ -753,15 +759,56 @@ exports.deleteOldTrack = function(chid, callback) {
             fs.unlink('home/trigger/upload' + r[0].path, function(err) {
                 if (err) {
                     console.log(err);
-                    callback({error: err});
                 }
                 console.log('file deleted successfully');
-                db.connection.query('UPDATE tracks SET  ondisk=0 WHERE  id = "' + r[0].id + '" LIMIT 1', function(error, result, fields) {
+                db.connection.query('UPDATE tracks SET gold=0, ondisk=0 WHERE  id = "' + r[0].id + '" LIMIT 1', function(error, result, fields) {
                     callback(r[0]);
                 });
             });
         } else {
             callback({error: 'track for deleting not find'});
+        }
+    });
+}
+exports.deleteTrack = function(track, callback) {
+
+    fs.unlink('home/trigger/upload/' + track.path, function(err) {
+        if (err) {
+            console.log(err);
+        }
+        console.log('file deleted successfully');
+        db.connection.query('UPDATE tracks SET gold=0, ondisk=0 WHERE  id = "' + track.id + '" LIMIT 1', function(error, result, fields) {
+            callback('ok');
+        });
+    });
+
+}
+
+exports.getTrackVotes = function(trackid, callback) {
+    var q = 'SELECT trackvote.*, users.name FROM trackvote LEFT JOIN users ON trackvote.voterid=users.id WHERE trackid = ' + trackid;
+    db.connection.query(q, function(error, result, fields) {
+        if (!error) {
+            var votes = {
+                positive:[],
+                negative:[],
+                rating:0
+            };
+            for (var v in result) {
+                var vote = {
+                    'voterid': result[v].voterid,
+                    'name': result[v].name,
+                    'value': result[v].value
+                };
+                if (result[v].value > 0) {
+                    votes.positive.push(vote);
+                } else {
+                    votes.negative.push(vote);
+                }
+                votes.rating += result[v].value;
+            }
+            callback(votes);
+        } else {
+            callback({error: true});
         }
     });
 }
@@ -985,7 +1032,6 @@ exports.recoverpass = function(mail, callback) {
                                 if (err) {
                                     callback({ok: false, e: 'sending mail fail'});
                                 } else {
-                                    console.log('Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)')
                                     callback({
                                         ok: true,
                                         m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
@@ -1068,20 +1114,17 @@ exports.generateinvite = function(userid) {
     });
 }
 exports.banuser = function(data) {
-    console.log('to base - ', data);
     db.connection.query('insert into banned (id, chid, reason, killerid, bantime) VALUES (' + data.id + ', ' + data.chid + ', ' + db.connection.escape(data.reason) + ',' + data.killerid + ',"' + data.bantime + '")', function(error, result, fields) {
         console.log(error);
     });
 }
 exports.unbanuser = function(data) {
-    console.log('to base - ', data);
     db.connection.query('DELETE FROM banned WHERE id = ' + data.id + ' AND chid = ' + data.chid + ' LIMIT 1;', function(error, result, fields) {
         console.log(error);
     });
 }
 
 exports.setpr = function(data) {
-    console.log('to base - ', data);
     db.connection.query('UPDATE channels SET prid = ' + data.id + ' WHERE `id` = ' + data.chid + ';', function(error, result, fields) {
         console.log(error);
     });
@@ -1109,7 +1152,6 @@ exports.savechannelstate = function(data, callback) {
             if (error) {
                 bddata.error = error;
             }
-            console.log(bddata);
             callback(bddata);
         });
     }
@@ -1190,8 +1232,7 @@ exports.getUserByName = function(id, callback) {
     });
 }
 exports.getPosts = function(callback, d) {
-    console.log(callback);
-    console.log(d);
+
     if (callback) {
         var datestring = '';
         if (d && d.date) {
@@ -1225,13 +1266,10 @@ exports.getPosts = function(callback, d) {
 }
 
 exports.getPost = function(callback, d) {
-    console.log('callback - ' + callback);
-    console.log('data - ' + d);
     if (callback) {
         var datestring = '';
         if (d && d.id) {
-            var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.id=' + d.id + ' AND post.killer IS NULL LIMIT 20'
-            console.log(q);
+            var q = 'SELECT post.*, users.name FROM post LEFT JOIN users ON post.senderid=users.id WHERE post.id=' + d.id + ' AND post.killer IS NULL LIMIT 20';
             dumbquery(q, function(data) {
                 if (!data.error) {
                     var ids = [];
@@ -1266,8 +1304,6 @@ exports.killPost = function(data, callback) {
                 q = 'SELECT prvote.date FROM prvote ORDER BY prvote.date DESC LIMIT 1';
                 dumbquery(q, function(b) {
                     if (!b.error) {
-                        console.log(a[0].date);
-                        console.log(b[0].date);
                         if ((a[0].date - b[0].date) > 0) {
                             q = 'UPDATE post SET post.killer= ' + data.killerid + ' WHERE id = ' + data.id + ' LIMIT 1;';
                             dumbquery(q, callback);

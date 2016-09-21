@@ -436,17 +436,19 @@ Channel.prototype.guard = function() {
             ids.push(ch.playlist[i].id);
         }
 
-        db.getRotation(ids, function(data) {
+        db.getRotation(ch.id, ids, function(data) {
             console.log(data.length + "tracks finded");
             if (data.length) {
-                console.log(data);
+                for (a in data) {
+                    //     console.log(data[a].artist + ' - ' + data[a].title);
+                }
                 track = data[Math.round(Math.random() * (data.length - 1))];
                 track.positive = [];
                 track.negative = [];
                 track.rating = 0;
                 track.addtime = new Date(Date.now() + 10800000);
-                console.log('trak to playlist -------------->')
-                console.log(track);
+                console.log('track to playlist -------------->');
+                console.log(track.artist + ' - ' + track.title);
                 ch.playlist.unshift(track);
                 main.getuser(0, function(user) {
                     if (user) {
@@ -539,14 +541,23 @@ Channel.prototype.checkFile = function() {
             if (ch.current && ch.playlist.length > 0) {
                 ch.processTrack(ch.current);
                 ch.current = ch.playlist.shift();
-                clearVotes(ch.current);
+                clearVotes(ch.current, function() {
+                    ch.currentTime = 0;
+                    sockets.sendNewCurrent({'chid': ch.id, 'track': packTrackData(ch.current)});
+                    ch.setNext();
+                    setTimeout(function() {
+                        ch.checkFile();
+                    }, 5000);
+                });
+            } else {
+                ch.currentTime = 0;
+                sockets.sendNewCurrent({'chid': ch.id, 'track': packTrackData(ch.current)});
+                ch.setNext();
+                setTimeout(function() {
+                    ch.checkFile();
+                }, 5000);
             }
-            ch.currentTime = 0;
-            sockets.sendNewCurrent({'chid': ch.id, 'track': packTrackData(ch.current)});
-            ch.setNext();
-            setTimeout(function() {
-                ch.checkFile();
-            }, 5000);
+
         } else {
             setTimeout(function() {
                 ch.checkFile();
@@ -747,7 +758,7 @@ Channel.prototype.addVote = function(data, callback) {
             rating += track.negative[i].value;
         }
         track.rating = rating;
-        if (track.rating < -9 || (track.positive.length < track.negative.length && track.negative.length > 2)) {
+        if (track.negative.length > 2 && track.negative.length > track.positive.length) {
             if (track.id == ch.current.id) {
                 ch.skip();
             } else {
@@ -818,7 +829,7 @@ Channel.prototype.processTrack = function(track) {
     }
     db.setPlayDate(track);
     if (!track.gold) {
-        if ((track.positive.length > ch.goldthreshold) && (track.negative.length == 0)) {
+        if ((track.positive.length - track.negative.length) > ch.goldthreshold) {
             var path = '/home/trigger/upload/' + track.path
             var goldpath = '/home/trigger/upload/gold/' + track.path
             console.log('"' + path + '"');
@@ -827,11 +838,14 @@ Channel.prototype.processTrack = function(track) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('renamed complete');
+                    console.log('rename complete');
                     db.setGold(track.id, '/gold/' + track.path);
                 }
             });
-
+            ch.goldthreshold = track.positive.length;
+            console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
+            db.setCurrentThreshold(ch.id, ch.goldthreshold);
+            sockets.sendChannelThreshold({'chid': ch.id, 'threshold': ch.goldthreshold});
             // db.generateinvite(track.submiter);
             var submiter = main.user(track.submiter);
             if (submiter) {
@@ -841,7 +855,16 @@ Channel.prototype.processTrack = function(track) {
         } else {
             killfile(track.path);
         }
+    } else {
+        // if track already gold
+        if (track.negative.length > 2 && track.negative.length > track.positive.length) {
+            db.deleteTrack(track, function(data) {
+                console.log('track deleted > ' + data);
+            });
+        }
     }
+
+
     var lastcheckhour = ch.goldchecktime.getHours();
     var currenthour = new Date().getHours();
     if (currenthour != lastcheckhour) {
@@ -866,20 +889,19 @@ Channel.prototype.processTrack = function(track) {
 Channel.prototype.updateGoldThreshold = function() {
     var ch = this;
     ch.goldchecktime = new Date();
-    db.getDailyGold(ch.id, function(count) {
+    db.getHourGold(ch.id, function(count) {
         if (count.error) {
             console.log(count.error);
         } else {
             console.log('GOLD COUNT >>>');
             console.log(count[0]['count(tracks.id)']);
-            if (count[0]['count(tracks.id)'] > ch.goldmax) {
-                ch.goldthreshold += 1;
-            }
-            if ((count < ch.goldmax - 5) && (ch.goldthreshold > 0)) {
+            if ((count[0]['count(tracks.id)'] < ch.goldmax - 2) && (ch.goldthreshold > 0)) {
                 ch.goldthreshold -= 1;
+                console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
+                db.setCurrentThreshold(ch.id, ch.goldthreshold);
+                sockets.sendChannelThreshold({'chid': ch.id, 'threshold': ch.goldthreshold});
             }
-            console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
-            db.setCurrentThreshold(ch.id, ch.goldthreshold);
+
         }
     })
 }
@@ -1003,7 +1025,6 @@ Channel.prototype.addPRVote = function(data, callback) {
                         callback(packElectionData(ch.electionData, data.voterid));
                     }
                 });
-
                 is = true;
                 break;
             }
@@ -1157,12 +1178,24 @@ function killfile(path) {
 
 }
 
-function clearVotes(track) {
+function clearVotes(track, callback) {
     if (!track.gold) {
         track.rating = 0;
         track.positive = [];
         track.negative = [];
         db.clearVotes(track);
+        callback();
+    } else {
+        db.getTrackVotes(track.id, function(data) {
+            if (!data.error) {
+                track.rating = data.rating;
+                track.positive = data.positive;
+                track.negative = data.negative;
+            } else {
+                console.log('error geting votes for rate gold track');
+            }
+            callback();
+        });
     }
 }
 

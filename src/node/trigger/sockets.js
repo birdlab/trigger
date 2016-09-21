@@ -29,6 +29,7 @@ io.sockets.on('connection', function(socket) {
                         'id': ch.id,
                         'hi': ch.hilink,
                         'low': ch.lowlink,
+                        'thershold': ch.goldthreshold,
                         'users': ch.chat.compactUsers(),
                         'current': ch.getCurrent()
                     });
@@ -47,9 +48,9 @@ io.sockets.on('connection', function(socket) {
     socket.emit('getver');
 });
 
-function closehistorywait(s){
-    if (s){
-        s.historygetting=false;
+function closehistorywait(s) {
+    if (s) {
+        s.historygetting = false;
     }
 }
 
@@ -170,6 +171,7 @@ function bind(socket) {
             userdata.hi = ch.hilink;
             userdata.low = ch.lowlink;
             userdata.lst = ch.listeners;
+            userdata.threshold = ch.goldthreshold;
             userdata.a = ch.active;
             userdata.name = ch.name;
             socket.emit('channeldata', userdata);
@@ -252,8 +254,8 @@ function bind(socket) {
 
     socket.on('gethistory', function(data, callback) {
             if (!socket.historygetting) {
-                socket.historygetting=true;
-                setTimeout(closehistorywait, 500,socket);
+                socket.historygetting = true;
+                setTimeout(closehistorywait, 500, socket);
 
                 if (!data.top) {
                     if (data.s == 0) {
@@ -283,8 +285,8 @@ function bind(socket) {
                     }
                 });
             } else {
-                var e="to much history query. Stay cool ok?"
-                if (callback){
+                var e = "to much history query. Stay cool ok?"
+                if (callback) {
                     callback(e);
                 }
             }
@@ -898,6 +900,15 @@ exports.sendListners = function(data) {
         sockets[s].emit('lst', data);
     }
 };
+
+exports.sendChannelThreshold = function(chid, threshold) {
+    for (var s in sockets) {
+        var socket = sockets[s];
+        if (socket.channel == chid) {
+            socket.emit('channelthershold', threshold);
+        }
+    }
+}
 exports.updateLimits = function(user) {
     for (var s in user.sockets) {
         var socket = getID(user.sockets[s]);
