@@ -6,8 +6,8 @@ function sortFunction(a, b) {
         return -1;
     }
     if (a.r == b.r) {
-        var atime=new Date(a.at);
-        var btime=new Date(b.at);
+        var atime = new Date(a.at);
+        var btime = new Date(b.at);
         return atime - btime;
     }
     return 0;
@@ -267,6 +267,13 @@ Client.prototype.init = function(host) {
         cl.channels = data.channels;
         cl.callbacks.channelsdata(data);
     });
+    socket.on('channelthershold', function(data) {
+        if (cl.channel) {
+            cl.channel.threshold = data;
+            $(cl).trigger('channelthershold', data);
+        }
+    });
+
     socket.on('userdata', function(data) {
         cl.callbacks.userdata(data);
     });

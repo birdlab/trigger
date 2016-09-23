@@ -205,6 +205,9 @@ $(document).ready(function() {
     $(client).bind('updatelimits', function(event, data) {
         newTagline();
     });
+    $(client).bind('channelthershold', function(event, data) {
+        newTagline();
+    });
     $(client).bind('newcurrent', function(event, data) {
         if (data.chid == client.channel.chid) {
             setCurrent(data.track);
@@ -479,8 +482,14 @@ function newTagline() {
             //co='Твой аккаунт мог быть угнан, '+username+'! Воспользуйся менялкой пароля в подводных камнях!'
         }
         $('#console .userinfo').html(co);
+
+
+        $('#console .userinfo').prepend('<div id="limits">Порог золота: ' + client.channel.threshold + '</div>');
+
+
         var tl = new Date(client.user.t * 1000);
         var limit = tl.toUTCString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+
         if (client.channel.chid == 1) {
             if (client.channel.pls.length < 21) {
                 $('#console .userinfo').prepend('<div id="limits">Сейчас нет лимитов!</div>');
@@ -493,6 +502,7 @@ function newTagline() {
         } else {
             $('#console .userinfo').prepend('<div id="limits">Здесь нет лимитов ;)</div>');
         }
+
         $('#limits').hover(function() {
                 var verbal = verbalTime(Date.parse(client.user.nt) - Date.parse(new Date()));
                 if (!verbal) {
@@ -1230,9 +1240,9 @@ function sf(a, b) {
     if (dif != 0) {
         return dif;
     } else {
-        var atime=new Date($(a).attr('at'));
-        var btime=new Date($(b).attr('at'));
-        return atime-btime;
+        var atime = new Date($(a).attr('at'));
+        var btime = new Date($(b).attr('at'));
+        return atime - btime;
     }
 }
 
