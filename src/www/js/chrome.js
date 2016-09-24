@@ -206,6 +206,7 @@ $(document).ready(function() {
         newTagline();
     });
     $(client).bind('channelthershold', function(event, data) {
+        client.channel.threshold=data;
         newTagline();
     });
     $(client).bind('newcurrent', function(event, data) {

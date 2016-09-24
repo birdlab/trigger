@@ -272,6 +272,7 @@ Client.prototype.init = function(host) {
             cl.channel.threshold = data;
             $(cl).trigger('channelthershold', data);
         }
+        $(cl).trigger('channelthershold', data);
     });
 
     socket.on('userdata', function(data) {
