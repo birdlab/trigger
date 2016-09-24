@@ -359,14 +359,18 @@ exports.getTracksByShift = function(data, callback) {
         gettitle = ' AND tracks.title LIKE "%' + data.title + '%"';
     }
     var q = '';
+    var date='playdate';
+    if (data.gold){
+        date='date'
+    }
     if (!data.top) {
-        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
+        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.'+date+' < ' + db.connection.escape(data.shift) + getgold + getartist + gettitle + ' order by tracks.playdate desc LIMIT 20';
     } else {
         var order = ' ORDER BY tracks.rating DESC, tracks.realrating DESC, tracks.playdate DESC ';
         if (data.votes) {
-            order = ' ORDER BY tracks.realrating DESC, tracks.rating DESC, tracks.playdate DESC '
+            order = ' ORDER BY tracks.realrating DESC, tracks.rating DESC, tracks.playdate DESC ';
         }
-        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.playdate BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + order + 'LIMIT ' + data.shift + ',20'
+        q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel=' + data.channel + ' AND tracks.'+date+' BETWEEN NOW() - INTERVAL 7 DAY AND NOW()' + getgold + getartist + gettitle + order + 'LIMIT ' + data.shift + ',20'
     }
     var finded = false;
     for (var i in historyStack) {
