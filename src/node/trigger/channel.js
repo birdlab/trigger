@@ -9,6 +9,8 @@ var sockets = require('./sockets.js');
 var san = require('sanitizer');
 var fs = require("fs");
 
+var pathtogold='gold/'
+
 
 function Channel(i) {
     console.log(i);
@@ -432,22 +434,26 @@ Channel.prototype.guard = function() {
     if (ch.playlist.length < 10) {
         console.log('///////////////////////  AUTOPILOT');
         var ids = [];
+        ids.push(ch.current.id);
         for (var i in ch.playlist) {
             ids.push(ch.playlist[i].id);
         }
 
         db.getRotation(ch.id, ids, function(data) {
-            console.log(data.length + "tracks finded");
+
+            console.log(data.length + " tracks finded for channel " + ch.name);
             if (data.length) {
-                for (a in data) {
-                    //     console.log(data[a].artist + ' - ' + data[a].title);
-                }
                 track = data[Math.round(Math.random() * (data.length - 1))];
                 track.positive = [];
                 track.negative = [];
+                console.log(track.path);
+               // if (track.path.search("amazon") == -1) {
+               //     track.path = '  amazon/' + track.path;
+               // }
+                console.log(track.path);
                 track.rating = 0;
                 track.addtime = new Date(Date.now() + 10800000);
-                console.log('track to playlist -------------->');
+                console.log('track to playlist ----->');
                 console.log(track.artist + ' - ' + track.title);
                 ch.playlist.unshift(track);
                 main.getuser(0, function(user) {
@@ -830,8 +836,8 @@ Channel.prototype.processTrack = function(track) {
     db.setPlayDate(track);
     if (!track.gold) {
         if ((track.positive.length - track.negative.length) > ch.goldthreshold) {
-            var path = '/home/trigger/upload/' + track.path
-            var goldpath = '/home/trigger/upload/gold/' + track.path
+            var path = '/home/trigger/upload/' + track.path;
+            var goldpath = '/home/trigger/upload/'+pathtogold + track.path;
             console.log('"' + path + '"');
             console.log('"' + goldpath + '"');
             fs.rename(path, goldpath, function(err) {
@@ -839,13 +845,14 @@ Channel.prototype.processTrack = function(track) {
                     console.log(err);
                 } else {
                     console.log('rename complete');
-                    db.setGold(track.id, '/gold/' + track.path);
+                    db.setGold(track.id, '/' + pathtogold + track.path);
                 }
             });
-            ch.goldthreshold = track.positive.length;
+            ch.cleanChannelGold();
+
+            ch.goldthreshold = track.positive.length - 1;
             console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
             db.setCurrentThreshold(ch.id, ch.goldthreshold);
-            sockets.sendChannelThreshold({'chid': ch.id, 'threshold': ch.goldthreshold});
             // db.generateinvite(track.submiter);
             var submiter = main.user(track.submiter);
             if (submiter) {
@@ -863,6 +870,8 @@ Channel.prototype.processTrack = function(track) {
             });
         }
     }
+    //debug send on every track
+    sockets.sendChannelThreshold({'chid': ch.id, 'threshold': ch.goldthreshold});
 
 
     var lastcheckhour = ch.goldchecktime.getHours();
@@ -886,9 +895,32 @@ Channel.prototype.processTrack = function(track) {
 
 }
 
+Channel.prototype.cleanChannelGold = function() {
+    var ch = this;
+    db.getChannelGoldSize(ch.id, function(hours) {
+        if (hours.error) {
+            console.log(hours.error);
+        } else {
+            console.log('Total gold on channel>>>');
+            var total = hours[0]['summ']
+            console.log(total);
+            if (total > 30) {
+                console.log('!!!Deleting Old Track!!!');
+                db.deleteOldTrack(ch.id, function(result) {
+                    console.log(result);
+                });
+            }
+
+        }
+    });
+};
+
 Channel.prototype.updateGoldThreshold = function() {
     var ch = this;
     ch.goldchecktime = new Date();
+
+    ch.cleanChannelGold();
+
     db.getHourGold(ch.id, function(count) {
         if (count.error) {
             console.log(count.error);

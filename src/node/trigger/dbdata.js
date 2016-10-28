@@ -15,8 +15,6 @@ var vprocess = false;
 var uvprocess = false;
 
 
-var searchCaseState = 0;
-
 
 function nmTokenPolicy(nmTokens) {
     if ("specialtoken" === nmTokens) {
@@ -633,17 +631,20 @@ exports.removeTrack = function(id, callback) {
 }
 
 
-function getRotationTracks(chid, tids, callback) {
+function getRotationTracks(chid, tids, callback, searchCaseState) {
     var ps = '"' + tids.join('","') + '"';
+
+    var excludeTime=' and tracks.playdate not BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()';
+
     var searchCase = [];
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()-2) and HOUR(NOW()+2)');
-    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()-2) and HOUR(NOW()+2)');
+    searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' ');
-    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel= ' + chid + ' AND tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState];
-    console.log(q);
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel= ' + chid + ' AND tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState]+excludeTime;
+    console.log(searchCase[searchCaseState]);
     db.connection.query(q, function(error, result, fields) {
         if (!error) {
             if (result.length > 1) {
@@ -705,7 +706,7 @@ function getRotationTracks(chid, tids, callback) {
             } else {
                 if (searchCaseState < searchCase.length - 1) {
                     searchCaseState++;
-                    getRotationTracks(chid, tids, callback);
+                    getRotationTracks(chid, tids, callback, searchCaseState);
                 } else {
                     callback([]);
                 }
@@ -719,18 +720,7 @@ function getRotationTracks(chid, tids, callback) {
 
 
 exports.getRotation = function(chid, tids, callback) {
-    searchCaseState = 0;
-    var q = 'SELECT tracks.id FROM tracks WHERE tracks.channel=' + chid + ' AND tracks.playdate  BETWEEN NOW() - INTERVAL 2 HOUR AND NOW()';
-    db.connection.query(q, function(error, r, fields) {
-        if (!error) {
-            for (var a in r) {
-                tids.push(r[a].id);
-            }
-        }
-        getRotationTracks(chid, tids, callback);
-    });
-
-
+    getRotationTracks(chid, tids, callback, 0);
 };
 exports.setCurrentThreshold = function(chid, threshold) {
     var q = 'UPDATE `channels` SET channels.gold_threshold = ' + db.connection.escape(threshold) + ' WHERE channels.id = ' + db.connection.escape(chid);
@@ -753,20 +743,45 @@ exports.getHourGold = function(chid, callback) {
     });
 }
 
-exports.deleteOldTrack = function(chid, callback) {
-    var q = 'SELECT tracks.id, tracks.path FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1  ORDER BY tracks.date ASC, tracks.rating ASC LIMIT 1';
+exports.getChannelGoldSize = function(chid, callback) {
+    var q = 'SELECT sum(tracks.time)/60/60 as summ FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1';
     db.connection.query(q, function(error, r, fields) {
         if (!error) {
-            callback(r[0]);
-            fs.unlink('home/trigger/upload' + r[0].path, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-                console.log('file deleted successfully');
-                db.connection.query('UPDATE tracks SET gold=0, ondisk=0 WHERE  id = "' + r[0].id + '" LIMIT 1', function(error, result, fields) {
-                    callback(r[0]);
-                });
-            });
+            callback(r);
+        } else {
+            callback({error: '>>>>>>getting overal gold minutes failed'});
+        }
+    });
+}
+
+function deleteGold(track, callback) {
+    console.log(track.path);
+    fs.unlink('/home/trigger/upload' + track.path, function(err) {
+        if (err) {
+            console.log(err);
+        }
+        console.log('file deleted successfully');
+        db.connection.query('UPDATE tracks SET gold=0, ondisk=0 WHERE  id = "' + track.id + '" LIMIT 1', function(error, result, fields) {
+            callback(track);
+        });
+    });
+}
+exports.deleteGoldTrackById = function(id, callback) {
+    var q = 'SELECT tracks.id, tracks.path FROM tracks WHERE tracks.id=' + db.connection.escape(id) + ' LIMIT 1';
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            deleteGold(r[0], callback);
+        } else {
+            callback({error: 'track for deleting not find'});
+        }
+    });
+
+}
+exports.deleteOldTrack = function(chid, callback) {
+    var q = 'SELECT tracks.id, tracks.path FROM tracks WHERE tracks.channel=' + db.connection.escape(chid) + ' and tracks.ondisk = 1  ORDER BY tracks.rating ASC, tracks.date ASC LIMIT 1';
+    db.connection.query(q, function(error, r, fields) {
+        if (!error) {
+            deleteGold(r[0], callback);
         } else {
             callback({error: 'track for deleting not find'});
         }
@@ -774,7 +789,7 @@ exports.deleteOldTrack = function(chid, callback) {
 }
 exports.deleteTrack = function(track, callback) {
 
-    fs.unlink('home/trigger/upload/' + track.path, function(err) {
+    fs.unlink('/home/trigger/upload/' + track.path, function(err) {
         if (err) {
             console.log(err);
         }

@@ -206,7 +206,10 @@ $(document).ready(function() {
         newTagline();
     });
     $(client).bind('channelthershold', function(event, data) {
-        client.channel.threshold=data;
+        console.log('threshold update');
+        console.log(event);
+        console.log(data);
+        client.channel.threshold = data;
         newTagline();
     });
     $(client).bind('newcurrent', function(event, data) {
@@ -483,7 +486,6 @@ function newTagline() {
             //co='Твой аккаунт мог быть угнан, '+username+'! Воспользуйся менялкой пароля в подводных камнях!'
         }
         $('#console .userinfo').html(co);
-
 
         $('#console .userinfo').prepend('<div id="limits">Порог золота: ' + client.channel.threshold + '</div>');
 
