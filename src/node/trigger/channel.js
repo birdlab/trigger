@@ -8,8 +8,8 @@ var main = require('../trigger.js');
 var sockets = require('./sockets.js');
 var san = require('sanitizer');
 var fs = require("fs");
-
-var pathtogold='gold/'
+var rootpath = '/home/trigger/upload/';
+var pathtogold = 'gold/'
 
 
 function Channel(i) {
@@ -44,6 +44,7 @@ function Channel(i) {
     this.goldthreshold = i.gold_threshold;
     this.goldmax = i.gold_max;
     this.goldchecktime = new Date();
+    this.pilotsearch = false;
 
     var ch = this;
     setTimeout(function() {
@@ -431,8 +432,9 @@ Channel.prototype.guard = function() {
     }
 
     ///////////////////////  AUTOPILOT
-    if (ch.playlist.length < 10) {
+    if (ch.playlist.length < 10 && ch.pilotsearch == false) {
         console.log('///////////////////////  AUTOPILOT');
+        ch.pilotsearch = true;
         var ids = [];
         ids.push(ch.current.id);
         for (var i in ch.playlist) {
@@ -447,33 +449,65 @@ Channel.prototype.guard = function() {
                 track.positive = [];
                 track.negative = [];
                 console.log(track.path);
-               // if (track.path.search("amazon") == -1) {
-               //     track.path = '  amazon/' + track.path;
-               // }
-                console.log(track.path);
-                track.rating = 0;
-                track.addtime = new Date(Date.now() + 10800000);
-                console.log('track to playlist ----->');
-                console.log(track.artist + ' - ' + track.title);
-                ch.playlist.unshift(track);
-                main.getuser(0, function(user) {
-                    if (user) {
-                        ch.addVote({
-                            'track': track.id,
-                            'user': user,
-                            'v': -1,
-                            inside: true,
-                            'fulltrack': track
-                        }, function() {
-                            ch.sort();
-                            if (!ch.current && ch.playlist.length > 0) {
-                                ch.pushNext();
+                if (track.path.search("amazon/") > -1) {
+                    track.amazon = true;
+                    copyFromAmazon(track, function() {
+                        console.log(track.path);
+                        track.rating = 0;
+                        track.addtime = new Date(Date.now() + 10800000);
+                        console.log('track to playlist ----->');
+                        console.log(track.artist + ' - ' + track.title);
+                        ch.playlist.unshift(track);
+                        main.getuser(0, function(user) {
+                            if (user) {
+                                ch.addVote({
+                                    'track': track.id,
+                                    'user': user,
+                                    'v': -1,
+                                    inside: true,
+                                    'fulltrack': track
+                                }, function() {
+                                    ch.sort();
+                                    if (!ch.current && ch.playlist.length > 0) {
+                                        ch.pushNext();
+                                    }
+                                    sockets.sendAddTrack({'chid': ch.id, 'track': packTrackData(track)});
+                                    ch.pilotsearch = false;
+                                });
+
                             }
-                            sockets.sendAddTrack({'chid': ch.id, 'track': packTrackData(track)});
                         });
 
-                    }
-                });
+
+                    });
+                } else {
+                    console.log(track.path);
+                    track.rating = 0;
+                    track.addtime = new Date(Date.now() + 10800000);
+                    console.log('track to playlist ----->');
+                    console.log(track.artist + ' - ' + track.title);
+                    ch.playlist.unshift(track);
+                    main.getuser(0, function(user) {
+                        if (user) {
+                            ch.addVote({
+                                'track': track.id,
+                                'user': user,
+                                'v': -1,
+                                inside: true,
+                                'fulltrack': track
+                            }, function() {
+                                ch.sort();
+                                if (!ch.current && ch.playlist.length > 0) {
+                                    ch.pushNext();
+                                }
+                                sockets.sendAddTrack({'chid': ch.id, 'track': packTrackData(track)});
+                                ch.pilotsearch = false;
+                            });
+
+                        }
+                    });
+                }
+
             }
 
 
@@ -837,7 +871,7 @@ Channel.prototype.processTrack = function(track) {
     if (!track.gold) {
         if ((track.positive.length - track.negative.length) > ch.goldthreshold) {
             var path = '/home/trigger/upload/' + track.path;
-            var goldpath = '/home/trigger/upload/'+pathtogold + track.path;
+            var goldpath = '/home/trigger/upload/' + pathtogold + track.path;
             console.log('"' + path + '"');
             console.log('"' + goldpath + '"');
             fs.rename(path, goldpath, function(err) {
@@ -846,24 +880,31 @@ Channel.prototype.processTrack = function(track) {
                 } else {
                     console.log('rename complete');
                     db.setGold(track.id, '/' + pathtogold + track.path);
+                    moveToAmazon(track);
+                    ch.cleanChannelGold();
+
+                    ch.goldthreshold = track.positive.length - 1;
+                    console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
+                    db.setCurrentThreshold(ch.id, ch.goldthreshold);
+                    // db.generateinvite(track.submiter);
+                    var submiter = main.user(track.submiter);
+                    if (submiter) {
+                        submiter.updateLimits();
+                    }
                 }
             });
-            ch.cleanChannelGold();
 
-            ch.goldthreshold = track.positive.length - 1;
-            console.log('NEW GOLD THRESHOLD = ' + ch.goldthreshold);
-            db.setCurrentThreshold(ch.id, ch.goldthreshold);
-            // db.generateinvite(track.submiter);
-            var submiter = main.user(track.submiter);
-            if (submiter) {
-                submiter.updateLimits();
-            }
 
         } else {
             killfile(track.path);
         }
     } else {
         // if track already gold
+        if (!track.amazon) {
+            moveToAmazon(track);
+        } else {
+            killfile(track.path);
+        }
         if (track.negative.length > 2 && track.negative.length > track.positive.length) {
             db.deleteTrack(track, function(data) {
                 console.log('track deleted > ' + data);
@@ -904,7 +945,7 @@ Channel.prototype.cleanChannelGold = function() {
             console.log('Total gold on channel>>>');
             var total = hours[0]['summ']
             console.log(total);
-            if (total > 30) {
+            if (total > 168) {
                 console.log('!!!Deleting Old Track!!!');
                 db.deleteOldTrack(ch.id, function(result) {
                     console.log(result);
@@ -1178,6 +1219,7 @@ Channel.prototype.setNext = function() {
                         ch.processing = false;
                     }
                 });
+
             } else {
                 ch.processing = false;
             }
@@ -1201,7 +1243,7 @@ exports.newChannel = function(info) {
 
 
 function killfile(path) {
-    var p = '/home/trigger/upload/' + path;
+    var p = rootpath + path;
     exec('rm "' + p + '"', function(error, stdout, stderr) {
         if (!error) {
         } else {
@@ -1265,6 +1307,58 @@ function packElectionData(electionData, userid) {
         }
     }
     return data;
+}
+
+
+function copyFromAmazon(track, callback) {
+    var fullpath = rootpath + track.path;
+    console.log(fullpath);
+    fs.exists(fullpath, function(exists) {
+        if (exists) {
+            console.log('file exists');
+            exec('cp  "' + fullpath + '" ' + rootpath + 'temp/', function(error, stdout, stderr) {
+                if (!error) {
+                    console.log('ok');
+                    var paths = track.path.split('amazon/gold/');
+                    track.path = 'temp/' + paths[1];
+                    console.log('file copied to:');
+                    console.log(track.path);
+                    callback();
+                } else {
+                    console.log(error);
+                    callback();
+
+                }
+            });
+
+        } else {
+            console.log('file not exists');
+            callback();
+        }
+    });
+
+}
+
+function moveToAmazon(track) {
+    var originalfile=track.path;
+    var fullpath = rootpath + track.path;
+    var amazonpath = rootpath + 'amazon/gold/';
+    console.log(fullpath);
+    console.log('move>>>>>');
+    exec('cp  "' + fullpath + '" "' + amazonpath + '"', function(error, stdout, stderr) {
+
+        if (!error) {
+            console.log(amazonpath);
+            console.log('ok');
+            track.path = 'amazon/' + track.path;
+            db.setGold(track.id, '/' + track.path);
+            killfile(originalfile);
+        } else {
+            console.log(error);
+        }
+    });
+
+
 }
 
 

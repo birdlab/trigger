@@ -15,7 +15,6 @@ var vprocess = false;
 var uvprocess = false;
 
 
-
 function nmTokenPolicy(nmTokens) {
     if ("specialtoken" === nmTokens) {
         return nmTokens;
@@ -634,7 +633,7 @@ exports.removeTrack = function(id, callback) {
 function getRotationTracks(chid, tids, callback, searchCaseState) {
     var ps = '"' + tids.join('","') + '"';
 
-    var excludeTime=' and tracks.playdate not BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()';
+    var excludeTime = ' and tracks.playdate not BETWEEN NOW() - INTERVAL 12 HOUR AND NOW()';
 
     var searchCase = [];
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW()) AND HOUR(tracks.date) between HOUR(NOW()) and HOUR(NOW()+1)');
@@ -643,7 +642,7 @@ function getRotationTracks(chid, tids, callback, searchCaseState) {
     searchCase.push(' and HOUR(tracks.date) between HOUR(NOW()-2) and HOUR(NOW()+2)');
     searchCase.push(' and DAYOFWEEK(tracks.date) = DAYOFWEEK(NOW())');
     searchCase.push(' ');
-    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel= ' + chid + ' AND tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState]+excludeTime;
+    var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.channel= ' + chid + ' AND tracks.ondisk=1 AND tracks.id not in (' + ps + ')' + searchCase[searchCaseState] + excludeTime;
     console.log(searchCase[searchCaseState]);
     db.connection.query(q, function(error, result, fields) {
         if (!error) {
