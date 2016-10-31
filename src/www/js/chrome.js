@@ -531,6 +531,9 @@ function onChannel(data) {
     setcurtime(true);
     $.Storage.set("channel", client.channel.chid + ' ');
     stream_mode = $.Storage.get("stream_mode");
+
+
+
     if (!stream_mode) {
         stream_mode = 'ogg';
         if (!player.canplay('audio/ogg')) {
@@ -623,6 +626,11 @@ function onChannel(data) {
     newTagline();
     $(window).trigger('hashchange');
 
+    var rc = $.Storage.get("greating");
+    if (rc != '1') {
+        readGreating();
+    }
+
 }
 
 function parser() {
@@ -644,10 +652,6 @@ function parser() {
 
 function processLogin(data) {
     if (data.user) {
-        var rc = $.Storage.get("constitution_1");
-        if (rc != 'read') {
-            readConstitution();
-        }
         newTagline();
         $('.loginform').hide(400);
         $('.goin').hide();
@@ -1326,16 +1330,16 @@ function secToTime(time) {
 
 }
 
-function readConstitution() {
+function readGreating() {
     var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
     $('#con').css('left', $('#console').css('width'));
     $('#con').css('width', $('#content').css('width') - $('#console').css('width'));
 
-    var jqxhr = $.get("/constitution.html", function(data) {
+    var jqxhr = $.get("/greating.html", function(data) {
         data += '<div id="ender"></div>';
         $('#coninside').html(data);
-        $('<button>Я все прочитал, впустите меня уже!</button>').appendTo('#ender').click(function() {
-            $.Storage.set("constitution_1", 'read')
+        $('<button>Ясно понятно</button>').appendTo('#ender').click(function() {
+            $.Storage.set("greating", '0')
             constitution.html('');
         });
 
