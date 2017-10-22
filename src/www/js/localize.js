@@ -76,15 +76,13 @@ locale = translate[lang];
 
 
 function switch_lang(l) {
-    console.log(l);
     if (lang != l) {
         lang = l;
         $.Storage.set("lang", lang);
         location.reload();
     } else {
-        console.log(l);
         locale = translate[lang];
-        moment.lang(lang);
+        moment.locale(lang);
         var buttonstring = '<a href=\'#\' onclick="switch_lang(\'en\');return false;">Translate this!</a>';
         if (lang == 'en') {
             buttonstring = '<a href=\'#\' onclick="switch_lang(\'ru\');return false;">Переведите это!</a>';

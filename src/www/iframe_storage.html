@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <script src="js/storage.js"></script>
+
+</head>
+
+<body>
+<script>
+    function listener(event) {
+        console.log(event);
+    }
+
+    if (window.addEventListener) {
+        window.addEventListener("message", listener);
+    } else {
+        // IE8
+        window.attachEvent("onmessage", listener);
+    }
+    console.log('listner ok');
+    window.parent.postMessage({'from':23234},'*');
+
+
+</script>
+
+
+
+</body>
+</html>

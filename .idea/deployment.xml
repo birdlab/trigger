@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="trigger.fm" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="trigger.fm">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/trigger/node" local="$PROJECT_DIR$/src/node" />
+            <mapping deploy="/home/trigger/www" local="$PROJECT_DIR$/src/www" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

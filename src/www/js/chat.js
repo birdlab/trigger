@@ -114,7 +114,8 @@ function submitMessage() {
     }
 
     if (!command) {
-
+        console.log('sending message');
+        console.log(m);
         client.sendMessage(m, function(data) {
             if (data.error) {
                 $('#messageinput').attr("placeholder", data.error);

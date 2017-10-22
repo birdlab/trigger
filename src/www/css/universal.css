@@ -388,6 +388,7 @@ input.id {
 #con {
     position: absolute;
     width: 100%;
+    height: 100%;
     padding-bottom: 0px;
     background: #333;
 }
@@ -716,4 +717,8 @@ td.sms img .hide {
 
 #limits {
     margin-bottom: 8px;
+}
+
+#limits {
+    height: 100%;
 }

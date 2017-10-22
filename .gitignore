@@ -88,3 +88,5 @@ src/php/smtp_config.php
 .vscode/settings.json
 
 *.conf
+
+.idea/.name

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5e44ab75-a082-4901-ac49-88fda315d455" name="trigger.fm" url="http://trigger.fm">
+        <fileTransfer host="trigger.fm" port="3336" accessType="SFTP" password="dfdadfc6dfcfdfcbdfd9dfcfdfc9dfc5dfc4dfc4dfcfdfc9dfdedfc7dfcf" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="3336" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

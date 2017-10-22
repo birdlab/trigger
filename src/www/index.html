@@ -19,7 +19,6 @@
     <script src="js/id3-minimized.js"></script>
     <script src="js/lastfm.api.js"></script>
     <script src="js/lastfm.api.md5.js"></script>
-    <script src="js/storage.js"></script>
 
     <script src="js/client.js"></script>
     <script src="js/chrome.js"></script>
@@ -46,6 +45,7 @@
 
     <link rel="stylesheet" href="js/redactor/redactor.css"/>
     <script src="js/redactor/redactor.js"></script>
+    <script src="js/storage.js"></script>
 
 
 </head>
@@ -103,7 +103,7 @@
 
         <div class='serverinfo reformal'>
 
-            <a href="http://trigger.fm/donate.html"><h1>DONATE!</h1></a>
+            <a href='javascript:goDonate();'><h1>DONATE!</h1></a>
 
             <br>
             <div id='langswitch'></div>
@@ -149,7 +149,9 @@
         <div class='content history'>
             <div id="hpanel">
                 <label><input type="checkbox" name="showgold" id="showgold">Золото</label>
-                <label><input type="checkbox" name="showtop" id="showtop">Топ <a id='topswitch' href='javascript:void(0);'>по рейтингу</a></label>
+                <label><input type="checkbox" name="showtop" id="showtop">Топ <a id='topswitch'
+                                                                                 href='javascript:void(0);'>по
+                    рейтингу</a></label>
                 <input class="finput artist" type="text" autocomplete="on" placeholder="Артист">
                 <input class="finput title" type="text" autocomplete="on" placeholder="Название">
             </div>
@@ -193,5 +195,7 @@
     <ul class="raiting-list_negative">блабла</ul>
     <ul class="raiting-list_positive">блабла</ul>
 </div>
+<iframe src="http://trigger.fm/iframe_storage.html" name='iframestore' width="0" height="0" frameborder="0">
+
 </body>
 </html>

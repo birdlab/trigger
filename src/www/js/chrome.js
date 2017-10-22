@@ -35,7 +35,7 @@ $(document).ready(function() {
     var vol = parseInt($.Storage.get("volume"));
     if (vol > 0) {
         vol = vol / 1000;
-        $('#volume .slider .bar').width(vol * 125);
+        $('#volume .slider .bar').width(vol*125);
         player.volume(vol);
     }
     $('.streamcontrol .play').click(function() {
@@ -116,6 +116,33 @@ $(document).ready(function() {
     } else {
         $.Storage.set("noimg", 'false');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+	var iframestore = window.frames.iframestore;
+
+    window.addEventListener('message',function(e) {
+        var key = e.message ? 'message' : 'data';
+        var data = e[key];
+        console.log(e);
+	    iframestore.postMessage({somedata:'wedfsdasdasdasd'}, "http://trigger.fm");
+    },false);
+
+
+
+
+
+
 
 
     client = new Client();
@@ -259,7 +286,6 @@ $(document).ready(function() {
             goLogin();
         }
     });
-
 
     $('#fileupload').fileupload({
         dataType: 'json',
@@ -628,7 +654,7 @@ function onChannel(data) {
 
     var rc = $.Storage.get("greating");
     if (rc != '1') {
-        readGreating();
+        //readGreating();
     }
 
 }
@@ -777,6 +803,9 @@ function setCurrent(track) {
         $('#playlist .current .artwork').css('border', '2px solid #ffcd00');
     } else {
         $('#playlist .current .artwork').css('border', '1px solid #aaa');
+    }
+    if (track.n.length>0 && track.n[0].n=='trigger'){
+        $('#playlist .current .artwork').css('border', '2px solid #ffcd00');
     }
     cur.attr('trackid', track.id);
     var vote = 0;
@@ -933,6 +962,10 @@ function addtrack(track) {
 
     var trackartist = base.find('.artist');
     var tracktitle = base.find('.title');
+    var artwork=base.find('.artwork');
+    if (track.n.length>0 && track.n[0].n=='trigger'){
+        artwork.css('border', '2px solid #ffcd00');
+    }
     if (client.user) {
         if (track.sid == client.user.id) {
             item.addClass('my');
@@ -1207,7 +1240,11 @@ function updateTrack(track) {
     item.find('.title').html(track.t);
     item.attr('rating', track.r);
     item.attr('vote', track.vote);
-    item.find('.numb').html(track.vote);
+    item.find('.numb').html(track.vote)
+
+    if (track.n.length>0 && track.n[0].n=='trigger'){
+        item.find('.atrwork').css('border', '2px solid #ffcd00');
+    }
     var positivelist = item.find(".pvotes").html('');
     var negativelist = item.find(".nvotes").html('');
     for (var i in track.n) {
@@ -1330,16 +1367,49 @@ function secToTime(time) {
 
 }
 
+function goDonate() {
+    var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
+    $('#con').css('left', $('#console').css('width'));
+    $('#con').css('width', $('#content').css('width') - $('#console').css('width'));
+
+    var jqxhr = $.get("/donate.html", function(data) {
+        data += '<div id="ender"></div>';
+        $('#coninside').html(data);
+        $('<button>X</button>').prependTo('#ender').click(function() {
+            $.Storage.set("greating", '1')
+            constitution.html('');
+        });
+
+    });
+
+}
+
 function readGreating() {
     var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
     $('#con').css('left', $('#console').css('width'));
     $('#con').css('width', $('#content').css('width') - $('#console').css('width'));
 
-    var jqxhr = $.get("/greating.html", function(data) {
+    var xhr = $.get("/greating.html", function(data) {
         data += '<div id="ender"></div>';
         $('#coninside').html(data);
         $('<button>Ясно понятно</button>').appendTo('#ender').click(function() {
-            $.Storage.set("greating", '0')
+            $.Storage.set("greating", '1')
+            constitution.html('');
+        });
+
+    });
+
+}
+function showFail() {
+    var constitution = $('<div id="con"><div id="coninside"></div></div>').appendTo('#content');
+    $('#con').css('left', $('#console').css('width'));
+    $('#con').css('width', $('#content').css('width') - $('#console').css('width'));
+
+    var xhr = $.get("/fail.html", function(data) {
+        data += '<div id="ender"></div>';
+        $('#coninside').html(data);
+        $('<button>Ясно понятно</button>').appendTo('#ender').click(function() {
+            $.Storage.set("greating", '1')
             constitution.html('');
         });
 
