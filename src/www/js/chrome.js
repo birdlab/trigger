@@ -185,15 +185,7 @@ $(document).ready(function() {
             $('.log').animate({scrollTop: $('.log')[0].scrollHeight}, 1200);
         }
     });
-    $(client).bind('cover', function(event, data) {
-        if (data.src != 'img/nocover.png') {
-            if ($('#playlist .current').attr('trackid') == data.id) {
-                $('#playlist .current .artwork').html('<img src="' + data.src + '">');
-            } else {
-                $('.trackid' + data.id + ' .artwork').html('<img src="' + data.src + '">');
-            }
-        }
-    });
+
     $(client).bind('addtrack', function(event, data) {
         var move = false;
         if ($('.log')[0].scrollHeight - $('.log').scrollTop() == $('.log').outerHeight()) {
@@ -894,7 +886,8 @@ function setCurrent(track) {
     var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
     cur.append('<div class="timer"><div class="cursor"></div></div>');
     $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
-    $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
+    $('<span><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>youtube</a></span>').appendTo(track_links);
+    $('<span><a href="https://play.google.com/music/listen?u=0#/sr/' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>googlemusic</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
 
     full.hide();
@@ -958,7 +951,12 @@ function addtrack(track) {
     if (track.tg.length > 1) {
         fastag += '...';
     }
-    base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="fastag"><div class="intag">' + fastag + '</div></td><td class="time"></td><td class="rating"><div class="ratingdiv">' + track.r + '</div></td></tr></table>');
+    var src = track.co;
+
+    if (!src) {
+        src = "img/nocover.png"
+    }
+    base.append('<table><tr><td class="cover"><div class="artwork"><img src='+src+'></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="fastag"><div class="intag">' + fastag + '</div></td><td class="time"></td><td class="rating"><div class="ratingdiv">' + track.r + '</div></td></tr></table>');
 
     var trackartist = base.find('.artist');
     var tracktitle = base.find('.title');
@@ -1056,9 +1054,16 @@ function addtrack(track) {
     }
     var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
     var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
+
+//блок ссылок
+
     $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
-    $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
+    $('<span><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>youtube</a></span>').appendTo(track_links);
+    $('<span><a href="https://play.google.com/music/listen?u=0#/sr/' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>googlemusic</a></span>').appendTo(track_links);
     $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
+
+
+
     full.hide();
     item.attr('id', track.id);
     item.attr('rating', track.r);
@@ -1066,7 +1071,7 @@ function addtrack(track) {
     item.addClass('trackid' + track.id);
     var vote = 0;
     if (client.user) {
-        for (var vr in track.p) {
+        for (var vr in track.p) {Живописная ул., 27 строение 13, Москва, 123098
             if (track.p[vr].vid == client.user.id) {
                 base.find('.rating div').css('color', '#ffae00');
                 vote = 1;

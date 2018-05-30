@@ -115,13 +115,13 @@ function getuser(id) {
                     var contents = $('#userdescription').html();
                     var pic = data.pic;
                     userdescription.keyup(function() {
-                        console.log('keypressed')
+                        //console.log('keypressed')
                     });
                     info.click(function(e) {
                         if (!$(e.target).hasClass('infoedit')) {
                             var usertext = $('#userdescription').html();
                             if (usertext != contents) {
-                                console.log('try to send', usertext);
+                               // console.log('try to send', usertext);
                                 client.updateUserData({
                                     i: usertext
                                 });
@@ -131,7 +131,7 @@ function getuser(id) {
                         if (!$(e.target).hasClass('picpath')) {
                             var path = $('#piclink').val();
                             if (path != pic && path.length) {
-                                console.log('try to send pic');
+                               // console.log('try to send pic');
                                 client.updateUserData({pic: path});
                                 pic = path;
                                 upic.html('<img src=' + path + '>');
@@ -383,9 +383,10 @@ function passchanger() {
     }
 }
 function addprofile(track) {
+    console.log(track);
     var item = $('<li class="item"></li>').appendTo('#info .content.profile .list');
     var base = $('<div class="base"></div>').appendTo(item);
-    var date = moment(track.tt).calendar();
+    var date = moment(track.ut).calendar();
     track.rr = track.p.length - track.n.length;
 
     base.append('<table><tr><td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
@@ -417,17 +418,20 @@ function addprofile(track) {
 
 
     var tags = $('<div class="tags"></div>').appendTo(full);
+    var track_links = $('<div class="track_links"></div>').appendTo(full);
     var info = $('<div class="info">' + inf + '</div>').appendTo(full);
-    full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+    var uploadverbal=moment(track.ut).subtract(3, 'hour').from();
+    full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a> <span class="howold">'+uploadverbal+'</span></div>');
     for (var t in track.tg) {
         var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
         tagitem.attr('tagid', track.tg[t].id);
     }
     var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
     var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
-    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(tags);
-    $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(tags);
-    $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(tags);
+    $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
+    $('<span><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>youtube</a></span>').appendTo(track_links);
+    $('<span><a href="https://play.google.com/music/listen?u=0#/sr/' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>googlemusic</a></span>').appendTo(track_links);
+    $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
     item.addClass('trackid' + track.id);
     lht = new Date(Date.parse(track.tt) + timezone);
     if (client.user) {

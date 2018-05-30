@@ -40,7 +40,7 @@ class UploadHandler
             'upload_dir' => '/home/trigger/upload/',
             'upload_url' => '',
             'user_dirs' => false,
-            'mkdir_mode' => 0755,
+            'mkdir_mode' => 0777,
             'param_name' => 'files',
             // Set the following option to 'POST', if your server does not support
             // DELETE requests. This is a parameter sent to the client:

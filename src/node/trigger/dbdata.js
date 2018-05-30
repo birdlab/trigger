@@ -15,6 +15,44 @@ var vprocess = false;
 var uvprocess = false;
 
 
+
+
+var LastfmAPI = require('lastfmapi');
+
+var lfm = new LastfmAPI({
+    'api_key': '4366bdedfe39171be1b5581b52ddee90',
+    'secret': '5def31e9198fa02af04873239bcb38f5'
+});
+
+
+function serachForImage(track) {
+    if (track.album && track.album.image) {
+        image = track.album.image;
+
+        for (n = 0; n < image.length; ++n) {
+            entry = image[n];
+            if (entry.size == 'medium') {
+                var p = entry["#text"];
+                if (p.length > 0) {
+                    return entry["#text"];
+                }
+            }
+        }
+        return false;
+    } else{
+        console.log(track)
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
 function nmTokenPolicy(nmTokens) {
 	if ("specialtoken" === nmTokens) {
 		return nmTokens;
@@ -298,6 +336,7 @@ function getTracksFromQery(qq, callback, dt) {
 					t: result[t].title.replace('&amp;', '&'),
 					i: result[t].info,
 					tt: result[t].playdate,
+					ut:result[t].date,
 					s: result[t].name,
 					p: [],
 					n: [],
@@ -306,7 +345,8 @@ function getTracksFromQery(qq, callback, dt) {
 					chid: result[t].channel,
 					sid: result[t].submiter,
 					g: result[t].gold > 0,
-					r: 0
+					r: 0,
+					co:result[t].coverlink
 				});
 				ids += result[t].id + ',';
 			}
@@ -366,7 +406,7 @@ function getTracksFromQery(qq, callback, dt) {
 }
 
 
-exports.getVoted = function (id, shift, positive, callback) {
+exports.getVoted = function (id, channel, shift, positive, callback) {
 	var p = '<';
 	if (positive) {
 		p = '>';
@@ -376,7 +416,7 @@ exports.getVoted = function (id, shift, positive, callback) {
 
 }
 exports.getuploads = function (id, shift, callback) {
-	var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.submiter=' + id + ' AND tracks.playdate < ' + db.connection.escape(shift) + ' order by tracks.playdate desc LIMIT 20';
+	var q = 'SELECT tracks.*, users.name FROM tracks LEFT JOIN users ON tracks.submiter=users.id WHERE tracks.submiter=' + id + ' AND tracks.date < ' + db.connection.escape(shift) + ' order by tracks.date desc LIMIT 20';
 	getTracksFromQery(q, callback);
 }
 
@@ -614,7 +654,7 @@ exports.addTrack = function (track, callback) {
 	track.artist = sanitizer.escape(track.artist);
 	track.title = sanitizer.escape(track.title);
 	track.info = sanitizer.sanitize(track.info, uriPolicy, nmTokenPolicy);
-	db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, 0, ?, ?, ?, ?, ?, NOW(), NULL,?,NULL,NULL)',
+	db.connection.query('INSERT INTO tracks VALUES (NULL, ?, ?, 0, 0, ?, ?, ?, ?, ?, NOW(), NULL,?,NULL,NULL,NULL)',
 		[track.path,
 			track.channel,
 			track.artist,
@@ -625,27 +665,48 @@ exports.addTrack = function (track, callback) {
 		function (err, result) {
 			if (!err) {
 				track.id = result.insertId;
-				var ids = [];
-				var tids = [];
-				if (track.tags.length) {
-					var q = 'INSERT INTO tracktags (trackid, tagid) VALUES';
-					for (var t in track.tags) {
-						if (t > 0) {
-							q += ','
-						}
-						q += '(' + track.id + ',' + track.tags[t].id + ')';
-					}
-					db.connection.query(q, function (e, result, fields) {
-						callback();
-					});
-				} else {
-					callback();
-				}
+                lfm.track.getInfo({
+                    'artist': track.artist,
+                    'track': track.title,
+                    'autocorrect': 1
+                }, function (err, tr) {
+                    if (tr) {
+                        img=serachForImage(tr);
+                        if (img){
+                            track.coverlink=img;
+                            var q = 'UPDATE tracks set coverlink="'+db.connection.escape(img)+'" WHERE tracks.id = '+track.id+' limit 1';
+                            console.log(q);
+                            db.connection.query(q, function (e, result, fields) {
+                                console.log(e);
+                                console.log(result);
+                            });
+
+                        }
+                    }
+
+
+                    if (track.tags.length) {
+                        var q = 'INSERT INTO tracktags (trackid, tagid) VALUES';
+                        for (var t in track.tags) {
+                            if (t > 0) {
+                                q += ','
+                            }
+                            q += '(' + track.id + ',' + track.tags[t].id + ')';
+                        }
+                        db.connection.query(q, function (e, result, fields) {
+                            callback();
+                        });
+                    } else {
+                        callback();
+                    }
+                });
+
 			} else {
 				console.log(err);
 			}
 		}
 	);
+
 
 }
 exports.setPlayDate = function (track) {

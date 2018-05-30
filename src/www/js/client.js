@@ -18,45 +18,18 @@ function sortFunction(a, b) {
 
 function findUrl(image, size) {
 	var n, entry;
-	for (n = 0; n < image.length; ++n) {
-		entry = image[n];
-		if (entry.size == size) {
-			var p = entry["#text"];
-			if (p.length > 0) {
-				return entry["#text"];
-			}
-		}
-	}
+    for (n = 0; n < image.length; ++n) {
+        entry = image[n];
+        if (entry.size == size) {
+            var p = entry["#text"];
+            if (p.length > 0) {
+                return entry["#text"];
+            }
+        }
+    }
 	return 'img/nocover.png';
 }
 
-function getcover(a, t, callback) {
-	var src = 'img/nocover.png';
-	if (lastfm) {
-		lastfm.track.getInfo({artist: a, track: t, autocorrect: 1}, {
-			success: function (data) {
-				try {
-					src = findUrl(data.track.album.image, 'medium');
-					callback(src);
-				} catch (err) {
-					lastfm.artist.getInfo({artist: a, autocorrect: 1}, {
-						success: function (data) {
-							src = findUrl(data.artist.image, 'medium');
-							callback(src);
-						},
-						error: function (code, message) {
-							callback(src);
-						}
-					});
-				}
-			},
-			error: function (code, message) {
-				callback(src);
-			}
-		});
-	}
-
-}
 
 
 function Client(host) {
@@ -119,10 +92,6 @@ Client.prototype.init = function (host) {
 		cl.channel.pls.push(track);
 		cl.channel.pls.sort(sortFunction);
 		$(cl).trigger('addtrack', data);
-		getcover(track.a, track.t, function (src) {
-			track.src = src;
-			$(cl).trigger('cover', {id: data.track.id, 'src': src});
-		});
 
 	});
 	socket.on('removetrack', function (data) {
@@ -195,17 +164,6 @@ Client.prototype.init = function (host) {
 	;
 	socket.on('channeldata', function (data) {
 		var i = 0;
-		var gg = function () {
-			var tr = cl.channel.pls[i];
-			getcover(tr.a, tr.t, function (src) {
-				tr.src = src;
-				$(cl).trigger('cover', {id: tr.id, 'src': src});
-				i += 1;
-				if (i < cl.channel.pls.length) {
-					gg();
-				}
-			});
-		}
 		data.changed = true;
 		data.hi = streampath + data.hi;
 		data.low = streampath + data.low;
@@ -251,12 +209,7 @@ Client.prototype.init = function (host) {
 				}
 			}
 		}
-		if (data.current) {
-			getcover(data.current.a, data.current.t, function (src) {
-				data.current.src = src;
-				$(cl).trigger('cover', {id: data.current.id, 'src': src});
-			});
-		}
+
 
 		cl.callbacks.channeldata(cl.channel);
 		if (cl.channel.pls.length > 0) {

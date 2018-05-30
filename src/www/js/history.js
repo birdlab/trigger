@@ -4,18 +4,18 @@
 
 var inputlimit = false, historyneedupdate = false, historytimeout = false, topcounter = 0, topvotes = false;
 
-$(document).ready(function() {
-    $('#showgold').bind('click', function() {
+$(document).ready(function () {
+    $('#showgold').bind('click', function () {
         if (!historyprocess) {
             showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
         }
     });
-    $('#showtop').bind('click', function() {
+    $('#showtop').bind('click', function () {
         if (!historyprocess) {
             showHistory($('#showgold').is(':checked'), $('#showtop').is(':checked'));
         }
     });
-    $('#topswitch').bind('click', function() {
+    $('#topswitch').bind('click', function () {
         if (!historyprocess) {
             $('#showtop').prop('checked', true);
             topvotes = !topvotes;
@@ -28,7 +28,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#info .content.history .inner').scroll(function() {
+    $('#info .content.history .inner').scroll(function () {
         if ($(this).children('.list').height() - $(this).scrollTop() - $(this).height() < 300 && !historyprocess) {
             historyprocess = true;
             var data = {
@@ -42,8 +42,7 @@ $(document).ready(function() {
             if (data.top) {
                 data.shift = $('#info .content.history .list .item').length;
             }
-            console.log(data);
-            client.getHistory(data, function(data) {
+            client.getHistory(data, function (data) {
 
                 if (data.e) {
                     console.log(data.e);
@@ -56,7 +55,7 @@ $(document).ready(function() {
             });
         }
     });
-    $('#hpanel .finput').keyup(function(data) {
+    $('#hpanel .finput').keyup(function (data) {
         updatehistory();
     });
 
@@ -66,7 +65,7 @@ function updatehistory() {
     if (historytimeout) {
         clearTimeout(historytimeout);
     }
-    historytimeout = setTimeout(function() {
+    historytimeout = setTimeout(function () {
         var data = {
             shift: 0,
             artist: $('#hpanel .finput.artist').val(),
@@ -76,7 +75,7 @@ function updatehistory() {
             votes: topvotes
         }
         $('#info .content.history .list').html('');
-        client.getHistory(data, function(data) {
+        client.getHistory(data, function (data) {
             console.log(data);
             if (!data.e) {
                 for (var t in data) {
@@ -101,7 +100,7 @@ function showHistory(g, top, shift) {
     var sh = 0;
     if (shift) {
         sh = shift;
-    } else {
+   } else {
         topcounter = 0;
     }
     var data = {
@@ -113,7 +112,7 @@ function showHistory(g, top, shift) {
         votes: topvotes
     }
     $('#info .content.history .list').html('');
-    client.getHistory(data, function(data) {
+    client.getHistory(data, function (data) {
         if (!data.e) {
             for (var t in data) {
                 var track = data[t];
@@ -124,6 +123,14 @@ function showHistory(g, top, shift) {
         }
         historyprocess = false;
     });
+}
+
+function addOnDisk(id, item) {
+    console.log(id);
+    client.addOnDisk(id, function(a){
+        console.log(a)
+    });
+
 }
 
 function addhistory(track) {
@@ -137,7 +144,11 @@ function addhistory(track) {
         var base = $('<div class="base"></div>').appendTo(item);
         var date = moment(track.tt).calendar();
         track.rr = track.p.length - track.n.length;
-        base.append('<table><tr>' + topcount + '<td class="cover"><div class="artwork"><img src="img/nocover.png"></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
+        cover = "img/nocover.png";
+        if (track.co) {
+            cover = track.co;
+        }
+        base.append('<table><tr>' + topcount + '<td class="cover"><div class="artwork"><img src=' + cover + '></div></td><td class="name"><div class="artist">' + track.a + '</div><div class="title">' + track.t + '</div></td><td class="time">' + date + '</td><td class="rating"><div>' + track.r + '<span class="real">/' + track.rr + '</span></div></td></tr></table>');
         var art = $(base).find('.artwork');
         if (track.g) {
             $(art).css('border', '2px solid #ffcd00');
@@ -159,7 +170,7 @@ function addhistory(track) {
 
         var voters = $('<div class="voters"><ul class="nvotes"></ul><ul class="pvotes"></ul></div>').appendTo(voting);
         voters.hide();
-        item.click(function() {
+        item.click(function () {
             voters.toggle();
         })
         var positivelist = $(voters).find(".pvotes");
@@ -174,7 +185,8 @@ function addhistory(track) {
         var tags = $('<div class="tags"></div>').appendTo(full);
         var track_links = $('<div class="track_links"></div>').appendTo(full);
         var info = $('<div class="info">' + inf + '</div>').appendTo(full);
-        full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a></div>');
+        var uploadverbal=moment(track.ut).subtract(3, 'hour').from();
+        full.append('<div class="sender">прнс <a href="javascript:getuser(' + track.sid + ');void(0);">' + track.s + '</a> <span class="howold">'+uploadverbal+'</span></div>');
         for (var t in track.tg) {
             var tagitem = $('<div class="tag">' + track.tg[t].n + '</div>').appendTo(tags);
             tagitem.attr('tagid', track.tg[t].id);
@@ -182,8 +194,12 @@ function addhistory(track) {
         var titleURI = encodeURIComponent(track.t).replace('amp%3B', '');
         var artistURI = encodeURIComponent(track.a).replace('amp%3B', '');
         $('<span><a href="http://vk.com/audio?q=' + artistURI + ' - ' + titleURI + '" target="_blank">>vk</a></span>').appendTo(track_links);
-        $('<span><a href="http://muzebra.com/search/?q=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>muzebra</a></span>').appendTo(track_links);
+        $('<span><a href="https://www.youtube.com/results?search_query=' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>youtube</a></span>').appendTo(track_links);
+        $('<span><a href="https://play.google.com/music/listen?u=0#/sr/' + encodeURIComponent(track.a) + ' - ' + encodeURIComponent(track.t) + '" target="_blank">>googlemusic</a></span>').appendTo(track_links);
         $('<span><a href="javascript:addTr(' + track.id + ');void(0);">>в чат</a></span>').appendTo(track_links);
+        if (track.od && (track.sid == client.user.id || client.user.id==1 || client.user.prch || client.user.opch)) {
+            $('<span class="ondisklink"><a href="javascript:addOnDisk(' + track.id + ');void(0);">>в эфир</a></span>').appendTo(track_links);
+        }
         item.addClass('trackid' + track.id);
         lht = new Date(Date.parse(track.tt) + timezone);
         if (client.user) {

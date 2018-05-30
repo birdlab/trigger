@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/node/trigger/channel.js" line="1406" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="936bb711-1ede-4577-96ae-50e27d5a2de5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/node/mailinator.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/www/fail.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/www/greating.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/trigger.js" afterPath="$PROJECT_DIR$/src/node/trigger.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/trigger/channel.js" afterPath="$PROJECT_DIR$/src/node/trigger/channel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/trigger/dbdata.js" afterPath="$PROJECT_DIR$/src/node/trigger/dbdata.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/trigger/sockets.js" afterPath="$PROJECT_DIR$/src/node/trigger/sockets.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/trigger/tester.js" afterPath="$PROJECT_DIR$/src/node/trigger/tester.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/util.js" afterPath="$PROJECT_DIR$/src/node/util.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/css/universal.css" afterPath="$PROJECT_DIR$/src/www/css/universal.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/donate.html" afterPath="$PROJECT_DIR$/src/www/donate.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/iframetest.html" afterPath="$PROJECT_DIR$/src/www/iframetest.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/index.html" afterPath="$PROJECT_DIR$/src/www/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/chat.js" afterPath="$PROJECT_DIR$/src/www/js/chat.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/chrome.js" afterPath="$PROJECT_DIR$/src/www/js/chrome.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/client.js" afterPath="$PROJECT_DIR$/src/www/js/client.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/localize.js" afterPath="$PROJECT_DIR$/src/www/js/localize.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/player.js" afterPath="$PROJECT_DIR$/src/www/js/player.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/storage.js" afterPath="$PROJECT_DIR$/src/www/js/storage.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/history.js" afterPath="$PROJECT_DIR$/src/www/js/history.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/js/user.js" afterPath="$PROJECT_DIR$/src/www/js/user.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/www/upload/server/php/UploadHandler.php" afterPath="$PROJECT_DIR$/src/www/upload/server/php/UploadHandler.php" />
     </list>
     <ignored path="trigger.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,116 +28,27 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="trigger" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dbdata.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/node/trigger/dbdata.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16275">
-              <caret line="1486" column="12" selection-start-line="1486" selection-start-column="12" selection-end-line="1486" selection-end-column="12" />
-              <folding>
-                <element signature="n#!!block;n#getinvites#0" expanded="false" />
-                <element signature="n#!!block;n#getUser#0" expanded="false" />
-                <element signature="e#5076#5726#0" expanded="false" />
-                <element signature="e#6539#6776#0" expanded="false" />
-                <element signature="e#6831#7322#0" expanded="false" />
-                <element signature="n#!!block;n#getTracksFromQery#0" expanded="false" />
-                <element signature="e#12601#12948#0" expanded="false" />
-                <element signature="e#12997#13375#0" expanded="false" />
-                <element signature="e#13804#15288#0" expanded="false" />
-                <element signature="n#!!block;n#processUserVote#0" expanded="false" />
-                <element signature="n#!!block;n#processVote#0" expanded="false" />
-                <element signature="e#18731#19651#0" expanded="false" />
-                <element signature="e#22794#23872#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chat.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/www/js/chat.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1875">
-              <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-              <folding>
-                <marker date="1499462207000" expanded="true" signature="6942:6946" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="6946:6950" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="6976:6980" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="6980:6984" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="7075:7079" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="7079:7083" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="7109:7113" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="7113:7117" ph="&gt;" />
-                <marker date="1499462207000" expanded="true" signature="7345:7349" ph="&gt;" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="channel.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="channel.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/node/trigger/channel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
-              <caret line="102" column="28" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="28" />
-              <folding>
-                <element signature="e#3913#4127#0" expanded="false" />
-                <element signature="e#4191#4523#0" expanded="false" />
-                <element signature="e#4579#5242#0" expanded="false" />
-                <element signature="e#5300#5517#0" expanded="false" />
-                <element signature="e#5562#5684#0" expanded="false" />
-                <element signature="e#5730#6054#0" expanded="false" />
-                <element signature="e#6099#6194#0" expanded="false" />
-                <element signature="n#!!block;n#uniq#0" expanded="false" />
-                <element signature="e#6443#7405#0" expanded="false" />
-                <element signature="e#7447#9012#0" expanded="false" />
-                <element signature="e#11071#11998#0" expanded="false" />
-                <element signature="e#12499#13264#0" expanded="false" />
-                <element signature="e#17318#17777#0" expanded="false" />
-                <element signature="e#17834#19753#0" expanded="false" />
-                <element signature="e#19805#21208#0" expanded="false" />
-                <element signature="e#21745#22326#0" expanded="false" />
-                <element signature="e#23820#24261#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="trigger.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/node/trigger.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="60" column="17" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
+            <state relative-caret-position="34">
+              <caret line="1039" column="1" lean-forward="true" selection-start-line="1039" selection-start-column="1" selection-end-line="1039" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/www/js/client.js">
+      <file leaf-file-name="user.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/node/trigger/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1245">
-              <caret line="83" column="18" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="18" />
-              <folding>
-                <element signature="e#8783#8888#0" expanded="false" />
-                <element signature="e#8939#9445#0" expanded="false" />
-                <element signature="e#9507#9606#0" expanded="false" />
-                <element signature="e#9666#10326#0" expanded="false" />
-                <element signature="e#10379#10471#0" expanded="false" />
-                <element signature="e#10525#10575#0" expanded="false" />
-                <element signature="e#10630#10685#0" expanded="false" />
-                <element signature="e#10740#10789#0" expanded="false" />
-                <element signature="e#10956#11009#0" expanded="false" />
-                <element signature="e#11182#11391#0" expanded="false" />
-                <element signature="e#11591#11760#0" expanded="false" />
-                <element signature="e#11814#11905#0" expanded="false" />
-                <element signature="e#11963#12061#0" expanded="false" />
-                <element signature="e#12115#12164#0" expanded="false" />
-                <element signature="e#12221#12401#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="374">
+              <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -152,33 +56,39 @@
       <file leaf-file-name="sockets.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/node/trigger/sockets.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7785">
-              <caret line="519" column="43" selection-start-line="519" selection-start-column="43" selection-end-line="519" selection-end-column="43" />
+            <state relative-caret-position="8823">
+              <caret line="519" column="42" lean-forward="false" selection-start-line="519" selection-start-column="42" selection-end-line="519" selection-end-column="42" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chrome.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/www/js/chrome.js">
+      <file leaf-file-name="dbdata.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/node/trigger/dbdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="666" column="19" selection-start-line="666" selection-start-column="19" selection-end-line="666" selection-end-column="19" />
+            <state relative-caret-position="7616">
+              <caret line="680" column="52" lean-forward="false" selection-start-line="680" selection-start-column="52" selection-end-line="680" selection-end-column="52" />
               <folding>
-                <element signature="e#1360#12073#0" expanded="false" />
-                <element signature="e#12118#12978#0" expanded="false" />
-                <element signature="n#!!block;n#recoverymode#0" expanded="false" />
-                <marker date="1507294450000" expanded="true" signature="24684:24715" ph="..." />
+                <element signature="n#!!block;n#getinvites#0" expanded="false" />
+                <element signature="n#!!block;n#getUser#0" expanded="false" />
+                <element signature="e#5740#6390#0" expanded="false" />
+                <element signature="e#7203#7440#0" expanded="false" />
+                <element signature="e#13319#13666#0" expanded="false" />
+                <element signature="e#13715#14093#0" expanded="false" />
+                <element signature="e#14522#16006#0" expanded="false" />
+                <element signature="n#!!block;n#processUserVote#0" expanded="false" />
+                <element signature="n#!!block;n#processVote#0" expanded="false" />
+                <element signature="e#24585#25663#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fail.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/www/fail.html">
+      <file leaf-file-name="util.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/node/util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="47" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
+            <state relative-caret-position="2635">
+              <caret line="155" column="48" lean-forward="false" selection-start-line="155" selection-start-column="48" selection-end-line="155" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -189,10 +99,44 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>addhistory</find>
+      <find>getTracksFromQery</find>
+      <find>getTracksByShift</find>
+      <find>get</find>
+      <find>addTra</find>
+      <find>getHistory</find>
+      <find>getcover</find>
+      <find>getCover</find>
+      <find>cover</find>
+      <find>$error_messages</find>
+      <find>error_messages</find>
+      <find>uploader</find>
+      <find>.co</find>
+      <find>track.co</find>
+      <find>src=</find>
+      <find>uploaded</find>
+      <find>console.log(src);</find>
+      <find>get_error_message</find>
+      <find>in</find>
+      <find>mg</find>
+      <find>history</find>
+      <find>addprofile</find>
+      <find>console</find>
+      <find>addTr</find>
+      <find>track</find>
+      <find>vk.com</find>
+      <find>vk</find>
+      <find>goldchecktime</find>
+      <find>cleanChannelGold</find>
+      <find>setop</find>
+    </findStrings>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -210,12 +154,9 @@
         <option value="$PROJECT_DIR$/src/www/embed.html" />
         <option value="$PROJECT_DIR$/src/www/css/embed.css" />
         <option value="$PROJECT_DIR$/src/www/css/start.css" />
-        <option value="$PROJECT_DIR$/src/www/js/uploader.js" />
         <option value="$PROJECT_DIR$/src/www/css/backupstyle.css" />
         <option value="$PROJECT_DIR$/src/www/css/style.css" />
         <option value="$PROJECT_DIR$/src/node/trigger/user.js" />
-        <option value="$PROJECT_DIR$/src/www/js/history.js" />
-        <option value="$PROJECT_DIR$/src/www/js/user.js" />
         <option value="$PROJECT_DIR$/src/www/js/blog.js" />
         <option value="$PROJECT_DIR$/src/www/js/minplayercontrol.js" />
         <option value="$PROJECT_DIR$/src/node/trigger/db.js" />
@@ -234,7 +175,6 @@
         <option value="$PROJECT_DIR$/src/www/iframe_storage.html" />
         <option value="$PROJECT_DIR$/src/node/trigger/tester.js" />
         <option value="$PROJECT_DIR$/src/www/js/player.js" />
-        <option value="$PROJECT_DIR$/src/node/util.js" />
         <option value="$PROJECT_DIR$/src/node/mailinator.js" />
         <option value="$PROJECT_DIR$/src/www/js/chat.js" />
         <option value="$PROJECT_DIR$/src/node/trigger/sockets.js" />
@@ -242,15 +182,29 @@
         <option value="$PROJECT_DIR$/src/www/css/universal.css" />
         <option value="$PROJECT_DIR$/src/node/service.js" />
         <option value="$PROJECT_DIR$/src/node/trigger.js" />
-        <option value="$PROJECT_DIR$/src/node/trigger/channel.js" />
         <option value="$PROJECT_DIR$/src/www/js/client.js" />
+        <option value="$PROJECT_DIR$/src/www/upload/server/php/UploadHandler.php" />
+        <option value="$PROJECT_DIR$/trigger.fm.conf" />
+        <option value="$PROJECT_DIR$/src/www/js/uploader.js" />
+        <option value="$PROJECT_DIR$/src/node/trigger/uploader.js" />
+        <option value="$PROJECT_DIR$/src/node/util.js" />
         <option value="$PROJECT_DIR$/src/node/trigger/dbdata.js" />
+        <option value="$PROJECT_DIR$/src/www/js/history.js" />
+        <option value="$PROJECT_DIR$/src/www/js/user.js" />
+        <option value="$PROJECT_DIR$/src/node/trigger/channel.js" />
         <option value="$PROJECT_DIR$/src/www/js/chrome.js" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
@@ -258,20 +212,30 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/src/node/node_modules" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="22" />
-    <option name="width" value="1440" />
-    <option name="height" value="878" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="193" />
+    <option name="y" value="26" />
+    <option name="width" value="1932" />
+    <option name="height" value="1417" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>AngularJS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
@@ -291,140 +255,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trigger" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="trigger" type="b2602c69:ProjectViewProjectNode" />
+              <item name="trigger" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -434,15 +277,14 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../birdlab" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.File Status" />
-    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="sshConsole" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
@@ -456,7 +298,27 @@
       <recent name="$PROJECT_DIR$/src/www/embed" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
@@ -479,15 +341,6 @@
       <option name="cucumberJsArguments" value="" />
       <option name="executablePath" />
       <option name="filePath" />
-      <method />
-    </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -513,6 +366,11 @@
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+    <option name="myConnectionType" value="DEPLOYMENT_SERVER" />
+    <option name="myConnectionId" value="5e44ab75-a082-4901-ac49-88fda315d455" />
   </component>
   <component name="StructureViewFactory">
     <option name="AUTOSCROLL_MODE" value="false" />
@@ -550,37 +408,67 @@
       <workItem from="1507211772781" duration="2281000" />
       <workItem from="1507234243465" duration="1299000" />
       <workItem from="1507667105284" duration="412000" />
+      <workItem from="1508705223514" duration="1533000" />
+      <workItem from="1509098342043" duration="3748000" />
+      <workItem from="1509576010769" duration="23000" />
+      <workItem from="1509757775660" duration="3145000" />
+      <workItem from="1509969111313" duration="1207000" />
+      <workItem from="1510182113305" duration="24359000" />
+      <workItem from="1510924264038" duration="27324000" />
+      <workItem from="1512505832404" duration="4672000" />
+      <workItem from="1514325652624" duration="54000" />
+      <workItem from="1514413163635" duration="7000" />
+      <workItem from="1514413180370" duration="4545000" />
+      <workItem from="1514934672934" duration="7237000" />
+      <workItem from="1517179157014" duration="365000" />
+      <workItem from="1517608837434" duration="466000" />
+      <workItem from="1517758370348" duration="5404000" />
+      <workItem from="1517821030772" duration="339000" />
+      <workItem from="1518428631125" duration="1457000" />
+      <workItem from="1518645681213" duration="201000" />
+      <workItem from="1518683663112" duration="4834000" />
+      <workItem from="1518938124350" duration="1840000" />
+      <workItem from="1521275680015" duration="1604000" />
+      <workItem from="1522233174791" duration="765000" />
+      <workItem from="1523824872212" duration="4320000" />
+      <workItem from="1525340057885" duration="1800000" />
+      <workItem from="1526669864112" duration="754000" />
+      <workItem from="1526850169593" duration="3756000" />
+      <workItem from="1527501178203" duration="1900000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89950000" />
+    <option name="totallyTimeSpent" value="197609000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="878" extended-state="0" />
+    <frame x="-8" y="-8" width="2576" height="1426" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17847222" sideWeight="0.9743261" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19583334" sideWeight="0.9743261" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1200318" sideWeight="0.9743261" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.065977745" sideWeight="0.9743261" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44413918" sideWeight="0.5023585" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27751938" sideWeight="0.4976415" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15451175" sideWeight="0.7890961" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15658915" sideWeight="0.7890961" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279503" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.php" />
@@ -598,71 +486,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="30" />
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/.bashrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/js/uploader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="40" column="45" selection-start-line="40" selection-start-column="45" selection-end-line="40" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/upload/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/upload/js/jquery.fileupload.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="954" column="15" selection-start-line="954" selection-start-column="8" selection-end-line="954" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/.profile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/.bash_logout">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/js/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="191" column="54" selection-start-line="191" selection-start-column="54" selection-end-line="191" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/js/minplayercontrol.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1065">
-          <caret line="71" column="25" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/miniclient.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="29" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
+          <caret line="0" column="29" lean-forward="false" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -670,224 +502,182 @@
     <entry file="file://$PROJECT_DIR$/src/node/trigger/dbutil.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/db.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+          <caret line="3" column="23" lean-forward="false" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/sendmail.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="537">
-          <caret line="42" column="112" selection-start-line="42" selection-start-column="112" selection-end-line="42" selection-end-column="180" />
+          <caret line="42" column="112" lean-forward="false" selection-start-line="42" selection-start-column="112" selection-end-line="42" selection-end-column="180" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/channels.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="385">
-          <caret line="314" column="37" selection-start-line="314" selection-start-column="37" selection-end-line="314" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/node/trigger/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+          <caret line="314" column="37" lean-forward="false" selection-start-line="314" selection-start-column="37" selection-end-line="314" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/fastinfo.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/utils.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/invites.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/node/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="23" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/constitution.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="45" selection-end-column="123" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trigger.fm.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="45" selection-end-column="123" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/dataparser.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="136" column="40" selection-start-line="136" selection-start-column="40" selection-end-line="136" selection-end-column="40" />
+          <caret line="136" column="40" lean-forward="false" selection-start-line="136" selection-start-column="40" selection-end-line="136" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/donate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/embed.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="58" selection-end-column="7" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="58" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/blog.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="93">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/iframetest.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/iframestorage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/iframe_storage.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/chat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
-          <caret line="89" column="9" selection-start-line="89" selection-start-column="9" selection-end-line="89" selection-end-column="9" />
+          <caret line="89" column="9" lean-forward="false" selection-start-line="89" selection-start-column="9" selection-end-line="89" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/storage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
-          <caret line="123" column="11" selection-start-line="123" selection-start-column="11" selection-end-line="123" selection-end-column="11" />
+          <caret line="123" column="11" lean-forward="false" selection-start-line="123" selection-start-column="11" selection-end-line="123" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/localize.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="627">
-          <caret line="63" column="24" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/js/history.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="13" />
+          <caret line="63" column="24" lean-forward="false" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/start.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="25" selection-end-column="50" />
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="25" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/player.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1875">
-          <caret line="125" column="97" selection-start-line="125" selection-start-column="97" selection-end-line="125" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/node/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
+          <caret line="125" column="97" lean-forward="false" selection-start-line="125" selection-start-column="97" selection-end-line="125" selection-end-column="97" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/mailinator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="930">
-          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
+          <caret line="62" column="5" lean-forward="false" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/db.local.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/tester.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
-          <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+          <caret line="35" column="25" lean-forward="false" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/start_fail.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
-          <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/css/universal.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="397" column="19" selection-start-line="397" selection-start-column="19" selection-end-line="397" selection-end-column="19" />
+          <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/in.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="768">
-          <caret line="196" column="6" selection-start-line="196" selection-start-column="6" selection-end-line="196" selection-end-column="6" />
+          <caret line="196" column="6" lean-forward="false" selection-start-line="196" selection-start-column="6" selection-end-line="196" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -895,132 +685,166 @@
     <entry file="file://$PROJECT_DIR$/src/www/js/chat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1875">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-          <folding>
-            <marker date="1499462207000" expanded="true" signature="6942:6946" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="6946:6950" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="6976:6980" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="6980:6984" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="7075:7079" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="7079:7083" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="7109:7113" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="7113:7117" ph="&gt;" />
-            <marker date="1499462207000" expanded="true" signature="7345:7349" ph="&gt;" />
-          </folding>
+          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/node/trigger/dbdata.js">
+    <entry file="file://$PROJECT_DIR$/src/www/js/embed.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16275">
-          <caret line="1486" column="12" selection-start-line="1486" selection-start-column="12" selection-end-line="1486" selection-end-column="12" />
-          <folding>
-            <element signature="n#!!block;n#getinvites#0" expanded="false" />
-            <element signature="n#!!block;n#getUser#0" expanded="false" />
-            <element signature="e#5076#5726#0" expanded="false" />
-            <element signature="e#6539#6776#0" expanded="false" />
-            <element signature="e#6831#7322#0" expanded="false" />
-            <element signature="n#!!block;n#getTracksFromQery#0" expanded="false" />
-            <element signature="e#12601#12948#0" expanded="false" />
-            <element signature="e#12997#13375#0" expanded="false" />
-            <element signature="e#13804#15288#0" expanded="false" />
-            <element signature="n#!!block;n#processUserVote#0" expanded="false" />
-            <element signature="n#!!block;n#processVote#0" expanded="false" />
-            <element signature="e#18731#19651#0" expanded="false" />
-            <element signature="e#22794#23872#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/js/client.js">
+    <entry file="file://$PROJECT_DIR$/src/www/fail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="83" column="18" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="18" />
-          <folding>
-            <element signature="e#8783#8888#0" expanded="false" />
-            <element signature="e#8939#9445#0" expanded="false" />
-            <element signature="e#9507#9606#0" expanded="false" />
-            <element signature="e#9666#10326#0" expanded="false" />
-            <element signature="e#10379#10471#0" expanded="false" />
-            <element signature="e#10525#10575#0" expanded="false" />
-            <element signature="e#10630#10685#0" expanded="false" />
-            <element signature="e#10740#10789#0" expanded="false" />
-            <element signature="e#10956#11009#0" expanded="false" />
-            <element signature="e#11182#11391#0" expanded="false" />
-            <element signature="e#11591#11760#0" expanded="false" />
-            <element signature="e#11814#11905#0" expanded="false" />
-            <element signature="e#11963#12061#0" expanded="false" />
-            <element signature="e#12115#12164#0" expanded="false" />
-            <element signature="e#12221#12401#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="6" column="47" lean-forward="false" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/js/holy.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="60" column="17" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
+        <state relative-caret-position="446">
+          <caret line="60" column="17" lean-forward="false" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/node/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="7" lean-forward="true" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/_tc/uploader.js" />
+    <entry file="file://$PROJECT_DIR$/trigger.fm.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="17" lean-forward="false" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/js/client.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3604">
+          <caret line="212" column="0" lean-forward="false" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/js/uploader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4199">
+          <caret line="247" column="23" lean-forward="false" selection-start-line="247" selection-start-column="23" selection-end-line="247" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/upload/server/php/UploadHandler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1254">
+          <caret line="333" column="40" lean-forward="false" selection-start-line="333" selection-start-column="23" selection-end-line="333" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/node/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2635">
+          <caret line="155" column="48" lean-forward="false" selection-start-line="155" selection-start-column="48" selection-end-line="155" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/node/trigger/channel.js">
+    <entry file="file://$PROJECT_DIR$/src/node/trigger/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="102" column="28" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="28" />
+        <state relative-caret-position="374">
+          <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/node/trigger/uploader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="18" lean-forward="false" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/upload/server/php/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/js/history.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3315">
+          <caret line="195" column="105" lean-forward="false" selection-start-line="195" selection-start-column="103" selection-end-line="195" selection-end-column="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/js/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="382" column="5" lean-forward="true" selection-start-line="382" selection-start-column="5" selection-end-line="382" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/node/trigger/dbdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7616">
+          <caret line="680" column="52" lean-forward="false" selection-start-line="680" selection-start-column="52" selection-end-line="680" selection-end-column="52" />
           <folding>
-            <element signature="e#3913#4127#0" expanded="false" />
-            <element signature="e#4191#4523#0" expanded="false" />
-            <element signature="e#4579#5242#0" expanded="false" />
-            <element signature="e#5300#5517#0" expanded="false" />
-            <element signature="e#5562#5684#0" expanded="false" />
-            <element signature="e#5730#6054#0" expanded="false" />
-            <element signature="e#6099#6194#0" expanded="false" />
-            <element signature="n#!!block;n#uniq#0" expanded="false" />
-            <element signature="e#6443#7405#0" expanded="false" />
-            <element signature="e#7447#9012#0" expanded="false" />
-            <element signature="e#11071#11998#0" expanded="false" />
-            <element signature="e#12499#13264#0" expanded="false" />
-            <element signature="e#17318#17777#0" expanded="false" />
-            <element signature="e#17834#19753#0" expanded="false" />
-            <element signature="e#19805#21208#0" expanded="false" />
-            <element signature="e#21745#22326#0" expanded="false" />
-            <element signature="e#23820#24261#0" expanded="false" />
+            <element signature="n#!!block;n#getinvites#0" expanded="false" />
+            <element signature="n#!!block;n#getUser#0" expanded="false" />
+            <element signature="e#5740#6390#0" expanded="false" />
+            <element signature="e#7203#7440#0" expanded="false" />
+            <element signature="e#13319#13666#0" expanded="false" />
+            <element signature="e#13715#14093#0" expanded="false" />
+            <element signature="e#14522#16006#0" expanded="false" />
+            <element signature="n#!!block;n#processUserVote#0" expanded="false" />
+            <element signature="n#!!block;n#processVote#0" expanded="false" />
+            <element signature="e#24585#25663#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/node/trigger/sockets.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7785">
-          <caret line="519" column="43" selection-start-line="519" selection-start-column="43" selection-end-line="519" selection-end-column="43" />
+        <state relative-caret-position="8823">
+          <caret line="519" column="42" lean-forward="false" selection-start-line="519" selection-start-column="42" selection-end-line="519" selection-end-column="42" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/www/css/universal.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="549" column="15" lean-forward="false" selection-start-line="549" selection-start-column="15" selection-end-line="549" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/www/js/chrome.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="666" column="19" selection-start-line="666" selection-start-column="19" selection-end-line="666" selection-end-column="19" />
-          <folding>
-            <element signature="e#1360#12073#0" expanded="false" />
-            <element signature="e#12118#12978#0" expanded="false" />
-            <element signature="n#!!block;n#recoverymode#0" expanded="false" />
-            <marker date="1507294450000" expanded="true" signature="24684:24715" ph="..." />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="1073" column="33" lean-forward="false" selection-start-line="1073" selection-start-column="33" selection-end-line="1073" selection-end-column="79" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/www/fail.html">
+    <entry file="file://$PROJECT_DIR$/src/node/trigger/channel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="47" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
+        <state relative-caret-position="34">
+          <caret line="1039" column="1" lean-forward="true" selection-start-line="1039" selection-start-column="1" selection-end-line="1039" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="webServersAuthStorage">
-    <data>AAAAsHe1AVMsB2zwDu4gUtF/dC0vBLvnbzypBpI2bz1GdzZg3vV5tFB6EPAD0ApxW3H6nm7HRP5J8RCTI2cryl0B4rXb5lhGe5YvTsIQ93sA45/Fiv0HWN8lczlBb98Wayyiwr+Ych/e5AFdyh7E7AUubmZRZtIbVv9w54K5JyG4OdjZ7hi7U4xPdiIuG/LKo3hKRQ9AOfB26wMV83QJnuSiTM5//CF8eeoe8nxHm9dYR5CpmTWxyXt4xmjGaqK903e6Og==</data>
   </component>
 </project>
