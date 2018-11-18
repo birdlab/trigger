@@ -89,4 +89,4 @@ src/php/smtp_config.php
 
 *.conf
 
-.idea
+.idea/*
