@@ -5,8 +5,10 @@ var md5 = require('MD5');
 var sanitizer = require('sanitizer');
 var fs = require("fs");
 
-var mailgun = require('mailgun').Mailgun;
-var mg = new mailgun('key-2b447e23ffd7065991bfe780bcf1c1cf');
+
+var api_key = 'key-2b447e23ffd7065991bfe780bcf1c1cf';
+var domain = 'mg.birdlab.ru';
+var mail_gun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 var voteq = [];
 var uvoteq = [];
@@ -1182,24 +1184,34 @@ exports.sendinvite = function (code, mail, socket) {
 		}
 	}
 	if (fake == false) {
-		mg.sendText('tars@birdlab.com', [data.mail, 'allbirdrus@gmail.com'],
-			'Клуб анонимных меломанов trigger.fm приглашает тебя!',
-			'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!',
-			function (err) {
-				if (err) {
-					socket.emit('invitestatus', {ok: false, m: mail});
-				} else {
-					db.connection.query('UPDATE invites SET  email="' + mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function (error, result, fields) {
-						if (error) {
-							socket.emit('invitestatus', {ok: false, m: mail});
-						}
-						if (result) {
-							socket.emit('invitestatus', {ok: true, m: mail});
-						}
-					});
 
-				}
-			});
+        var data = {
+            from: 'tars@birdlab.com',
+            to: data.mail,
+            subject: 'Клуб анонимных меломанов trigger.fm приглашает тебя!',
+            text: 'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!'
+        };
+
+        mail_gun.messages().send(data, function (err, body) {
+            console.log(err);
+            console.log(body);
+            if (err) {
+                socket.emit('invitestatus', {ok: false, m: mail});
+            } else {
+                db.connection.query('UPDATE invites SET  email="' + mail + '", send_time=NOW() WHERE  code = "' + code + '" LIMIT 1', function (error, result, fields) {
+                    if (error) {
+                        socket.emit('invitestatus', {ok: false, m: mail});
+                    }
+                    if (result) {
+                        socket.emit('invitestatus', {ok: true, m: mail});
+                    }
+                });
+
+            }
+
+        });
+
+
 	}
 }
 
@@ -1223,17 +1235,28 @@ exports.sendextinvite = function (data, callback) {
 								}
 							}
 							if (fake == false) {
-								mg.sendText('tars@birdlab.com', [data.mail, 'allbirdrus@gmail.com'],
-									'Клуб анонимных меломанов trigger.fm приглашает тебя!',
-									'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!',
-									function (err) {
-										if (err) {
-											callback({error: err});
-										} else {
-											callback({status: 'ok'});
+                                var data = {
+                                    from: 'tars@birdlab.com',
+                                    to: data.mail,
+                                    subject: 'Клуб анонимных меломанов trigger.fm приглашает тебя!',
+                                    text: 'Привет, дорогой друг! Ты держишь в руках драгоценную ссылку, которая откроет тебе дверь в удивительный мир музыкальной прокрастинации! http://trigger.fm/invites/in.php?email=' + data.mail + '&code=' + code + ' Удачи!'
+                                };
 
-										}
-									});
+                                mail_gun.messages().send(data, function (err, body) {
+                                    console.log(err);
+                                    console.log(body);
+
+                                        if (err) {
+                                            callback({error: err});
+                                        } else {
+                                            callback({status: 'ok'});
+
+                                        }
+
+
+                                });
+
+
 							}
 						} else {
 							callback({error: er});
@@ -1259,19 +1282,29 @@ exports.recoverpass = function (mail, callback) {
 						callback({ok: false, e: 'db fail'});
 					}
 					if (r) {
-						mg.sendText('tars@birdlab.com', [result[0].email, 'allbirdrus@gmail.com'],
-							'trigger.fm принес тебе твой новый пароль',
-							'Привет,' + result[0].name + '! Кто-то, возможно ты, решил сбросить твой пароль на trigger.fm. Твой новый пароль: ' + pass,
-							function (err) {
-								if (err) {
-									callback({ok: false, e: 'sending mail fail'});
-								} else {
-									callback({
-										ok: true,
-										m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
-									});
-								}
-							});
+
+                        var data = {
+                            from: 'tars@birdlab.com',
+                            to: result[0].email,
+                            subject: 'trigger.fm принес тебе твой новый пароль',
+                            text: 'Привет,' + result[0].name + '! Кто-то, возможно ты, решил сбросить твой пароль на trigger.fm. Твой новый пароль: ' + pass
+                        };
+
+                        mail_gun.messages().send(data, function (err, body) {
+                        	console.log(err);
+                            console.log(body);
+                            if (err) {
+                                console.log(err);
+                                callback({ok: false, e: 'sending mail fail'});
+                            } else {
+                                callback({
+                                    ok: true,
+                                    m: 'Привет, ' + result[0].name + ' на твой ящик ' + result[0].email + ' отправлен новый пароль ;)'
+                                });
+                            }
+
+                        });
+
 
 					}
 				});
