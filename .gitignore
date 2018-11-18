@@ -89,5 +89,4 @@ src/php/smtp_config.php
 
 *.conf
 
-.idea/.name
-.idea/workspace.xml
+.idea
