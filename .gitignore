@@ -90,3 +90,7 @@ src/php/smtp_config.php
 *.conf
 
 .idea/*
+.idea/workspace.xml
+.idea/webServers.xml
+.idea/webServers.xml
+.idea/deployment.xml
